@@ -25,7 +25,7 @@ namespace SimpleMusicStore.Auth.Extensions
 
 			services.AddAuthorization(options =>
 			{
-				options.AddPolicy("ApiUser", policy => policy.RequireClaim(JwtRegisteredClaimNames.Iss));
+				options.AddPolicy("ApiUser", policy => policy.RequireClaim("karizma"));
 			});
 		}
 	}

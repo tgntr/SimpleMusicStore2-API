@@ -13,17 +13,27 @@ namespace SimpleMusicStore.Auth.Extensions
 {
 	public static class Configurations
 	{
-		public static JwtSecurityToken SecurityToken(this JwtConfiguration config, Claim[] claims)
+		public static SecurityToken SecurityToken(this JwtConfiguration config, Claim[] claims)
 		{
-			return new JwtSecurityToken(
-				issuer: config.Issuer,
-				audience: config.Audience,
-				claims: claims,
-				notBefore: config.NotBefore,
-				expires: config.ExpirationDate(),
-				signingCredentials: config.SigningCredentials()
-			);
-		}
+            //return new JwtSecurityToken(
+            //	issuer: config.Issuer,
+            //	audience: config.Audience,
+            //	claims: claims,
+            //	notBefore: config.NotBefore,
+            //	expires: config.ExpirationDate(),
+            //	signingCredentials: config.SigningCredentials()
+            //);
+
+            var securityTokenDescriptor = new SecurityTokenDescriptor
+            {
+                Audience = config.Audience,
+                Issuer = config.Issuer,
+                Subject = new ClaimsIdentity(claims),
+                Expires = config.ExpirationDate(),
+                SigningCredentials = config.SigningCredentials()
+            };
+            return new JwtSecurityTokenHandler().CreateToken(securityTokenDescriptor);
+        }
 
 		public static TokenValidationParameters ValidationParameters(this JwtConfiguration config)
 		{

@@ -32,12 +32,13 @@ namespace SimpleMusicStore.Auth
 
 		private string GenerateJwtToken(string username)
 		{
-			var claims = new[]
-			{
+            var claims = new Claim[]
+            {
 				//TODO requiring these claims returns 403 forbidden
-				new Claim(JwtRegisteredClaimNames.Sub, username)
-			};
-			var token = _config.SecurityToken(claims);
+				new Claim("karizma", username)
+            };
+
+            var token = _config.SecurityToken(claims);
 			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 	}
