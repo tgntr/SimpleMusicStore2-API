@@ -1,8 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Text;
 
 namespace SimpleMusicStore.Models.AuthenticationProviders
 {

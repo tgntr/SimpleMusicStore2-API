@@ -8,6 +8,6 @@ namespace SimpleMusicStore.Contracts
 {
     public interface IdentityHandler
     {
-        bool Exists(AuthenticationRequest request);
+        //bool Exists(AuthenticationRequest request);
     }
 }

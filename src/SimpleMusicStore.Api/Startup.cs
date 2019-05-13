@@ -11,6 +11,8 @@ using SimpleMusicStore.Models.AuthenticationProviders;
 using SimpleMusicStore.Auth.Extensions;
 using SimpleMusicStore.MusicLibrary;
 using SimpleMusicStore.Storage;
+using SimpleMusicStore.Contracts.Repositories;
+using SimpleMusicStore.Repositories;
 
 namespace SimpleMusicStore.Api
 {
@@ -34,6 +36,7 @@ namespace SimpleMusicStore.Api
 			services.AddScoped<IdentityHandler, UserManager>();
 			services.AddScoped<MusicSource, Discogs>();
 			services.AddScoped<FileStorage, GoogleCloud>();
+            services.AddScoped<IUserRepository, UserRepository>();
 			services.AddAutoMapper();
 		}
 		

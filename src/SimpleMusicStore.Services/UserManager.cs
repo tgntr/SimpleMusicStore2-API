@@ -6,10 +6,10 @@ namespace SimpleMusicStore.Services
 {
     public class UserManager : IdentityHandler
     {
-        public bool Exists(AuthenticationRequest request)
-        {
-			//TODO add repository
-            return true;
-        }
+        //public bool Exists(AuthenticationRequest request)
+        //{
+		//	//TODO add repository
+        //    return true;
+        //}
     }
 }

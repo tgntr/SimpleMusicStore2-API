@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using SimpleMusicStore.Models.AuthenticationProviders;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace SimpleMusicStore.Auth.Extensions
 {
@@ -25,7 +23,7 @@ namespace SimpleMusicStore.Auth.Extensions
 
 			services.AddAuthorization(options =>
 			{
-				options.AddPolicy("ApiUser", policy => policy.RequireClaim("karizma"));
+				options.AddPolicy("ApiUser", policy => policy.RequireClaim("username"));
 			});
 		}
 	}

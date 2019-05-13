@@ -5,10 +5,9 @@ using System.Collections.Generic;
 
 namespace SimpleMusicStore.Entities
 {
-    public class User : IdentityUser
+    public class User
     {
         public User()
-			:base()
         {
             Addresses = new List<Address>();
             FollowedArtists = new List<ArtistFollow>();
@@ -17,6 +16,8 @@ namespace SimpleMusicStore.Entities
             Orders = new List<Order>();
         }
 
+        public string Username { get; set; }
+        public string Password { get; set; }
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public long? FacebookId { get; set; }

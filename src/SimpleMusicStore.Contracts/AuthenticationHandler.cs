@@ -1,11 +1,12 @@
 ﻿using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.AuthenticationProviders;
 using System;
+using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts
 {
     public interface AuthenticationHandler
     {
-        bool TryAuthenticate(AuthenticationRequest request, out string token);
+        Task<string> Authenticate(AuthenticationRequest request);
     }
 }

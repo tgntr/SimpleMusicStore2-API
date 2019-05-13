@@ -23,14 +23,11 @@ namespace SimpleMusicStore.Api.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult Post([FromBody] AuthenticationRequest request)
+		public async Task<string> Post([FromBody] AuthenticationRequest request)
 		{
-			if (!_authenticator.TryAuthenticate(request, out string token))
-			{
-				return BadRequest("invalid username or password");
-			}
+            var token = await _authenticator.Authenticate(request);
 
-			return Ok(new { sub = token });
+            return token;
 		}
 	}
 }

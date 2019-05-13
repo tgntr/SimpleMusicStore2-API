@@ -4,38 +4,39 @@ using SimpleMusicStore.Models.AuthenticationProviders;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using SimpleMusicStore.Auth.Extensions;
+using SimpleMusicStore.Contracts.Repositories;
+using System.Threading.Tasks;
+using System;
 
 namespace SimpleMusicStore.Auth
 {
     public class Jwt : AuthenticationHandler
     {
+        private readonly IUserRepository _users;
         private readonly IdentityHandler _userManager;
         private readonly JwtConfiguration _config;
 
-        public Jwt(IdentityHandler userManager, IOptions<JwtConfiguration> config)
+        public Jwt(IUserRepository users, IdentityHandler userManager, IOptions<JwtConfiguration> config)
         {
+            _users = users;
             _userManager = userManager;
             _config = config.Value;
-			//TODO validate the jwtConfiguration?
         }
 
-        public bool TryAuthenticate(AuthenticationRequest request, out string token)
+        public async Task<string> Authenticate(AuthenticationRequest request)
 		{
-			token = string.Empty;
-			if (!_userManager.Exists(request))
-			{
-				return false;
-			}
-			token = GenerateJwtToken(request.Username);
-			return true;
+            if (!await _users.IsValid(request))
+                //TODO configure so api returns proper error when thrown
+                throw new ArgumentException("invalid username or password");
+
+			return GenerateJwtToken(request.Username);
 		}
 
 		private string GenerateJwtToken(string username)
 		{
             var claims = new Claim[]
             {
-				//TODO requiring these claims returns 403 forbidden
-				new Claim("karizma", username)
+				new Claim("username", username)
             };
 
             var token = _config.SecurityToken(claims);
