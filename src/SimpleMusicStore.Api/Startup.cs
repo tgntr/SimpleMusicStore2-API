@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SimpleMusicStore.Auth;
+﻿using SimpleMusicStore.Auth;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using SimpleMusicStore.Contracts;
-using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Services;
 using SimpleMusicStore.Models.AuthenticationProviders;
 using SimpleMusicStore.Auth.Extensions;
@@ -39,17 +28,15 @@ namespace SimpleMusicStore.Api
 		{
 			//TODO Environment class to access appsettings values
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-			services.AddJwtAuthentication(JwtTokenConfiguration());
-			services.Configure<JwtTokenConfiguration>(JwtTokenSection());
+			services.Configure<JwtConfiguration>(JwtPayloadSection());
+			services.AddJwtAuthentication(JwtConfiguration());
 			services.AddScoped<AuthenticationHandler, Jwt>();
 			services.AddScoped<IdentityHandler, UserManager>();
 			services.AddScoped<MusicSource, Discogs>();
-			services.AddScoped<DataStorage, GoogleCloud>();
+			services.AddScoped<FileStorage, GoogleCloud>();
 			services.AddAutoMapper();
 		}
-
-
-
+		
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -69,16 +56,17 @@ namespace SimpleMusicStore.Api
             app.UseMvc();
 
         }
-
-		private JwtTokenConfiguration JwtTokenConfiguration()
+		private IConfigurationSection JwtPayloadSection()
 		{
-			return Configuration.GetSection("JwtToken").Get<JwtTokenConfiguration>();
+			return Configuration.GetSection("JwtPayload");
+		}
+
+		private JwtConfiguration JwtConfiguration()
+		{
+			return JwtPayloadSection().Get<JwtConfiguration>();
 		}
 
 
-		private IConfigurationSection JwtTokenSection()
-		{
-			return Configuration.GetSection("JwtToken");
-		}
+		
 	}
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts
 {
-	public interface DataStorage
+	public interface FileStorage
 	{
 		Task Upload(IFormFile file);
 	}

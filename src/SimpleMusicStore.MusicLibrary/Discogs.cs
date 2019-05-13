@@ -13,11 +13,12 @@ namespace SimpleMusicStore.MusicLibrary
 {
     public class Discogs : MusicSource
     {
-        private const string CONTENT_RELEASE = "releases";
-        private const string CONTENT_LABEL = "labels";
-        private const string CONTENT_ARTIST = "artists";
-        private const string CONTENT_MASTER = "masters";
-        private const string PARAMETER_SPLITTER = "/";
+		private const string
+			CONTENT_RELEASE = "releases",
+			CONTENT_LABEL = "labels",
+			CONTENT_ARTIST = "artists",
+			CONTENT_MASTER = "masters",
+			PARAMETER_SPLITTER = "/";
 
         private readonly WebClient _web;
         private readonly string _urlFormat = "https://api.discogs.com/{0}/{1}?key={2}&secret={3}";

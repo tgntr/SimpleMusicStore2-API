@@ -1,30 +1,28 @@
 ﻿using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using SimpleMusicStore.Contracts;
-using SimpleMusicStore.Contracts.Services;
-using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.AuthenticationProviders;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
+using SimpleMusicStore.Auth.Extensions;
 
 namespace SimpleMusicStore.Auth
 {
     public class Jwt : AuthenticationHandler
     {
         private readonly IdentityHandler _userManager;
-        private readonly JwtTokenConfiguration _token;
-        public Jwt(IdentityHandler userManager, IOptions<JwtTokenConfiguration> token)
+        private readonly JwtConfiguration _config;
+
+        public Jwt(IdentityHandler userManager, IOptions<JwtConfiguration> config)
         {
             _userManager = userManager;
-            _token = token.Value;
+            _config = config.Value;
+			//TODO validate the jwtConfiguration?
         }
+
         public bool TryAuthenticate(AuthenticationRequest request, out string token)
 		{
 			token = string.Empty;
-			if (!_userManager.IsValidUser(request))
+			if (!_userManager.Exists(request))
 			{
 				return false;
 			}
@@ -32,24 +30,15 @@ namespace SimpleMusicStore.Auth
 			return true;
 		}
 
-		//TODO claims
 		private string GenerateJwtToken(string username)
 		{
 			var claims = new[]
 			{
-				new Claim(ClaimTypes.Name, username)
+				//TODO requiring these claims returns 403 forbidden
+				new Claim(JwtRegisteredClaimNames.Sub, username)
 			};
-			var secret = new SymmetricSecurityKey(_token.SecretEncoded());
-			var credentials = new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
-			var jwtToken = new JwtSecurityToken(
-				issuer:_token.Issuer,
-				audience: _token.Audience,
-				claims: claims,
-				expires: DateTime.UtcNow.AddMinutes(_token.AccessExpiration),
-				signingCredentials: credentials
-			);
-
-			return new JwtSecurityTokenHandler().WriteToken(jwtToken);
+			var token = _config.SecurityToken(claims);
+			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 	}
 }

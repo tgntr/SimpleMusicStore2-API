@@ -1,5 +1,4 @@
 ﻿using Google.Cloud.Storage.V1;
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Google.Apis.Auth.OAuth2;
@@ -7,7 +6,7 @@ using SimpleMusicStore.Contracts;
 
 namespace SimpleMusicStore.Storage
 {
-    public class GoogleCloud : DataStorage
+    public class GoogleCloud : FileStorage
     {
         private const string BUCKET_NAME = "simplemusicstore";
         private readonly StorageClient _storage;
