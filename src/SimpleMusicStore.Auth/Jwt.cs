@@ -13,13 +13,13 @@ namespace SimpleMusicStore.Auth
     public class Jwt : AuthenticationHandler
     {
         private readonly IUserRepository _users;
-        private readonly IdentityHandler _userManager;
+        //private readonly IdentityHandler _userManager;
         private readonly JwtConfiguration _config;
 
-        public Jwt(IUserRepository users, IdentityHandler userManager, IOptions<JwtConfiguration> config)
+        public Jwt(IUserRepository users, IOptions<JwtConfiguration> config)
         {
             _users = users;
-            _userManager = userManager;
+            //_userManager = userManager;
             _config = config.Value;
         }
 

@@ -23,11 +23,9 @@ namespace SimpleMusicStore.Api.Controllers
 		}
 
 		[HttpPost]
-		public async Task<string> Post([FromBody] AuthenticationRequest request)
+		public async Task<string> Post([FromBody] AuthenticationRequest credentials)
 		{
-            var token = await _authenticator.Authenticate(request);
-
-            return token;
+            return await _authenticator.Authenticate(credentials);
 		}
 	}
 }

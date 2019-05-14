@@ -23,11 +23,11 @@ namespace SimpleMusicStore.MusicLibrary
         private readonly WebClient _web;
         private readonly string _urlFormat = "https://api.discogs.com/{0}/{1}?key={2}&secret={3}";
 
-        public Discogs(WebClient client)
+        public Discogs()
         {
-            _web = client;
+            _web = new WebClient();
+            _web.Headers.Add("user-agent", "SimpleMusicStore");
         }
-        //TODO should discogs models be in models project? otherwise how could I access them in the Contracts project?
         public async Task<RecordInfo> Record(Uri uri)
         {
             var discogsId = await FindIdAsync(uri);

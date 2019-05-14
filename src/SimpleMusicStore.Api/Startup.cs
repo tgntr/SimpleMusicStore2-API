@@ -30,9 +30,10 @@ namespace SimpleMusicStore.Api
 		{
 			//TODO Environment class to access appsettings values
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-			services.Configure<JwtConfiguration>(JwtPayloadSection());
-			services.AddJwtAuthentication(JwtConfiguration());
-			services.AddScoped<AuthenticationHandler, Jwt>();
+
+            services.AddJwtAuthentication(JwtPayloadSection(), FacebookCredentials());
+
+            //TODO move all service injections to method
 			services.AddScoped<IdentityHandler, UserManager>();
 			services.AddScoped<MusicSource, Discogs>();
 			services.AddScoped<FileStorage, GoogleCloud>();
@@ -55,21 +56,17 @@ namespace SimpleMusicStore.Api
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseMvc();
 
         }
 		private IConfigurationSection JwtPayloadSection()
-		{
-			return Configuration.GetSection("JwtPayload");
-		}
+		    => Configuration.GetSection("JwtPayload");
 
-		private JwtConfiguration JwtConfiguration()
-		{
-			return JwtPayloadSection().Get<JwtConfiguration>();
-		}
+        private IConfigurationSection FacebookCredentials()
+            => Configuration.GetSection("Facebook");
 
 
-		
-	}
+
+    }
 }

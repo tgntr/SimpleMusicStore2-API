@@ -9,12 +9,12 @@ namespace SimpleMusicStore.Contracts.Repositories
     public interface IRepository<TEntity>
         where TEntity : class
     {
-        IQueryable<TEntity> All();
+        IEnumerable<TEntity> All();
 
-        Task AddAsync(TEntity entity);
+        Task Add(TEntity entity);
 
         void Delete(TEntity entity);
 
-        Task<int> SaveChangesAsync();
+        Task<int> SaveChanges();
     }
 }

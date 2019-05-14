@@ -13,14 +13,14 @@ namespace SimpleMusicStore.Repositories
         //private readonly FunAppContext context;
         protected static readonly ICollection<TEntity> set = new List<TEntity>();
 
-        public Task AddAsync(TEntity entity)
+        public Task Add(TEntity entity)
         {
             return Task.Run(() => set.Add(entity));
         }
 
-        public IQueryable<TEntity> All()
+        public IEnumerable<TEntity> All()
         {
-            return set.AsQueryable();
+            return set;
         }
 
         public void Delete(TEntity entity)
@@ -28,7 +28,7 @@ namespace SimpleMusicStore.Repositories
             set.Remove(entity);
         }
 
-        public Task<int> SaveChangesAsync()
+        public Task<int> SaveChanges()
         {
             return null;
         }
