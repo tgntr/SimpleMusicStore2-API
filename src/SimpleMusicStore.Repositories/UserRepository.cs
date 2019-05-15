@@ -13,16 +13,16 @@ namespace SimpleMusicStore.Repositories
     {
         public UserRepository()
         {
-            set.Add(new User { Username = "test", Password = "test" });
+            _set.Add(new User { Username = "test", Password = "test" });
         }
         public Task<bool> IsValid(AuthenticationRequest request)
         {
-            return Task.Run(() => set.Any(u => u.Username == request.Username && u.Password == request.Password));
+            return Task.Run(() => _set.Any(u => u.Username == request.Username && u.Password == request.Password));
         }
 
         public Task<User> Find(string username)
         {
-            return Task.Run(() => set.FirstOrDefault(u => u.Username == u.Username));
+            return Task.Run(() => _set.FirstOrDefault(u => u.Username == u.Username));
         }
     }
 }
