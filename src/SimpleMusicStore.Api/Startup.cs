@@ -19,15 +19,15 @@ namespace SimpleMusicStore.Api
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-		{
-			//TODO Environment class to access appsettings values
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        {
+            //TODO Environment class to access appsettings values
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddJwtAuthentication(JwtPayloadSection(), FacebookCredentials());
             services.AddCustomServices();
-		}
-		
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -45,8 +45,8 @@ namespace SimpleMusicStore.Api
             app.UseMvc();
 
         }
-		private IConfigurationSection JwtPayloadSection()
-		    => Configuration.GetSection("JwtPayload");
+        private IConfigurationSection JwtPayloadSection()
+            => Configuration.GetSection("JwtPayload");
 
         private IConfigurationSection FacebookCredentials()
             => Configuration.GetSection("Facebook");
