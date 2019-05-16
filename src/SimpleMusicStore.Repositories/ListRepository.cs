@@ -11,24 +11,24 @@ namespace SimpleMusicStore.Repositories
         where TEntity : class
     {
         //private readonly FunAppContext context;
-        protected static readonly ICollection<TEntity> set = new List<TEntity>();
+        protected static readonly ICollection<TEntity> _set = new List<TEntity>();
 
-        public Task AddAsync(TEntity entity)
+        public Task Add(TEntity entity)
         {
-            return Task.Run(() => set.Add(entity));
+            return Task.Run(() => _set.Add(entity));
         }
 
-        public IQueryable<TEntity> All()
+        public IEnumerable<TEntity> All()
         {
-            return set.AsQueryable();
+            return _set;
         }
 
         public void Delete(TEntity entity)
         {
-            set.Remove(entity);
+            _set.Remove(entity);
         }
 
-        public Task<int> SaveChangesAsync()
+        public Task<int> SaveChanges()
         {
             return null;
         }

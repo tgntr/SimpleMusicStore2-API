@@ -7,25 +7,29 @@ namespace SimpleMusicStore.Models.MusicLibraries
 {
     public class RecordInfo
     {
-        public RecordVideoInfo[] Videos { get; set; }
-
-        public RecordLabelInfo[] Labels { get; set; }
-
-        public RecordArtistInfo[] Artists { get; set; }
-
-        public ImageInfo[] Images { get; set; }
-
+        public RecordInfo()
+        {
+            Videos = new List<RecordVideoInfo>();
+            Images = new List<ImageInfo>();
+        }
+        //TODO check if deserializes with private properties
         public int Id { get; set; }
-
-        public string[] Genres { get; set; }
-
         public string Title { get; set; }
-
         public int Year { get; set; }
+        public ICollection<RecordVideoInfo> Videos { get; set; }
+        public ICollection<RecordLabelInfo> Labels { get; set; }
+        public ICollection<RecordArtistInfo> Artists { get; set; }
+        public ICollection<ImageInfo> Images { get; set; }
+        public ICollection<string> Genres { get; set; }
+        public ICollection<RecordTrackInfo> Tracklist { get; set; }
+        public ICollection<RecordFormatInfo> Formats { get; set; }
 
-        public RecordTrackInfo[] Tracklist { get; set; }
+        public string Format => Formats.First().Name;
+        public string Image => Images.First().Uri;
+        public int ArtistId => Artists.First().Id;
+        public int LabelId => Labels.First().Id;
 
-        public List<RecordFormatDto> Formats { get; set; }
+
 
 
 

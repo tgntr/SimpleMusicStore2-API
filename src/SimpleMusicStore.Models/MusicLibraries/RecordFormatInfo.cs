@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Models.MusicLibraries
 {
-    public class RecordFormatDto
+    public class RecordFormatInfo
     {
         public string Name { get; set; }
     }

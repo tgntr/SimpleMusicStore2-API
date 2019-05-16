@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using SimpleMusicStore.MusicLibrary.Extensions;
-using SimpleMusicStore.Contracts;
 
 //TODO rename namespaces
 namespace SimpleMusicStore.MusicLibrary
@@ -23,14 +22,14 @@ namespace SimpleMusicStore.MusicLibrary
         private readonly WebClient _web;
         private readonly string _urlFormat = "https://api.discogs.com/{0}/{1}?key={2}&secret={3}";
 
-        public Discogs(WebClient client)
+        public Discogs()
         {
-            _web = client;
+            _web = new WebClient();
+            _web.AddHeaders();
         }
-        //TODO should discogs models be in models project? otherwise how could I access them in the Contracts project?
         public async Task<RecordInfo> Record(Uri uri)
         {
-            var discogsId = await FindIdAsync(uri);
+            var discogsId = await FindId(uri);
             return await DownloadContentAsync<RecordInfo>(CONTENT_RELEASE, discogsId);
         }
 
@@ -44,7 +43,7 @@ namespace SimpleMusicStore.MusicLibrary
             return await DownloadContentAsync<ArtistInfo>(CONTENT_ARTIST, id);
         }
 
-        private async Task<int> FindIdAsync(Uri uri)
+        private async Task<int> FindId(Uri uri)
         {
             if (IsMasterUrl(uri))
                 return (await DownloadContentAsync<MasterInfo>(CONTENT_MASTER, uri.Id())).Main_Release;

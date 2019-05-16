@@ -9,12 +9,14 @@ namespace SimpleMusicStore.Storage
     public class GoogleCloud : FileStorage
     {
         private const string BUCKET_NAME = "simplemusicstore";
+
+
         private readonly StorageClient _storage;
 
         public GoogleCloud()
         {
             //TODO move credentials file
-            var credentials = GoogleCredential.GetApplicationDefault();
+            //var credentials = GoogleCredential.GetApplicationDefault();
             _storage = StorageClient.Create();
         }
 
