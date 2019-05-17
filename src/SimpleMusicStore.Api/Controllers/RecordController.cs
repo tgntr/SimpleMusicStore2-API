@@ -23,7 +23,7 @@ namespace SimpleMusicStore.Api.Controllers
         [HttpPost]
         [Route("record/add")]
         public async Task Add([FromBody]NewRecord record)
-         {
+        {
             //TODO in the front end, when someone paste discogs url, provide an preview with some AJAX, so the user could see what he is going to add to the store????
             await _records.Add(record);
         }

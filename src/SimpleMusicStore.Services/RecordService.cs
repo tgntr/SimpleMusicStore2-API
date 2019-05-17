@@ -32,10 +32,7 @@ namespace SimpleMusicStore.Services
             await CheckIfExists(recordInfo);
             Task.WaitAll(
                 _artists.Add(recordInfo.ArtistId),
-                _labels.Add(recordInfo.LabelId)
-            );
-            
-            //TODO configure map
+                _labels.Add(recordInfo.LabelId));
             var record = _mapper.Map<Record>(recordInfo);
             record.Price = newRecord.Price;
             await _records.Add(record);
