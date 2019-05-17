@@ -9,7 +9,7 @@ namespace SimpleMusicStore.Entities
     public class Video : Entity<int>
     {
         [Required]
-        public string Url { get; set; }
+        public string Uri { get; set; }
 
         [Required]
         public int RecordId { get; set; }

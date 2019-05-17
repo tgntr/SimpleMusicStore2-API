@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using SimpleMusicStore.MusicLibrary.Extensions;
+using Microsoft.Extensions.Configuration;
 
 //TODO rename namespaces
 namespace SimpleMusicStore.MusicLibrary
@@ -19,43 +20,51 @@ namespace SimpleMusicStore.MusicLibrary
 			CONTENT_MASTER = "masters",
 			PARAMETER_SPLITTER = "/";
 
-        private readonly WebClient _web;
-        private readonly string _urlFormat = "https://api.discogs.com/{0}/{1}?key={2}&secret={3}";
+        //private readonly WebClient _web;
+        //TODO hide key and secret best practice
+        private readonly string _urlFormat = "https://api.discogs.com/{0}/{1}?key=VpQTKELQqmtSDIXYycSF&secret=cOgmwRrXvdWmubVEeKYYIuZyjyHBaQfr";
 
-        public Discogs()
+        public Discogs(IConfigurationSection credentials)
         {
-            _web = new WebClient();
-            _web.AddHeaders();
+            //_web = new WebClient();
+            //_web.AddHeaders(credentials);
         }
         public async Task<RecordInfo> Record(Uri uri)
         {
             var discogsId = await FindId(uri);
-            return await DownloadContentAsync<RecordInfo>(CONTENT_RELEASE, discogsId);
+            return  await DownloadContent<RecordInfo>(CONTENT_RELEASE, discogsId);
         }
 
         public async Task<LabelInfo> Label(int id)
         {
-            return await DownloadContentAsync<LabelInfo>(CONTENT_LABEL, id);
+            return await DownloadContent<LabelInfo>(CONTENT_LABEL, id);
         }
 
         public async Task<ArtistInfo> Artist(int id)
         {
-            return await DownloadContentAsync<ArtistInfo>(CONTENT_ARTIST, id);
+            return await DownloadContent<ArtistInfo>(CONTENT_ARTIST, id);
         }
 
         private async Task<int> FindId(Uri uri)
         {
             if (IsMasterUrl(uri))
-                return (await DownloadContentAsync<MasterInfo>(CONTENT_MASTER, uri.Id())).Main_Release;
+                return (await DownloadContent<MasterInfo>(CONTENT_MASTER, uri.Id())).Main_Release;
 
             return uri.Id();
         }
 
-        private async Task<T> DownloadContentAsync<T>(string contentType, int discogsId)
+        private async Task<T> DownloadContent<T>(string contentType, int discogsId)
         {
-            var content = await _web.DownloadStringTaskAsync(GenerateUrl(contentType, discogsId));
+            var content = await Web().DownloadStringTaskAsync(GenerateUrl(contentType, discogsId));
             //TODO validate
             return JsonConvert.DeserializeObject<T>(content);
+        }
+
+        private WebClient Web()
+        {
+            var web = new WebClient();
+            web.AddHeaders();
+            return web;
         }
 
         private bool IsMasterUrl(Uri uri)

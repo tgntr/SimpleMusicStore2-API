@@ -9,19 +9,21 @@ using SimpleMusicStore.Models.Binding;
 
 namespace SimpleMusicStore.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class RecordController : ControllerBase
+    //[ApiController]
+    public class RecordController : Controller
     {
         private readonly IRecordService _records;
 
         public RecordController(IRecordService records)
+            : base()
         {
             _records = records;
         }
 
-        public async Task Add(NewRecord record)
-        {
+        [HttpPost]
+        [Route("record/add")]
+        public async Task Add([FromBody]NewRecord record)
+         {
             //TODO in the front end, when someone paste discogs url, provide an preview with some AJAX, so the user could see what he is going to add to the store????
             await _records.Add(record);
         }

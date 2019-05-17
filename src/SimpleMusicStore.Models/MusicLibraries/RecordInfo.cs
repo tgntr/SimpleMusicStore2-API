@@ -28,6 +28,7 @@ namespace SimpleMusicStore.Models.MusicLibraries
         public string Image => Images.First().Uri;
         public int ArtistId => Artists.First().Id;
         public int LabelId => Labels.First().Id;
+        public string Genre => Genres.First();
 
 
 

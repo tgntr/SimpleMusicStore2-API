@@ -4,6 +4,7 @@ using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.Binding;
+using SimpleMusicStore.Models.MusicLibraries;
 using System;
 using System.Threading.Tasks;
 
@@ -28,17 +29,22 @@ namespace SimpleMusicStore.Services
         public async Task Add(NewRecord newRecord)
         {
             var recordInfo = await _discogs.Record(new Uri(newRecord.DiscogsUrl));
-
-            if (!await _records.Exists(recordInfo.Id))
-                throw new ArgumentException("record is already in store");
-
-            await _labels.Add(recordInfo.LabelId);
-            await _artists.Add(recordInfo.LabelId);
+            await CheckIfExists(recordInfo);
+            Task.WaitAll(
+                _artists.Add(recordInfo.ArtistId),
+                _labels.Add(recordInfo.LabelId)
+            );
+            
             //TODO configure map
             var record = _mapper.Map<Record>(recordInfo);
+            record.Price = newRecord.Price;
             await _records.Add(record);
         }
 
-
+        private async Task CheckIfExists(RecordInfo recordInfo)
+        {
+            if (await _records.Exists(recordInfo.Id))
+                throw new ArgumentException("record is already in store");
+        }
     }
 }

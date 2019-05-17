@@ -28,8 +28,8 @@ namespace SimpleMusicStore.Services
             if (await _artists.Exists(discogsId))
                 return;
 
-            var artistInfo = _discogs.Artist(discogsId);
-            var artist = _mapper.Map<Artist>(artistInfo);
+            var artistInfo = await _discogs.Artist(discogsId);
+            var artist =  _mapper.Map<Artist>(artistInfo);
             await _artists.Add(artist);
         }
     }

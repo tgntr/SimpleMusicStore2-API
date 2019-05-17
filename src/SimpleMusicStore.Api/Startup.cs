@@ -22,8 +22,8 @@ namespace SimpleMusicStore.Api
         {
             //TODO Environment class to access appsettings values
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddJwtAuthentication(JwtPayloadSection(), FacebookCredentials());
-            services.AddCustomServices();
+            services.AddJwtAuthentication(JwtPayloadSection(), FacebookSection());
+            services.AddCustomServices(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,10 +48,7 @@ namespace SimpleMusicStore.Api
         private IConfigurationSection JwtPayloadSection()
             => Configuration.GetSection("JwtPayload");
 
-        private IConfigurationSection FacebookCredentials()
+        private IConfigurationSection FacebookSection()
             => Configuration.GetSection("Facebook");
-
-
-
     }
 }
