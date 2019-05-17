@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SimpleMusicStore.Contracts;
 using SimpleMusicStore.Contracts.Repositories;
@@ -13,10 +14,12 @@ namespace SimpleMusicStore.Api.Extensions
 {
     public static class DependencyInjections
     {
-        public static void AddCustomServices(this IServiceCollection services)
+        public static void AddCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IdentityHandler, UserManager>();
-            services.AddScoped<MusicSource, Discogs>();
+
+            services.AddScoped<MusicSource, Discogs>(provider => new Discogs(configuration.GetSection("Discogs")));
+
             services.AddScoped<FileStorage, GoogleCloud>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRecordService, RecordService>();

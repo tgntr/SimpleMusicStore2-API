@@ -1,4 +1,5 @@
-﻿using SimpleMusicStore.Models.MusicLibraries;
+﻿using Microsoft.Extensions.Configuration;
+using SimpleMusicStore.Models.MusicLibraries;
 using System;
 using System.Linq;
 using System.Net;
@@ -14,11 +15,12 @@ namespace SimpleMusicStore.MusicLibrary.Extensions
             return int.Parse(id);
         }
 
-        internal static void AddHeaders(this WebClient client)
+        internal static void AddHeaders(this WebClient client)//, IConfigurationSection credentials)
         {
-            //TODO pass key and secret
-            client.Headers.Add("user-agent", "SimpleMusicStore");
-            client.Headers.Add("Authorization", "Discogs key=MY_CONSUMER_KEY secret=MY_CONSUMER_SECRET");
+            client.Headers.Add("user-agent", "SimpleMusicStore2");
+
+            //TODO doesn't authorize 
+            //client.Headers.Add("Authorization", $"Discogs key={credentials["key"]} secret={credentials["secret"]}");
         }
     }
 }

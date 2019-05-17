@@ -3,9 +3,6 @@ using SimpleMusicStore.Contracts;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
@@ -28,7 +25,7 @@ namespace SimpleMusicStore.Services
             if (await _labels.Exists(discogsId))
                 return;
 
-            var labelInfo = _discogs.Label(discogsId);
+            var labelInfo = await _discogs.Label(discogsId);
             var label = _mapper.Map<Label>(labelInfo);
             await _labels.Add(label);
         }

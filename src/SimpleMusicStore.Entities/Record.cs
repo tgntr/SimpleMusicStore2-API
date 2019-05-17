@@ -9,7 +9,7 @@ namespace SimpleMusicStore.Entities
     {
         public Record()
         {
-            ImageUrl = @"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/12in-Vinyl-LP-Record-Angle.jpg/330px-12in-Vinyl-LP-Record-Angle.jpg";
+            Image = @"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/12in-Vinyl-LP-Record-Angle.jpg/330px-12in-Vinyl-LP-Record-Angle.jpg";
             Videos = new List<Video>();
             Tracks = new List<Track>();
             WantedBy = new List<Wish>();
@@ -18,16 +18,12 @@ namespace SimpleMusicStore.Entities
             IsActive = true;
         }
 
-        [Required]
-        public int DiscogsId { get; set; }
 
         [Required]
         public string Title { get; set; }
 
         [Url]
-        public string ImageUrl { get; set; } 
-
-        public string Description { get; set; }
+        public string Image { get; set; } 
 
         //TODO should genre be an entity?
         public string Genre { get; set; }
