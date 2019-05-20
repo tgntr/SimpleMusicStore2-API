@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SimpleMusicStore.Auth;
 using SimpleMusicStore.Contracts;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
@@ -16,6 +17,7 @@ namespace SimpleMusicStore.Api.Extensions
     {
         public static void AddCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<AuthenticationHandler, Jwt>();
             services.AddScoped<IdentityHandler, UserManager>();
 
             services.AddScoped<MusicSource, Discogs>(provider => new Discogs(configuration.GetSection("Discogs")));

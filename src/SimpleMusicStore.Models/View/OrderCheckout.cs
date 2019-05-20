@@ -7,8 +7,8 @@ namespace SimpleMusicStore.Models.View
 {
     public class OrderCheckout
     {
-        public List<AddressDto> Addresses { get; set; }
-        public List<CartItem> Items { get; set; }
+        public ICollection<AddressDto> Addresses { get; set; }
+        public ICollection<CartItem> Items { get; set; }
         public decimal TotalPrice => Items.Sum(i => i.Quantity * i.Price);
     }
 }

@@ -15,5 +15,10 @@ namespace SimpleMusicStore.Repositories
             //TODO faster way
             return Task.Run(() => _set.Any(r => r.Id == id));
         }
+
+        public Task<Record> Find(int id)
+        {
+            return Task.Run(() => _set.FirstOrDefault(r => r.Id == id));
+        }
     }
 }

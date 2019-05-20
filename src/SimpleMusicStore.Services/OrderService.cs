@@ -17,35 +17,36 @@ namespace SimpleMusicStore.Services
         }
 
 
-        public Task AddToCart(int id)
+        public async Task AddToCart(int id)
         {
-            throw new NotImplementedException();
+            await _cart.Add(id);
         }
 
 
-        public Task DecreaseQuantity(int id)
+        public void DecreaseQuantity(int id)
         {
-            throw new NotImplementedException();
+            //todo should i make this async anyway??
+            _cart.DecreaseQuantity(id);
         }
 
-        public Task IncreaseQuantity(int id)
+        public async Task IncreaseQuantity(int id)
         {
-            throw new NotImplementedException();
+            await _cart.IncreaseQuantity(id);
         }
 
-        public Task<ICollection<CartItem>> Cart()
+        public async Task<ICollection<CartItem>> Cart()
         {
-            throw new NotImplementedException();
+            return await _cart.Items();
         }
 
-        public Task RemoveFromCart(int id)
+        public void RemoveFromCart(int id)
         {
-            throw new NotImplementedException();
+            _cart.Remove(id);
         }
 
-        public Task EmptyCart()
+        public void EmptyCart()
         {
-            throw new NotImplementedException();
+            _cart.Empty();
         }
 
         public Task<OrderCheckout> Checkout()

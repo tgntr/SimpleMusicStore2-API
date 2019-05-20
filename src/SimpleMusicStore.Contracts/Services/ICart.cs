@@ -10,9 +10,9 @@ namespace SimpleMusicStore.Contracts.Services
     {
         Task<ICollection<CartItem>> Items();
         Task Add(int id);
-        Task Remove(int id);
+        void Remove(int id);
         Task IncreaseQuantity(int id);
-        Task DecreaseQuantity(int id);
-        Task EmptyCart();
+        void DecreaseQuantity(int id);
+        void Empty();
     }
 }

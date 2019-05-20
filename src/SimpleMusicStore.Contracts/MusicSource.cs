@@ -9,6 +9,5 @@ namespace SimpleMusicStore.Contracts
 		Task<RecordInfo> Record(Uri uri);
 		Task<LabelInfo> Label(int id);
 		Task<ArtistInfo> Artist(int id);
-
 	}
 }

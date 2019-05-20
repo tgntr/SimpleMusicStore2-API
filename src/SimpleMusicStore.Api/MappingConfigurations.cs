@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.MusicLibraries;
+using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace SimpleMusicStore.Api
             CreateMap<RecordVideoInfo, Video>();
             CreateMap<RecordTrackInfo, Track>();
             CreateMap<RecordInfo, Record>();
+            CreateMap<Record, CartItem>();
         }
     }
 }

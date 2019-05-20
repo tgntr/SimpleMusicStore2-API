@@ -29,7 +29,7 @@ namespace SimpleMusicStore.Services
         public async Task Add(NewRecord newRecord)
         {
             var recordInfo = await _discogs.Record(new Uri(newRecord.DiscogsUrl));
-            await CheckIfExists(recordInfo);
+            await CheckIfAlreadyExists(recordInfo);
             Task.WaitAll(
                 _artists.Add(recordInfo.ArtistId),
                 _labels.Add(recordInfo.LabelId));
@@ -38,7 +38,21 @@ namespace SimpleMusicStore.Services
             await _records.Add(record);
         }
 
-        private async Task CheckIfExists(RecordInfo recordInfo)
+        public Task<bool> Exists(int id)
+        {
+            return _records.Exists(id);
+        }
+
+        public Task<Record> Find(int id)
+        {
+            return _records.Find(id);
+        }
+
+        public async Task<int> Availability(int id)
+        {
+            return (await _records.Find(id)).Quantity;
+        }
+        private async Task CheckIfAlreadyExists(RecordInfo recordInfo)
         {
             if (await _records.Exists(recordInfo.Id))
                 throw new ArgumentException("record is already in store");

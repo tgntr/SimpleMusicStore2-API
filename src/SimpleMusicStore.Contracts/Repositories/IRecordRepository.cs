@@ -9,5 +9,6 @@ namespace SimpleMusicStore.Contracts.Repositories
     public interface IRecordRepository : IRepository<Record>
     {
         Task<bool> Exists(int id);
+        Task<Record> Find(int id);
     }
 }

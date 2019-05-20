@@ -37,7 +37,7 @@ namespace SimpleMusicStore.Entities
         [Range(1, 100)]
         public decimal Price { get; set; }
 
-        //TODO quantity
+        public int Quantity { get; set; }
 
         public string Format { get; set; }
 
