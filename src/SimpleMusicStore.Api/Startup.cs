@@ -24,7 +24,7 @@ namespace SimpleMusicStore.Api
         {
             //TODO Environment class to access appsettings values
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddJwtAuthentication(JwtPayloadSection(), FacebookSection());
+            services.AddJwtAuthentication(JwtPayloadSection());
             services.AddCustomServices(Configuration);
 
             services.AddSession(opt =>
@@ -59,7 +59,7 @@ namespace SimpleMusicStore.Api
         private IConfigurationSection JwtPayloadSection()
             => Configuration.GetSection("JwtPayload");
 
-        private IConfigurationSection FacebookSection()
-            => Configuration.GetSection("Facebook");
+        //private IConfigurationSection FacebookSection()
+        //    => Configuration.GetSection("Facebook");
     }
 }

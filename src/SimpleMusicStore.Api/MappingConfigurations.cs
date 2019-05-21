@@ -13,12 +13,17 @@ namespace SimpleMusicStore.Api
     {
         public MappingConfigurations()
         {
+            //TODO seperate things
             CreateMap<LabelInfo, Label>();
             CreateMap<ArtistInfo, Artist>();
             CreateMap<RecordVideoInfo, Video>();
             CreateMap<RecordTrackInfo, Track>();
             CreateMap<RecordInfo, Record>();
             CreateMap<Record, CartItem>();
+
+            CreateMap<KeyValuePair<int, int>, Item>()
+                .ForMember(i => i.RecordId, src => src.MapFrom(kvp => kvp.Key))
+                .ForMember(i => i.Quantity, src => src.MapFrom(kvp => kvp.Value));
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SimpleMusicStore.Entities
 {
-    public class User
+    public class User : IdentityUser
     {
         public User()
         {

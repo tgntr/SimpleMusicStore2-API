@@ -9,9 +9,9 @@ namespace SimpleMusicStore.Auth.Extensions
 {
     public static class JwtSetup
     {
-        public static void AddJwtAuthentication(this IServiceCollection services, IConfigurationSection jwtConfig, IConfigurationSection facebookCredentials)
+        public static void AddJwtAuthentication(this IServiceCollection services, IConfigurationSection config)
         {
-            services.Configure<JwtConfiguration>(jwtConfig);
+            services.Configure<JwtConfiguration>(config);
 
             services.AddAuthentication(options =>
             {
@@ -23,12 +23,7 @@ namespace SimpleMusicStore.Auth.Extensions
                     //TODO should i move the lambda functions in the configurations extension?
                     options.RequireHttpsMetadata = false;
                     options.SaveToken = true;
-                    options.TokenValidationParameters = jwtConfig.JwtConfiguration().ValidationParameters();
-                })
-                .AddFacebook(options =>
-                {
-                    options.AppId = facebookCredentials["Id"];
-                    options.AppSecret = facebookCredentials["Secret"];
+                    options.TokenValidationParameters = config.JwtConfiguration().ValidationParameters();
                 });
 
             services.AddAuthorization(options =>

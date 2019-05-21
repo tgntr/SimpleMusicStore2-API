@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SimpleMusicStore.Contracts.Repositories;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,17 @@ namespace SimpleMusicStore.Repositories
     {
         //private readonly FunAppContext context;
         protected static readonly ICollection<TEntity> _set = new List<TEntity>();
+        protected readonly IMapper _mapper;
+
+        public ListRepository()
+        {
+
+        }
+
+        public ListRepository(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
 
         public Task Add(TEntity entity)
         {

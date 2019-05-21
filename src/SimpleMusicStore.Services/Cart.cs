@@ -27,6 +27,8 @@ namespace SimpleMusicStore.Services
             _items = new Dictionary<int, int>();
         }
 
+        public IDictionary<int, int> Items => _items;
+
         public async Task Add(int id)
         {
             await CheckIfValid(id);
@@ -62,7 +64,7 @@ namespace SimpleMusicStore.Services
             UpdateCart();
         }
         
-        public async Task<ICollection<CartItem>> Items()
+        public async Task<ICollection<CartItem>> Current()
         {
             //todo a better way???
             var cart = new List<CartItem>();
@@ -83,7 +85,7 @@ namespace SimpleMusicStore.Services
             UpdateCart();
         }
 
-
+        public bool IsEmpty() => _items.Count() == 0;
         //todo move these checks to another class???
         private async Task CheckIfValid(int id)
         {
