@@ -73,26 +73,35 @@ namespace SimpleMusicStore.Services
             };
         }
 
-        public async Task Finish(int addressId)
+        public async Task Complete(int addressId)
         {
-            CheckIfCartIsEmpty();
-            await CheckIfAddressIsValid(addressId);
-            var order = new Order
+            await ValidateOrderCompletionPreConditions(addressId);
+            await AddNewOrder(addressId);
+            EmptyCart();
+        }
+
+        private async Task AddNewOrder(int addressId)
+        {
+            Order order = new Order
             {
                 DeliveryAddressId = addressId,
                 UserId = _currentUserId,
                 Items = _cart.Items.Select(i => _mapper.Map<Item>(i)).ToList()
             };
+
             await _orders.Add(order);
             await _orders.SaveChanges();
-            //TODO _records.DecreaseQuantities(_cart.Items);
-            EmptyCart();
+        }
 
+        private async Task ValidateOrderCompletionPreConditions(int addressId)
+        {
+            CheckIfCartIsEmpty();
+            await CheckIfAddressIsValid(addressId);
         }
 
         private async Task CheckIfAddressIsValid(int id)
         {
-            if(!await _addresses.Exists(id, _currentUserId))
+            if (!await _addresses.Exists(id, _currentUserId))
             {
                 throw new ArgumentException("invalid address");
             }

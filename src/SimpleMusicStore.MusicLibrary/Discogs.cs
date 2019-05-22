@@ -26,8 +26,7 @@ namespace SimpleMusicStore.MusicLibrary
 
         public Discogs(IConfigurationSection credentials)
         {
-            //_web = new WebClient();
-            //_web.AddHeaders(credentials);
+            
         }
         public async Task<RecordInfo> Record(Uri uri)
         {

@@ -19,7 +19,6 @@ namespace SimpleMusicStore.Entities
             IsActive = true;
         }
 
-
         [Required]
         public string Title { get; set; }
 
@@ -38,7 +37,7 @@ namespace SimpleMusicStore.Entities
         [Range(1, 100)]
         public decimal Price { get; set; }
 
-        //todo check if works
+        //todo make this work
         public int Quantity => Stocks.Sum(s => s.Quantity) - Orders.Sum(o => o.Quantity);
 
         public string Format { get; set; }

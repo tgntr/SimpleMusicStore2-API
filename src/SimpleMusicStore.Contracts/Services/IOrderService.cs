@@ -13,6 +13,6 @@ namespace SimpleMusicStore.Contracts.Services
         void DecreaseQuantity(int id);
         void EmptyCart();
         Task<OrderCheckout> Checkout();
-        Task Finish(int addressId);
+        Task Complete(int addressId);
     }
 }

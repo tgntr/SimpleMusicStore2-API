@@ -14,13 +14,11 @@ namespace SimpleMusicStore.Auth
     public class Jwt : AuthenticationHandler
     {
         private readonly IUserRepository _users;
-        //private readonly IdentityHandler _userManager;
         private readonly JwtConfiguration _config;
 
         public Jwt(IUserRepository users, IOptions<JwtConfiguration> config)
         {
             _users = users;
-            //_userManager = userManager;
             _config = config.Value;
         }
 
@@ -39,7 +37,7 @@ namespace SimpleMusicStore.Auth
         }
 
         private string GenerateJwtToken(User user)
-		{
+        {
             var claims = new Claim[]
             {
                 new Claim("id", user.Id),
@@ -47,7 +45,7 @@ namespace SimpleMusicStore.Auth
             };
 
             var token = _config.SecurityToken(claims);
-			return new JwtSecurityTokenHandler().WriteToken(token);
-		}
-	}
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+    }
 }

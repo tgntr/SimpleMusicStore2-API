@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
-using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
@@ -29,12 +27,12 @@ namespace SimpleMusicStore.Services
 
         public IDictionary<int, int> Items => _items;
 
-        public async Task Add(int id)
+        public async Task Add(int userId, int itemId)
         {
-            await CheckIfValid(id);
-            await CheckIfAvailable(id);
-            if (_items.ContainsKey(id))
-                await IncreaseQuantity(id);
+            await ValidateThatItemExists(itemId);
+            await ValidateThatItemIsInStock(itemId);
+            if (_items.ContainsKey(itemId))
+                await IncreaseQuantity(itemId);
             else
                 _items[id] = 1;
             UpdateCart();
