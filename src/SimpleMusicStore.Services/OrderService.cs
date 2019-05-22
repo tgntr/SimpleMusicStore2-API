@@ -77,7 +77,6 @@ namespace SimpleMusicStore.Services
         {
             CheckIfCartIsEmpty();
             await CheckIfAddressIsValid(addressId);
-
             var order = new Order
             {
                 DeliveryAddressId = addressId,
@@ -86,8 +85,6 @@ namespace SimpleMusicStore.Services
             };
             await _orders.Add(order);
             await _orders.SaveChanges();
-
-            
             //TODO _records.DecreaseQuantities(_cart.Items);
             EmptyCart();
 
@@ -95,7 +92,6 @@ namespace SimpleMusicStore.Services
 
         private async Task CheckIfAddressIsValid(int id)
         {
-            //todo check if it's current user's address
             if(!await _addresses.Exists(id, _currentUserId))
             {
                 throw new ArgumentException("invalid address");
