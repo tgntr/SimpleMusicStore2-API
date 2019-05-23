@@ -3,26 +3,32 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Models.View;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
 {
-    public class Cart : ICart
+    public class ShoppingCart : ICart
     {
         private const string CART = "cart";
-        private readonly ISession _session;
+
+        private readonly IDatabase _cartStorage;
         private readonly IRecordService _records;
+        private readonly string _currentUserId;
         private readonly IMapper _mapper;
         private IDictionary<int, int> _items;
 
-        public Cart(IHttpContextAccessor context, IRecordService records, IMapper mapper)
+        public ShoppingCart(IHttpContextAccessor context, IRecordService records, IMapper mapper)
         {
-            _session = context.HttpContext.Session;
+            _cartStorage = RedisDatabase();
             _records = records;
-            _items = new Dictionary<int, int>();
+            _currentUserId = context.HttpContext.User.FindFirstValue("id");
+            _items = FindCartItems(_currentUserId);
+            _mapper = mapper;
         }
 
         public IDictionary<int, int> Items => _items;
@@ -113,6 +119,22 @@ namespace SimpleMusicStore.Services
         private void UpdateCart()
         {
             _session.SetString(CART, JsonConvert.SerializeObject(_items));
+        }
+
+        private IDatabase RedisDatabase()
+        {
+            var redisMultiplexer = ConnectionMultiplexer.Connect("localhost");
+            return redisMultiplexer.GetDatabase();
+        }
+
+        private Dictionary<int, int> FindCartItems(string userId)
+        {
+            var cart = _cartStorage.StringGet(_currentUserId);
+            if (!string.IsNullOrEmpty(cart))
+            {
+                return JsonConvert.DeserializeObject<Dictionary<int, int>>(cart);
+            }
+            return new Dictionary<int, int>();
         }
     }
 }
