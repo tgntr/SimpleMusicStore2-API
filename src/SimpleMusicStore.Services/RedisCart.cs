@@ -118,7 +118,7 @@ namespace SimpleMusicStore.Services
 
         private void UpdateCart()
         {
-            _session.SetString(CART, JsonConvert.SerializeObject(_items));
+            _cartStorage.StringSet(CART, JsonConvert.SerializeObject(_items));
         }
 
         private IDatabase RedisDatabase()
