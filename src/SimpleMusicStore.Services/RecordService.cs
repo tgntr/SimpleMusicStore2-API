@@ -42,21 +42,6 @@ namespace SimpleMusicStore.Services
 			CreateArtistAndLabelProfiles(recordInfo);
 			await AddRecordToStore(recordInfo, record.Price);
 		}
-		
-		public Task<bool> Exists(int id)
-		{
-			return _records.Exists(id);
-		}
-
-		public Task<Record> Find(int id)
-		{
-			return _records.Find(id);
-		}
-
-		public async Task<int> Availability(int id)
-		{
-			return (await _records.Find(id)).Quantity;
-		}
 
 		private async Task AddRecordToStore(RecordInfo recordInfo, decimal price)
 		{

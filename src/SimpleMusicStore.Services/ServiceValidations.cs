@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.AuthenticationProviders;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -19,6 +22,7 @@ namespace SimpleMusicStore.Services
         private readonly IArtistRepository _artists;
         private readonly ILabelRepository _labels;
         private readonly ILabelFollowRepository _labelFollows;
+        private readonly UserManager<User> _users;
         private readonly string _currentUserId;
 
         public ServiceValidations(
@@ -30,7 +34,8 @@ namespace SimpleMusicStore.Services
             IArtistFollowRepository artistFollows,
             IArtistRepository artists,
             ILabelRepository labels,
-            ILabelFollowRepository labelFollows)
+            ILabelFollowRepository labelFollows,
+            UserManager<User> users)
         {
             _addresses = addresses;
             _cart = cart;
@@ -40,6 +45,7 @@ namespace SimpleMusicStore.Services
             _artists = artists;
             _labels = labels;
             _labelFollows = labelFollows;
+            _users = users;
             _currentUserId = httpContext.HttpContext.User.FindFirstValue("id");
         }
         public async Task AddressIsValid(int id)
@@ -146,6 +152,12 @@ namespace SimpleMusicStore.Services
 
             if (await _records.Availability(itemId) <= quantity)
                 throw new ArgumentException("Required quantity is not available!");
+        }
+
+        public async Task CredentialsAreValid(User user, string password)
+        {
+            if (!await _users.CheckPasswordAsync(user, password))
+                throw new ArgumentException("Invalid credentials");
         }
     }
 }

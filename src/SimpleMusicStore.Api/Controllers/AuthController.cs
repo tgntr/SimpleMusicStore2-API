@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Contracts;
+using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Models.AuthenticationProviders;
 
 namespace SimpleMusicStore.Api.Controllers

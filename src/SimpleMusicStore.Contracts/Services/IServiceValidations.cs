@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.AuthenticationProviders;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,5 +26,6 @@ namespace SimpleMusicStore.Contracts.Services
         Task RecordIsNotInWishlist(int recordId);
         void CartIsNotEmpty();
         Task AddressIsValid(int id);
+        Task CredentialsAreValid(User user, string pasword);
     }
 }

@@ -15,8 +15,6 @@ namespace SimpleMusicStore.Services
 {
     public class Redis : ShoppingCart
     {
-        private const string CART = "cart";
-
         private readonly IDatabase _cartStorage;
         private readonly IRecordRepository _records;
         protected readonly string _currentUserId;
@@ -34,7 +32,7 @@ namespace SimpleMusicStore.Services
         {
             _cartStorage = RedisDatabase();
             _records = records;
-			_currentUserId = FindCurrentUserId(context);
+            _currentUserId = null;
             _items = FindCurrentUserCart();
             _mapper = mapper;
             _validator = validator;
@@ -98,7 +96,7 @@ namespace SimpleMusicStore.Services
 
 		private async Task SaveShoppingCart()
         {
-            await _cartStorage.StringSetAsync(CART, JsonConvert.SerializeObject(_items));
+            await _cartStorage.StringSetAsync(_currentUserId, JsonConvert.SerializeObject(_items));
         }
 
         private IDatabase RedisDatabase()
@@ -137,7 +135,5 @@ namespace SimpleMusicStore.Services
 		{
 			_items[itemId]++;
 		}
-
-		private string FindCurrentUserId(IHttpContextAccessor context) => context.HttpContext.User.FindFirstValue("id");
     }
 }
