@@ -10,52 +10,72 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
 {
-    public class RecordService : IRecordService
-    {
-        private readonly MusicSource _discogs;
-        private readonly IRecordRepository _records;
-        private readonly IMapper _mapper;
-        private readonly ILabelService _labels;
-        private readonly IArtistService _artists;
-        public RecordService(MusicSource source, IRecordRepository records, IMapper mapper, ILabelService labels, IArtistService artists)
-        {
-            _discogs = source;
-            _records = records;
-            _mapper = mapper;
-            _artists = artists;
+	public class RecordService : IRecordService
+	{
+		private readonly MusicSource _discogs;
+		private readonly IRecordRepository _records;
+		private readonly IMapper _mapper;
+		private readonly ILabelService _labels;
+		private readonly IArtistService _artists;
+        private readonly IServiceValidations _validator;
+
+        public RecordService(
+			MusicSource source,
+			IRecordRepository records,
+			IMapper mapper,
+			ILabelService labels,
+			IArtistService artists,
+            IServiceValidations validator)
+		{
+			_discogs = source;
+			_records = records;
+			_mapper = mapper;
+			_artists = artists;
+            _validator = validator;
             _labels = labels;
-        }
+		}
 
-        public async Task Add(NewRecord newRecord)
-        {
-            var recordInfo = await _discogs.Record(new Uri(newRecord.DiscogsUrl));
-            await CheckIfAlreadyExists(recordInfo);
-            Task.WaitAll(
-                _artists.Add(recordInfo.ArtistId),
-                _labels.Add(recordInfo.LabelId));
-            var record = _mapper.Map<Record>(recordInfo);
-            record.Price = newRecord.Price;
-            await _records.Add(record);
-        }
+		public async Task Add(NewRecord record)
+		{
+			var recordInfo = await ExtractRecordInfo(record.DiscogsUrl);
+			await _validator.RecordIsNotInStore(recordInfo.Id);
+			CreateArtistAndLabelProfiles(recordInfo);
+			await AddRecordToStore(recordInfo, record.Price);
+		}
+		
+		public Task<bool> Exists(int id)
+		{
+			return _records.Exists(id);
+		}
 
-        public Task<bool> Exists(int id)
-        {
-            return _records.Exists(id);
-        }
+		public Task<Record> Find(int id)
+		{
+			return _records.Find(id);
+		}
 
-        public Task<Record> Find(int id)
-        {
-            return _records.Find(id);
-        }
+		public async Task<int> Availability(int id)
+		{
+			return (await _records.Find(id)).Quantity;
+		}
 
-        public async Task<int> Availability(int id)
-        {
-            return (await _records.Find(id)).Quantity;
-        }
-        private async Task CheckIfAlreadyExists(RecordInfo recordInfo)
-        {
-            if (await _records.Exists(recordInfo.Id))
-                throw new ArgumentException("record is already in store");
-        }
-    }
+		private async Task AddRecordToStore(RecordInfo recordInfo, decimal price)
+		{
+			var record = _mapper.Map<Record>(recordInfo);
+			record.Price = record.Price;
+			await _records.Add(record);
+			await _records.SaveChanges();
+		}
+
+		private void CreateArtistAndLabelProfiles(RecordInfo recordInfo)
+		{
+			Task.WaitAll(
+				_artists.Add(recordInfo.ArtistId),
+				_labels.Add(recordInfo.LabelId));
+		}
+
+		private async Task<RecordInfo> ExtractRecordInfo(string url)
+		{
+			return await _discogs.Record(new Uri(url));
+		}
+	}
 }

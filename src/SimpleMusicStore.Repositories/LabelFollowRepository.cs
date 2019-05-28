@@ -10,7 +10,14 @@ namespace SimpleMusicStore.Repositories
 {
     public class LabelFollowRepository : ListRepository<LabelFollow>, ILabelFollowRepository
     {
-        public Task<bool> Exists(int labelId, string userId)
+		public async Task Delete(int labelId, string userId)
+		{
+			var labelFollow = _set.First(lf => lf.LabelId == labelId && lf.UserId == userId);
+			_set.Remove(labelFollow);
+			await SaveChanges();
+		}
+
+		public Task<bool> Exists(int labelId, string userId)
         {
             return Task.Run(()=>_set.Any(f => f.LabelId == labelId && f.UserId == userId));
         }

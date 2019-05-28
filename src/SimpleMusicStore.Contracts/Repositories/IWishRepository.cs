@@ -9,5 +9,6 @@ namespace SimpleMusicStore.Contracts.Repositories
     public interface IWishRepository : IRepository<Wish>
     {
         Task<bool> Exists(int recordId, string userId);
-    }
+		Task Delete(int recordId, string userId);
+	}
 }

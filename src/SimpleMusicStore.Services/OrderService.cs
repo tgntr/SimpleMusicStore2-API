@@ -4,80 +4,50 @@ using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.View;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
 {
-    class OrderService : IOrderService
+    class OrderService : Redis, IOrderService
     {
-        private readonly ICart _cart;
-        private readonly IAddressService _addresses;
-        private readonly string _currentUserId;
-        private readonly IMapper _mapper;
+        private readonly IAddressRepository _addresses;
         private readonly IOrderRepository _orders;
 
-        public OrderService(ICart cart, IAddressService addresses, IHttpContextAccessor httpContext, IMapper mapper, IOrderRepository orders)
+        public OrderService(
+            IAddressRepository addresses,
+            IHttpContextAccessor httpContext,
+            IMapper mapper,
+            IOrderRepository orders,
+            IRecordRepository records,
+            IServiceValidations validator)
+            : base(httpContext, records, mapper, validator)
         {
-            //TODO is it a good approach ???
-            _cart = cart;
-            //todo work with address service when available
             _addresses = addresses;
-            _currentUserId = httpContext.HttpContext.User.FindFirstValue("id");
-            _mapper = mapper;
             _orders = orders;
-        }
-
-        public async Task AddToCart(int id)
-        {
-            await _cart.Add(id);
-        }
-
-        public void DecreaseQuantity(int id)
-        {
-            //todo should i make this async anyway??
-            _cart.DecreaseQuantity(id);
-        }
-
-        public async Task IncreaseQuantity(int id)
-        {
-            await _cart.IncreaseQuantity(id);
-        }
-
-        public async Task<ICollection<CartItem>> Cart()
-        {
-            return await _cart.Current();
-        }
-
-        public void RemoveFromCart(int id)
-        {
-            _cart.Remove(id);
-        }
-
-        public void EmptyCart()
-        {
-            _cart.Empty();
         }
 
         public async Task<OrderCheckout> Checkout()
         {
-            CheckIfCartIsEmpty();
-            return new OrderCheckout
-            {
-                Addresses = await _addresses.FindAll(_currentUserId),
-                Items = await _cart.Current()
-            };
+            _validator.CartIsNotEmpty();
+            return await GenerateOrderCheckoutDetailsView();
         }
 
         public async Task Complete(int addressId)
         {
-            await ValidateOrderCompletionPreConditions(addressId);
+            _validator.CartIsNotEmpty();
+            await _validator.AddressIsValid(addressId);
             await AddNewOrder(addressId);
-            EmptyCart();
+            await EmptyCart();
+        }
+
+        private async Task<OrderCheckout> GenerateOrderCheckoutDetailsView()
+        {
+            return new OrderCheckout
+            {
+                Addresses = await _addresses.FindAll(_currentUserId),
+                Items = await Cart()
+            };
         }
 
         private async Task AddNewOrder(int addressId)
@@ -86,31 +56,11 @@ namespace SimpleMusicStore.Services
             {
                 DeliveryAddressId = addressId,
                 UserId = _currentUserId,
-                Items = _cart.Items.Select(i => _mapper.Map<Item>(i)).ToList()
+                Items = _items.Select(i => _mapper.Map<Item>(i)).ToList()
             };
 
             await _orders.Add(order);
             await _orders.SaveChanges();
-        }
-
-        private async Task ValidateOrderCompletionPreConditions(int addressId)
-        {
-            CheckIfCartIsEmpty();
-            await CheckIfAddressIsValid(addressId);
-        }
-
-        private async Task CheckIfAddressIsValid(int id)
-        {
-            if (!await _addresses.Exists(id, _currentUserId))
-            {
-                throw new ArgumentException("invalid address");
-            }
-        }
-
-        private void CheckIfCartIsEmpty()
-        {
-            if (_cart.IsEmpty())
-                throw new OperationCanceledException("cart is empty");
         }
     }
 }

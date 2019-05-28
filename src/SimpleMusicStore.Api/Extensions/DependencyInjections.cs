@@ -18,10 +18,7 @@ namespace SimpleMusicStore.Api.Extensions
         public static void AddCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<AuthenticationHandler, Jwt>();
-            services.AddScoped<IdentityHandler, UserManager>();
-
             services.AddScoped<MusicSource, Discogs>(provider => new Discogs(configuration.GetSection("Discogs")));
-
             services.AddScoped<FileStorage, GoogleCloud>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRecordService, RecordService>();
@@ -32,9 +29,11 @@ namespace SimpleMusicStore.Api.Extensions
             services.AddScoped<IArtistRepository, ArtistRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<ShoppingCart, Redis>();
             services.AddScoped<ILabelFollowRepository, LabelFollowRepository>();
             services.AddScoped<IArtistFollowRepository, ArtistFollowRepository>();
             services.AddScoped<IWishRepository, WishRepository>();
+            services.AddScoped<IServiceValidations, ServiceValidations>();
             services.AddAutoMapper();
         }
     }

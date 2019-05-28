@@ -10,5 +10,6 @@ namespace SimpleMusicStore.Contracts.Repositories
     {
         Task<bool> Exists(int id);
         Task<Record> Find(int id);
+		Task<int> Availability(int id);
     }
 }

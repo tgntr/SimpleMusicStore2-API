@@ -16,76 +16,77 @@ namespace SimpleMusicStore.Services
         private readonly IArtistFollowRepository _artistFollows;
         private readonly ILabelFollowRepository _labelFollows;
         private readonly string _currentUserId;
-        private readonly IRecordService _records;
+        private readonly IServiceValidations _validator;
 
-        public FollowService(IWishRepository wishes, IArtistFollowRepository artistFollows, ILabelFollowRepository labelFollows, IHttpContextAccessor httpContext, IRecordService records)
+        public FollowService(
+			IWishRepository wishes, 
+			IArtistFollowRepository artistFollows, 
+			ILabelFollowRepository labelFollows, 
+			IHttpContextAccessor httpContext,
+            IServiceValidations validator)
         {
             _wishes = wishes;
             _artistFollows = artistFollows;
             _labelFollows = labelFollows;
             _currentUserId = httpContext.HttpContext.User.FindFirstValue("id");
-            _records = records;
+            _validator = validator;
         }
 
         public async Task AddToWishlist(int recordId)
         {
-            await ValidateThatRecordExists(recordId);
-            await ValidateThatRecordIsNotInWishlist(recordId);
+            await _validator.RecordExists(recordId);
+            await _validator.RecordIsNotInWishlist(recordId);
             await AddRecordToWishlist(recordId);
         }
 
         public async Task FollowArtist(int artistId)
         {
-            await ValidateThatArtistExists(artistId);
-            await ValidateThatArtistIsNotFollowed(artistId);
+            await _validator.ArtistExists(artistId);
+            await _validator.ArtistIsNotFollowed(artistId);
             await AddArtistFollow(artistId);
         }
 
-        public async Task FollowLabel(int labelId)
+		public async Task FollowLabel(int labelId)
         {
-            await ValidateThatLabelExists(artistId);
-            await ValidateThatLabelIsNotFollowed(artistId);
-            await AddLabelFollow(artistId);
+            await _validator.LabelExists(labelId);
+            await _validator.LabelIsNotFollowed(labelId);
+            await AddLabelFollow(labelId);
         }
 
-        public async Task RemoveFromWishlist(int recordId)
+		public async Task RemoveFromWishlist(int recordId)
         {
-            await ValidateThatRecordIsInWishlist(recordId);
-            await RemoveRecordFromWishList(recordId);
+            await _validator.RecordIsInWishlist(recordId);
+			await _wishes.Delete(recordId, _currentUserId);
+		}
+
+		public async Task UnfollowArtist(int artistId)
+        {
+            await _validator.ArtistIsFollowed(artistId);
+			await _artistFollows.Delete(artistId, _currentUserId);
         }
 
-        public async Task UnfollowArtist(int artistId)
+		public async Task UnfollowLabel(int labelId)
         {
-            await ValidateThatArtistIsFollowed(artistId);
-            await RemoveArtistFollow(artistId);
+            await _validator.LabelIsFollowed(labelId);
+			await _labelFollows.Delete(labelId, _currentUserId);
         }
 
-        public Task UnfollowLabel(int labelId)
-        {
-            await ValidateThatLabelIsFollowed(artistId);
-            await RemoveLabelFollow(artistId);
-        }
-
-        private async Task AddRecordToWishlist(int recordId)
+		private async Task AddRecordToWishlist(int recordId)
         {
             await _wishes.Add(new Wish { RecordId = recordId, UserId = _currentUserId });
             await _wishes.SaveChanges();
         }
 
-        private async Task ValidateThatRecordIsNotInWishlist(int recordId)
-        {
-            if (await _wishes.Exists(recordId, _currentUserId))
-            {
-                throw new ArgumentException("Record is already in wishlist!");
-            }
-        }
+		private async Task AddArtistFollow(int artistId)
+		{
+			await _artistFollows.Add(new ArtistFollow() { ArtistId = artistId, UserId = _currentUserId });
+			await _artistFollows.SaveChanges();
+		}
 
-        private async Task ValidateThatRecordExists(int recordId)
-        {
-            if (!await _records.Exists(recordId))
-            {
-                throw new ArgumentException("Invalid record!");
-            }
-        }
-    }
+		private async Task AddLabelFollow(int labelId)
+		{
+			await _labelFollows.Add(new LabelFollow() { LabelId = labelId, UserId = _currentUserId });
+			await _labelFollows.SaveChanges();
+		}
+	}
 }
