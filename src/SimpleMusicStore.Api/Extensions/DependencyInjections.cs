@@ -35,6 +35,8 @@ namespace SimpleMusicStore.Api.Extensions
             services.AddScoped<IArtistFollowRepository, ArtistFollowRepository>();
             services.AddScoped<IWishRepository, WishRepository>();
             services.AddScoped<IServiceValidations, ServiceValidations>();
+            services.AddScoped<IClaimHandler, ClaimHandler>();
+            services.AddScoped<IClaimAccessor, ClaimAccessor>();
             services.AddAutoMapper();
         }
     }

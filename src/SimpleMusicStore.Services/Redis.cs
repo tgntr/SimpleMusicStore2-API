@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Models.View;
@@ -17,7 +18,7 @@ namespace SimpleMusicStore.Services
     {
         private readonly IDatabase _cartStorage;
         private readonly IRecordRepository _records;
-        protected readonly string _currentUserId;
+        protected readonly IClaimAccessor _currentUser;
         protected readonly IMapper _mapper;
         protected readonly IServiceValidations _validator;
         protected static IDictionary<int, int> _items;
@@ -25,14 +26,14 @@ namespace SimpleMusicStore.Services
         public Dictionary<int, int> Items => new Dictionary<int, int>(_items);
 
         public Redis(
-            IHttpContextAccessor context, 
+            IClaimAccessor currentUser,
             IRecordRepository records, 
             IMapper mapper,
             IServiceValidations validator)
         {
             _cartStorage = RedisDatabase();
             _records = records;
-            _currentUserId = null;
+            _currentUser = currentUser;
             _items = FindCurrentUserCart();
             _mapper = mapper;
             _validator = validator;
@@ -96,7 +97,7 @@ namespace SimpleMusicStore.Services
 
 		private async Task SaveShoppingCart()
         {
-            await _cartStorage.StringSetAsync(_currentUserId, JsonConvert.SerializeObject(_items));
+            await _cartStorage.StringSetAsync(_currentUser.Id, JsonConvert.SerializeObject(_items));
         }
 
         private IDatabase RedisDatabase()
@@ -107,7 +108,7 @@ namespace SimpleMusicStore.Services
 
         private Dictionary<int, int> FindCurrentUserCart()
         {
-            var cart = _cartStorage.StringGet(_currentUserId);
+            var cart = _cartStorage.StringGet(_currentUser.Id);
             if (string.IsNullOrEmpty(cart))
             {
 				return new Dictionary<int, int>();

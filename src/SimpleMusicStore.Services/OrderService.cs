@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Entities;
@@ -16,12 +17,12 @@ namespace SimpleMusicStore.Services
 
         public OrderService(
             IAddressRepository addresses,
-            IHttpContextAccessor httpContext,
             IMapper mapper,
             IOrderRepository orders,
             IRecordRepository records,
-            IServiceValidations validator)
-            : base(httpContext, records, mapper, validator)
+            IServiceValidations validator,
+            IClaimAccessor currentUser)
+            : base(currentUser, records, mapper, validator)
         {
             _addresses = addresses;
             _orders = orders;
@@ -45,7 +46,7 @@ namespace SimpleMusicStore.Services
         {
             return new OrderCheckout
             {
-                Addresses = await _addresses.FindAll(_currentUserId),
+                Addresses = await _addresses.FindAll(_currentUser.Id),
                 Items = await Cart()
             };
         }
@@ -55,7 +56,7 @@ namespace SimpleMusicStore.Services
             Order order = new Order
             {
                 DeliveryAddressId = addressId,
-                UserId = _currentUserId,
+                UserId = _currentUser.Id,
                 Items = _items.Select(i => _mapper.Map<Item>(i)).ToList()
             };
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Auth
 {
-    public class ClaimHandler
+    public class ClaimHandler : IClaimHandler
     {
-        public Task<Claim[]> GenerateClaims(User user, bool isAdmin)
+        public Claim[] GenerateClaims(User user, bool isAdmin)
         {
-            return Task.Run(() => new Claim[]
+            return new Claim[]
             {
                 new Claim("username", user.UserName),
                 new Claim("id", user.Id),
                 new Claim("isAdmin", isAdmin.ToString())
-            });
+            };
         }
     }
 }

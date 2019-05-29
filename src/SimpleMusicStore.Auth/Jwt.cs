@@ -4,9 +4,7 @@ using SimpleMusicStore.Models.AuthenticationProviders;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using SimpleMusicStore.Auth.Extensions;
-using SimpleMusicStore.Contracts.Repositories;
 using System.Threading.Tasks;
-using System;
 using SimpleMusicStore.Contracts.Services;
 using Microsoft.AspNetCore.Identity;
 using SimpleMusicStore.Entities;
@@ -20,11 +18,12 @@ namespace SimpleMusicStore.Auth
         private readonly JwtConfiguration _config;
         private readonly IClaimHandler _claimCreator;
 
-        public Jwt(IOptions<JwtConfiguration> config, IServiceValidations validator, UserManager<User> users)
+        public Jwt(IOptions<JwtConfiguration> config, IServiceValidations validator, UserManager<User> users, IClaimHandler claimCreator)
         {
             _validator = validator;
             _users = users;
             _config = config.Value;
+            _claimCreator = claimCreator;
         }
 
         public async Task<string> Authenticate(AuthenticationRequest request)
@@ -37,7 +36,7 @@ namespace SimpleMusicStore.Auth
 
         private async Task<Claim[]> ExtractClaims(User user)
         {
-            return await _claimCreator.GenerateClaims(user, await _users.IsInRoleAsync(user, "Admin"));
+            return _claimCreator.GenerateClaims(user, await _users.IsInRoleAsync(user, "Admin"));
         }
 
         private string GenerateJwtToken(Claim[] claims)

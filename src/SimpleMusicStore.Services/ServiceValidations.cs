@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Entities;
@@ -23,11 +24,11 @@ namespace SimpleMusicStore.Services
         private readonly ILabelRepository _labels;
         private readonly ILabelFollowRepository _labelFollows;
         private readonly UserManager<User> _users;
-        private readonly string _currentUserId;
+        private readonly IClaimAccessor _currentUser;
 
         public ServiceValidations(
             IAddressRepository addresses,
-            IHttpContextAccessor httpContext,
+            IClaimAccessor currentUser,
             ShoppingCart cart,
             IWishRepository wishes,
             IRecordRepository records,
@@ -46,11 +47,11 @@ namespace SimpleMusicStore.Services
             _labels = labels;
             _labelFollows = labelFollows;
             _users = users;
-            _currentUserId = httpContext.HttpContext.User.FindFirstValue("id");
+            _currentUser = currentUser;
         }
         public async Task AddressIsValid(int id)
         {
-            if (!await _addresses.Exists(id, _currentUserId))
+            if (!await _addresses.Exists(id, _currentUser.Id))
                 throw new ArgumentException("Invalid address!");
         }
 
@@ -62,7 +63,7 @@ namespace SimpleMusicStore.Services
 
         public async Task RecordIsNotInWishlist(int recordId)
         {
-            if (await _wishes.Exists(recordId, _currentUserId))
+            if (await _wishes.Exists(recordId, _currentUser.Id))
                 throw new ArgumentException("Record is already in wishlist!");
         }
 
@@ -74,7 +75,7 @@ namespace SimpleMusicStore.Services
 
         public async Task ArtistIsNotFollowed(int artistId)
         {
-            if (await _artistFollows.Exists(artistId, _currentUserId))
+            if (await _artistFollows.Exists(artistId, _currentUser.Id))
                 throw new ArgumentException("Artist is already followed!");
         }
 
@@ -86,7 +87,7 @@ namespace SimpleMusicStore.Services
 
         public async Task LabelIsNotFollowed(int labelId)
         {
-            if (await _labelFollows.Exists(labelId, _currentUserId))
+            if (await _labelFollows.Exists(labelId, _currentUser.Id))
                 throw new ArgumentException("Label is already followed!");
         }
 
@@ -98,19 +99,19 @@ namespace SimpleMusicStore.Services
 
         public async Task RecordIsInWishlist(int recordId)
         {
-            if (!await _wishes.Exists(recordId, _currentUserId))
+            if (!await _wishes.Exists(recordId, _currentUser.Id))
                 throw new ArgumentException("Record is not in wishlist!");
         }
 
         public async Task ArtistIsFollowed(int artistId)
         {
-            if (!await _artistFollows.Exists(artistId, _currentUserId))
+            if (!await _artistFollows.Exists(artistId, _currentUser.Id))
                 throw new ArgumentException("Artist is not followed!");
         }
 
         public async Task LabelIsFollowed(int labelId)
         {
-            if (!await _labelFollows.Exists(labelId, _currentUserId))
+            if (!await _labelFollows.Exists(labelId, _currentUser.Id))
                 throw new ArgumentException("Label is not followed!");
         }
 
