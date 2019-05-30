@@ -16,7 +16,7 @@ namespace SimpleMusicStore.Services
     public class ServiceValidations : IServiceValidations
     {
         private readonly IAddressRepository _addresses;
-        private readonly ShoppingCart _cart;
+        private readonly IShoppingCart _cart;
         private readonly IWishRepository _wishes;
         private readonly IRecordRepository _records;
         private readonly IArtistFollowRepository _artistFollows;
@@ -29,7 +29,7 @@ namespace SimpleMusicStore.Services
         public ServiceValidations(
             IAddressRepository addresses,
             IClaimAccessor currentUser,
-            ShoppingCart cart,
+            IShoppingCart cart,
             IWishRepository wishes,
             IRecordRepository records,
             IArtistFollowRepository artistFollows,

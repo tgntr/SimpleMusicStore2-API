@@ -26,6 +26,6 @@ namespace SimpleMusicStore.Contracts.Services
         Task RecordIsNotInWishlist(int recordId);
         void CartIsNotEmpty();
         Task AddressIsValid(int id);
-        Task CredentialsAreValid(User user, string pasword);
+        Task CredentialsAreValid(User user, string password);
     }
 }

@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.Storage", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.Repositories", "SimpleMusicStore.Repositories\SimpleMusicStore.Repositories.csproj", "{D1751FC8-C6F4-40A5-BF23-86F33A711BD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMusicStore.Extensions", "SimpleMusicStore.Extensions\SimpleMusicStore.Extensions.csproj", "{05A49A74-AD2D-4DC7-9A99-106B1DF5A3E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.Extensions", "SimpleMusicStore.Extensions\SimpleMusicStore.Extensions.csproj", "{05A49A74-AD2D-4DC7-9A99-106B1DF5A3E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMusicStore.CacheProvider", "SimpleMusicStore.CacheProvider\SimpleMusicStore.CacheProvider.csproj", "{F00AC290-AF0F-427A-A71E-01D6B6E89FAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{05A49A74-AD2D-4DC7-9A99-106B1DF5A3E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05A49A74-AD2D-4DC7-9A99-106B1DF5A3E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05A49A74-AD2D-4DC7-9A99-106B1DF5A3E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F00AC290-AF0F-427A-A71E-01D6B6E89FAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F00AC290-AF0F-427A-A71E-01D6B6E89FAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F00AC290-AF0F-427A-A71E-01D6B6E89FAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F00AC290-AF0F-427A-A71E-01D6B6E89FAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

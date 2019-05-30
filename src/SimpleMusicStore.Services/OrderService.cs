@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
 {
-    class OrderService : Redis, IOrderService
+    class OrderService : ShoppingCart, IOrderService
     {
         private readonly IAddressRepository _addresses;
         private readonly IOrderRepository _orders;

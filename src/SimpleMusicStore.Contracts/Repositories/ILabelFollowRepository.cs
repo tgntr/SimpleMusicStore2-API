@@ -9,6 +9,6 @@ namespace SimpleMusicStore.Contracts.Repositories
     public interface ILabelFollowRepository : IRepository<LabelFollow>
     {
         Task<bool> Exists(int labelId, string userId);
-		Task Delete(int labelId, string userId);
+        Task Delete(int labelId, string userId);
     }
 }

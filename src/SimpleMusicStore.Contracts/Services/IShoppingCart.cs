@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Services
 {
-    public interface ShoppingCart
+    public interface IShoppingCart
     {
         Dictionary<int, int> Items { get; }
         Task<ICollection<CartItem>> Cart();

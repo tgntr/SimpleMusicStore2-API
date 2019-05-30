@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
 {
-    public class Redis : ShoppingCart
+    public class ShoppingCart : IShoppingCart
     {
         private readonly IDatabase _cartStorage;
         private readonly IRecordRepository _records;
@@ -25,13 +26,14 @@ namespace SimpleMusicStore.Services
 
         public Dictionary<int, int> Items => new Dictionary<int, int>(_items);
 
-        public Redis(
+        public ShoppingCart(
             IClaimAccessor currentUser,
             IRecordRepository records, 
             IMapper mapper,
-            IServiceValidations validator)
+            IServiceValidations validator,
+            IDatabase cacheProvider)
         {
-            _cartStorage = RedisDatabase();
+            _cartStorage = cacheProvider;
             _records = records;
             _currentUser = currentUser;
             _items = FindCurrentUserCart();
