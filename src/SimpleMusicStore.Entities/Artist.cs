@@ -25,6 +25,5 @@ namespace SimpleMusicStore.Entities
         public ICollection<Record> Records { get; set; }
 
         public ICollection<ArtistFollow> Followers { get; set; }
-
     }
 }

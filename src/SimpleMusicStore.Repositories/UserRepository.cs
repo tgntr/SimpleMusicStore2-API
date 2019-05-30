@@ -13,7 +13,7 @@ namespace SimpleMusicStore.Repositories
     {
         public UserRepository()
         {
-            _set.Add(new User { Username = "test", Password = "test" });
+            _set.Add(new User { Id = "asd", Username = "test", Password = "test" });
         }
         public Task<bool> IsValid(AuthenticationRequest request)
         {

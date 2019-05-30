@@ -15,22 +15,33 @@ namespace SimpleMusicStore.Services
         private readonly IArtistRepository _artists;
         private readonly IMapper _mapper;
         private readonly MusicSource _discogs;
+        private readonly IServiceValidations _validator;
 
-        public ArtistService(IArtistRepository artists, IMapper mapper, MusicSource discogs)
+        public ArtistService(
+            IArtistRepository artists, 
+            IMapper mapper, 
+            MusicSource discogs,
+            IServiceValidations validator)
         {
             _artists = artists;
             _mapper = mapper;
             _discogs = discogs;
+            _validator = validator;
         }
 
         public async Task Add(int discogsId)
         {
-            if (await _artists.Exists(discogsId))
-                return;
+            await _validator.ArtistDoesNotExist(discogsId);
+            await AddArtist(discogsId);
+        }
 
+        private async Task AddArtist(int discogsId)
+        {
             var artistInfo = await _discogs.Artist(discogsId);
-            var artist =  _mapper.Map<Artist>(artistInfo);
+            var artist = _mapper.Map<Artist>(artistInfo);
             await _artists.Add(artist);
         }
+
+        
     }
 }

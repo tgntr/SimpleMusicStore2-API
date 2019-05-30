@@ -14,6 +14,5 @@ namespace SimpleMusicStore.Repositories
         {
             return Task.Run(() => _set.Any(l => l.Id == id));
         }
-
     }
 }

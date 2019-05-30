@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace SimpleMusicStore.Entities
 {
@@ -17,7 +18,6 @@ namespace SimpleMusicStore.Entities
             DateAdded = DateTime.UtcNow;
             IsActive = true;
         }
-
 
         [Required]
         public string Title { get; set; }
@@ -37,7 +37,8 @@ namespace SimpleMusicStore.Entities
         [Range(1, 100)]
         public decimal Price { get; set; }
 
-        //TODO quantity
+        //todo make this work
+        public int Quantity => Stocks.Sum(s => s.Quantity) - Orders.Sum(o => o.Quantity);
 
         public string Format { get; set; }
 
@@ -52,12 +53,9 @@ namespace SimpleMusicStore.Entities
         public Label Label { get; set; }
         
         public ICollection<Wish> WantedBy { get; set; }
-
         public ICollection<Item> Orders { get; set; }
-
         public ICollection<Video> Videos { get; set; }
-
         public ICollection<Track> Tracks { get; set; }
-
+        public ICollection<Stock> Stocks { get; set; }
     }
 }

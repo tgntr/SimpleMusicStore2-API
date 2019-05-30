@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SimpleMusicStore.Auth.Extensions;
 using SimpleMusicStore.Api.Extensions;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace SimpleMusicStore.Api
 {
@@ -22,8 +24,15 @@ namespace SimpleMusicStore.Api
         {
             //TODO Environment class to access appsettings values
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddJwtAuthentication(JwtPayloadSection(), FacebookSection());
+            services.AddJwtAuthentication(JwtPayloadSection());
             services.AddCustomServices(Configuration);
+
+            services.AddSession(opt =>
+            {
+                opt.IdleTimeout = new TimeSpan(1, 0, 0);
+                opt.Cookie.IsEssential = true;
+            });
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,7 +57,7 @@ namespace SimpleMusicStore.Api
         private IConfigurationSection JwtPayloadSection()
             => Configuration.GetSection("JwtPayload");
 
-        private IConfigurationSection FacebookSection()
-            => Configuration.GetSection("Facebook");
+        //private IConfigurationSection FacebookSection()
+        //    => Configuration.GetSection("Facebook");
     }
 }
