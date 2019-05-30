@@ -7,6 +7,7 @@ using SimpleMusicStore.Auth.Extensions;
 using SimpleMusicStore.Api.Extensions;
 using Microsoft.AspNetCore.Http;
 using System;
+using StackExchange.Redis;
 
 namespace SimpleMusicStore.Api
 {
@@ -27,6 +28,7 @@ namespace SimpleMusicStore.Api
             services.AddJwtAuthentication(JwtPayloadSection());
             services.AddCustomServices(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton(ConnectionMultiplexer.Connect(Configuration["Redis:Connection"]).GetDatabase());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +47,12 @@ namespace SimpleMusicStore.Api
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
         }
         private IConfigurationSection JwtPayloadSection()

@@ -1,28 +1,22 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Models.View;
-using StackExchange.Redis;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace SimpleMusicStore.Services
+namespace SimpleMusicStore.ShoppingCart
 {
     public class ShoppingCart : IShoppingCart
     {
-        private readonly IDatabase _cartStorage;
         private readonly IRecordRepository _records;
         protected readonly IClaimAccessor _currentUser;
         protected readonly IMapper _mapper;
         protected readonly IServiceValidations _validator;
-        protected static IDictionary<int, int> _items;
+        protected IDictionary<int, int> _items;
 
         public Dictionary<int, int> Items => new Dictionary<int, int>(_items);
 
@@ -30,56 +24,48 @@ namespace SimpleMusicStore.Services
             IClaimAccessor currentUser,
             IRecordRepository records, 
             IMapper mapper,
-            IServiceValidations validator,
-            IDatabase cacheProvider)
+            IServiceValidations validator)
         {
-            _cartStorage = cacheProvider;
             _records = records;
             _currentUser = currentUser;
-            _items = FindCurrentUserCart();
             _mapper = mapper;
             _validator = validator;
         }
 
-        public async Task AddToCart(int itemId)
+        public virtual async Task AddToCart(int itemId)
 		{
 			await _validator.ItemExists(itemId);
-			await _validator.ItemIsInStock(itemId);
+			await _validator.ItemIsInStock(itemId, Items);
 			await AddItemToShoppingCart(itemId);
-			await SaveShoppingCart();
 		}
 
-		public async Task DecreaseQuantity(int itemId)
+		public virtual async Task DecreaseQuantity(int itemId)
 		{
-			_validator.ItemIsInCart(itemId);
+			_validator.ItemIsInCart(itemId, Items);
 			DecreaseItemQuantity(itemId);
-			await SaveShoppingCart();
 		}
 
-		public async Task IncreaseQuantity(int itemId)
+		public virtual async Task IncreaseQuantity(int itemId)
 		{
-            _validator.ItemIsInCart(itemId);
-			await _validator.ItemIsInStock(itemId);
+            _validator.ItemIsInCart(itemId, Items);
+			await _validator.ItemIsInStock(itemId, Items);
 			IncreaseItemQuantity(itemId);
-			await SaveShoppingCart();
 		}
 		
-		public async Task EmptyCart()
+		public virtual async Task EmptyCart()
         {
             _items = new Dictionary<int, int>();
-            await SaveShoppingCart();
         }
         
-        public async Task<ICollection<CartItem>> Cart()
+        public virtual async Task<ICollection<CartItem>> Cart()
 		{
 			return await CurrentStateOfCart();
 		}
 		
-		public async Task RemoveFromCart(int itemId)
+		public virtual async Task RemoveFromCart(int itemId)
         {
-            _validator.ItemIsInCart(itemId);
+            _validator.ItemIsInCart(itemId, Items);
             _items.Remove(itemId);
-            await SaveShoppingCart();
         }
 
         public bool IsEmpty() => _items.Count() == 0;
@@ -95,27 +81,6 @@ namespace SimpleMusicStore.Services
 				cart.Add(map);
 			}
 			return cart;
-		}
-
-		private async Task SaveShoppingCart()
-        {
-            await _cartStorage.StringSetAsync(_currentUser.Id, JsonConvert.SerializeObject(_items));
-        }
-
-        private IDatabase RedisDatabase()
-        {
-            var redisMultiplexer = ConnectionMultiplexer.Connect("localhost");
-            return redisMultiplexer.GetDatabase();
-        }
-
-        private Dictionary<int, int> FindCurrentUserCart()
-        {
-            var cart = _cartStorage.StringGet(_currentUser.Id);
-            if (string.IsNullOrEmpty(cart))
-            {
-				return new Dictionary<int, int>();
-            }
-			return JsonConvert.DeserializeObject<Dictionary<int, int>>(cart);
 		}
 
 		private async Task AddItemToShoppingCart(int itemId)

@@ -9,8 +9,8 @@ namespace SimpleMusicStore.Contracts.Services
 {
     public interface IServiceValidations
     {
-        Task ItemIsInStock(int itemId);
-        void ItemIsInCart(int itemId);
+        Task ItemIsInStock(int itemId, IDictionary<int, int> items);
+        void ItemIsInCart(int itemId, IDictionary<int, int> items);
         Task ItemExists(int itemId);
         Task RecordIsNotInStore(int id);
         Task LabelDoesNotExist(int discogsId);
@@ -24,7 +24,7 @@ namespace SimpleMusicStore.Contracts.Services
         Task ArtistExists(int artistId);
         Task RecordExists(int recordId);
         Task RecordIsNotInWishlist(int recordId);
-        void CartIsNotEmpty();
+        void CartIsNotEmpty(IDictionary<int, int> items);
         Task AddressIsValid(int id);
         Task CredentialsAreValid(User user, string password);
     }
