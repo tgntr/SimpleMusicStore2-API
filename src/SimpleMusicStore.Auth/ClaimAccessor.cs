@@ -16,8 +16,8 @@ namespace SimpleMusicStore.Auth
             _claims = http.HttpContext.User;
         }
 
-        public string Id => _claims.FindFirstValue("id");
-        public string Username => _claims.FindFirstValue("username");
-        public bool IsAdmin => bool.Parse(_claims.FindFirstValue("isAdmin"));
+        public string Id => _claims.FindFirstValue(ID);
+        public string Username => _claims.FindFirstValue(USERNAME);
+        public bool IsAdmin => bool.Parse(_claims.FindFirstValue(IS_ADMIN));
     }
 }
