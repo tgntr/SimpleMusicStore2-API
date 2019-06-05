@@ -3,7 +3,7 @@ using SimpleMusicStore.Models.AuthenticationProviders;
 using System;
 using System.Threading.Tasks;
 
-namespace SimpleMusicStore.Contracts
+namespace SimpleMusicStore.Contracts.Auth
 {
     public interface AuthenticationHandler
     {

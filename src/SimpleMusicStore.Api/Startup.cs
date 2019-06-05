@@ -26,12 +26,6 @@ namespace SimpleMusicStore.Api
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddJwtAuthentication(JwtPayloadSection());
             services.AddCustomServices(Configuration);
-
-            services.AddSession(opt =>
-            {
-                opt.IdleTimeout = new TimeSpan(1, 0, 0);
-                opt.Cookie.IsEssential = true;
-            });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
@@ -56,8 +50,5 @@ namespace SimpleMusicStore.Api
         }
         private IConfigurationSection JwtPayloadSection()
             => Configuration.GetSection("JwtPayload");
-
-        //private IConfigurationSection FacebookSection()
-        //    => Configuration.GetSection("Facebook");
     }
 }

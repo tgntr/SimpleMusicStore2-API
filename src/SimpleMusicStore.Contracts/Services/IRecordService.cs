@@ -10,8 +10,5 @@ namespace SimpleMusicStore.Contracts.Services
     public interface IRecordService
     {
         Task Add(NewRecord record);
-        Task<bool> Exists(int id);
-        Task<int> Availability(int id);
-        Task<Record> Find(int id);
     }
 }

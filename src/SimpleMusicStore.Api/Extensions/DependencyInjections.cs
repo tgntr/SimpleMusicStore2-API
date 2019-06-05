@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SimpleMusicStore.Auth;
 using SimpleMusicStore.Contracts;
+using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.MusicLibrary;
@@ -20,7 +21,7 @@ namespace SimpleMusicStore.Api.Extensions
             services.AddScoped<AuthenticationHandler, Jwt>();
             services.AddScoped<MusicSource, Discogs>(provider => new Discogs(configuration.GetSection("Discogs")));
             services.AddScoped<FileStorage, GoogleCloud>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            //services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRecordService, RecordService>();
             services.AddScoped<IRecordRepository, RecordRepository>();
             services.AddScoped<ILabelService, LabelService>();
@@ -34,6 +35,8 @@ namespace SimpleMusicStore.Api.Extensions
             services.AddScoped<IArtistFollowRepository, ArtistFollowRepository>();
             services.AddScoped<IWishRepository, WishRepository>();
             services.AddScoped<IServiceValidations, ServiceValidations>();
+            services.AddScoped<IClaimHandler, ClaimHandler>();
+            services.AddScoped<IClaimAccessor, ClaimAccessor>();
             services.AddAutoMapper();
         }
     }

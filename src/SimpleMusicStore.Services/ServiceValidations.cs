@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.AuthenticationProviders;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -19,18 +23,20 @@ namespace SimpleMusicStore.Services
         private readonly IArtistRepository _artists;
         private readonly ILabelRepository _labels;
         private readonly ILabelFollowRepository _labelFollows;
-        private readonly string _currentUserId;
+        private readonly UserManager<User> _users;
+        private readonly IClaimAccessor _currentUser;
 
         public ServiceValidations(
             IAddressRepository addresses,
-            IHttpContextAccessor httpContext,
+            IClaimAccessor currentUser,
             ShoppingCart cart,
             IWishRepository wishes,
             IRecordRepository records,
             IArtistFollowRepository artistFollows,
             IArtistRepository artists,
             ILabelRepository labels,
-            ILabelFollowRepository labelFollows)
+            ILabelFollowRepository labelFollows,
+            UserManager<User> users)
         {
             _addresses = addresses;
             _cart = cart;
@@ -40,11 +46,12 @@ namespace SimpleMusicStore.Services
             _artists = artists;
             _labels = labels;
             _labelFollows = labelFollows;
-            _currentUserId = httpContext.HttpContext.User.FindFirstValue("id");
+            _users = users;
+            _currentUser = currentUser;
         }
         public async Task AddressIsValid(int id)
         {
-            if (!await _addresses.Exists(id, _currentUserId))
+            if (!await _addresses.Exists(id, _currentUser.Id))
                 throw new ArgumentException("Invalid address!");
         }
 
@@ -56,7 +63,7 @@ namespace SimpleMusicStore.Services
 
         public async Task RecordIsNotInWishlist(int recordId)
         {
-            if (await _wishes.Exists(recordId, _currentUserId))
+            if (await _wishes.Exists(recordId, _currentUser.Id))
                 throw new ArgumentException("Record is already in wishlist!");
         }
 
@@ -68,7 +75,7 @@ namespace SimpleMusicStore.Services
 
         public async Task ArtistIsNotFollowed(int artistId)
         {
-            if (await _artistFollows.Exists(artistId, _currentUserId))
+            if (await _artistFollows.Exists(artistId, _currentUser.Id))
                 throw new ArgumentException("Artist is already followed!");
         }
 
@@ -80,7 +87,7 @@ namespace SimpleMusicStore.Services
 
         public async Task LabelIsNotFollowed(int labelId)
         {
-            if (await _labelFollows.Exists(labelId, _currentUserId))
+            if (await _labelFollows.Exists(labelId, _currentUser.Id))
                 throw new ArgumentException("Label is already followed!");
         }
 
@@ -92,19 +99,19 @@ namespace SimpleMusicStore.Services
 
         public async Task RecordIsInWishlist(int recordId)
         {
-            if (!await _wishes.Exists(recordId, _currentUserId))
+            if (!await _wishes.Exists(recordId, _currentUser.Id))
                 throw new ArgumentException("Record is not in wishlist!");
         }
 
         public async Task ArtistIsFollowed(int artistId)
         {
-            if (!await _artistFollows.Exists(artistId, _currentUserId))
+            if (!await _artistFollows.Exists(artistId, _currentUser.Id))
                 throw new ArgumentException("Artist is not followed!");
         }
 
         public async Task LabelIsFollowed(int labelId)
         {
-            if (!await _labelFollows.Exists(labelId, _currentUserId))
+            if (!await _labelFollows.Exists(labelId, _currentUser.Id))
                 throw new ArgumentException("Label is not followed!");
         }
 
@@ -146,6 +153,12 @@ namespace SimpleMusicStore.Services
 
             if (await _records.Availability(itemId) <= quantity)
                 throw new ArgumentException("Required quantity is not available!");
+        }
+
+        public async Task CredentialsAreValid(User user, string password)
+        {
+            if (!await _users.CheckPasswordAsync(user, password))
+                throw new ArgumentException("Invalid credentials");
         }
     }
 }
