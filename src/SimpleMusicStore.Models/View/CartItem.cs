@@ -8,8 +8,8 @@ namespace SimpleMusicStore.Models.View
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public ArtistDto Artist { get; set; }
-        public LabelDto Label { get; set; }
+        public ArtistDetails Artist { get; set; }
+        public LabelDetails Label { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
     }

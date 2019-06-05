@@ -20,8 +20,7 @@ namespace SimpleMusicStore.Services
         private readonly IClaimAccessor _currentUser;
         private readonly IServiceValidations _validator;
 
-        public FollowService(
-            IWishRepository wishes,
+        public FollowService(IWishRepository wishes,
             IArtistFollowRepository artistFollows,
             ILabelFollowRepository labelFollows,
             IServiceValidations validator,
