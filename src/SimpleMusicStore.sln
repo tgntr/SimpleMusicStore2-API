@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.Storage", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.Repositories", "SimpleMusicStore.Repositories\SimpleMusicStore.Repositories.csproj", "{D1751FC8-C6F4-40A5-BF23-86F33A711BD1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.Extensions", "SimpleMusicStore.Extensions\SimpleMusicStore.Extensions.csproj", "{05A49A74-AD2D-4DC7-9A99-106B1DF5A3E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMusicStore.Extensions", "SimpleMusicStore.Extensions\SimpleMusicStore.Extensions.csproj", "{05A49A74-AD2D-4DC7-9A99-106B1DF5A3E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMusicStore.ShoppingCart", "SimpleMusicStore.ShoppingCart\SimpleMusicStore.ShoppingCart.csproj", "{6DD3701B-9177-4787-8B81-4ACA052B5231}"
 EndProject
