@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SimpleMusicStore.Contracts.Repositories;
+using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.View;
 using System;
@@ -10,27 +12,30 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories
 {
-    public class AddressRepository : ListRepository<Address>, IAddressRepository
+    public class AddressRepository : DbRepository<Address>, IAddressRepository
     {
-        public AddressRepository(IMapper mapper)
-            : base(mapper)
+        private readonly IMapper _mapper;
+
+        public AddressRepository(SimpleMusicStoreDbContext db, IMapper mapper)
+            : base(db)
         {
+            _mapper = mapper;
         }
 
         public Task<bool> Exists(int id)
         {
-            return Task.Run(()=>_set.Any(a => a.Id == id));
+            return _set.AnyAsync(a => a.Id == id);
         }
 
         public Task<bool> Exists(int id, string userId)
         {
-            return Task.Run(() => _set.Any(a => a.Id == id && a.UserId == userId));
+            return _set.AnyAsync(a => a.Id == id && a.UserId == userId);
         }
 
-        public Task<IEnumerable<AddressDetails>> FindAll(string userId)
+        public IEnumerable<AddressDetails> FindAll(string userId)
         {
             //TODO is it an okay way to map stuff? Is it good to map things here?
-            return Task.Run(() => _set.Where(a => a.UserId == userId).Select(_mapper.Map<AddressDetails>));
+            return _set.Where(a => a.UserId == userId).Select(_mapper.Map<AddressDetails>);
         }
     }
 }

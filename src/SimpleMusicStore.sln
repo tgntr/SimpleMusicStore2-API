@@ -21,11 +21,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.Storage", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.Repositories", "SimpleMusicStore.Repositories\SimpleMusicStore.Repositories.csproj", "{D1751FC8-C6F4-40A5-BF23-86F33A711BD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMusicStore.Extensions", "SimpleMusicStore.Extensions\SimpleMusicStore.Extensions.csproj", "{05A49A74-AD2D-4DC7-9A99-106B1DF5A3E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.Extensions", "SimpleMusicStore.Extensions\SimpleMusicStore.Extensions.csproj", "{05A49A74-AD2D-4DC7-9A99-106B1DF5A3E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMusicStore.ShoppingCart", "SimpleMusicStore.ShoppingCart\SimpleMusicStore.ShoppingCart.csproj", "{6DD3701B-9177-4787-8B81-4ACA052B5231}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.ShoppingCart", "SimpleMusicStore.ShoppingCart\SimpleMusicStore.ShoppingCart.csproj", "{6DD3701B-9177-4787-8B81-4ACA052B5231}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMusicStore.Validations", "SimpleMusicStore.Validations\SimpleMusicStore.Validations.csproj", "{DFE3D47E-653A-4A54-A9CC-0318DD4A96C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.Validations", "SimpleMusicStore.Validations\SimpleMusicStore.Validations.csproj", "{DFE3D47E-653A-4A54-A9CC-0318DD4A96C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMusicStore.Data", "SimpleMusicStore.Data\SimpleMusicStore.Data.csproj", "{680A327E-71DE-4BF1-9185-FB0E4CD0BF10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{DFE3D47E-653A-4A54-A9CC-0318DD4A96C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFE3D47E-653A-4A54-A9CC-0318DD4A96C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFE3D47E-653A-4A54-A9CC-0318DD4A96C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{680A327E-71DE-4BF1-9185-FB0E4CD0BF10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{680A327E-71DE-4BF1-9185-FB0E4CD0BF10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{680A327E-71DE-4BF1-9185-FB0E4CD0BF10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{680A327E-71DE-4BF1-9185-FB0E4CD0BF10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

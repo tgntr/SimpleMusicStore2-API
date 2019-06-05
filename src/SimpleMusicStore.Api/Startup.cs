@@ -8,6 +8,7 @@ using SimpleMusicStore.Api.Extensions;
 using Microsoft.AspNetCore.Http;
 using System;
 using StackExchange.Redis;
+using SimpleMusicStore.Data;
 
 namespace SimpleMusicStore.Api
 {
@@ -29,6 +30,7 @@ namespace SimpleMusicStore.Api
             services.AddCustomServices(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton(ConnectionMultiplexer.Connect(Configuration["Redis:Connection"]).GetDatabase());
+            services.AddDatabase(Configuration["Database:Connection"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

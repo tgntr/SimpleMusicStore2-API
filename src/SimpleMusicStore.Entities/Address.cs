@@ -26,7 +26,7 @@ namespace SimpleMusicStore.Entities
         public bool IsActive { get; set; }
         [Required]
         public string UserId { get; set; }
-        public User User { get; set; }
+        public SimpleUser User { get; set; }
         public ICollection<Order> Orders { get; set; }
     }
 }

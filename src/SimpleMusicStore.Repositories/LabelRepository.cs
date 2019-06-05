@@ -1,4 +1,6 @@
-﻿using SimpleMusicStore.Contracts.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using SimpleMusicStore.Contracts.Repositories;
+using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,11 +10,16 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories
 {
-    public class LabelRepository : ListRepository<Label>, ILabelRepository
+    public class LabelRepository : DbRepository<Label>, ILabelRepository
     {
+        public LabelRepository(SimpleMusicStoreDbContext db)
+            :base(db)
+        {
+        }
+
         public Task<bool> Exists(int id)
         {
-            return Task.Run(() => _set.Any(l => l.Id == id));
+            return _set.AnyAsync(l => l.Id == id);
         }
     }
 }

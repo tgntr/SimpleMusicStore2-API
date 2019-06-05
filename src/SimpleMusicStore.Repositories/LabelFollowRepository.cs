@@ -1,4 +1,6 @@
-﻿using SimpleMusicStore.Contracts.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using SimpleMusicStore.Contracts.Repositories;
+using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,18 +10,23 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories
 {
-    public class LabelFollowRepository : ListRepository<LabelFollow>, ILabelFollowRepository
+    public class LabelFollowRepository : DbRepository<LabelFollow>, ILabelFollowRepository
     {
+        public LabelFollowRepository(SimpleMusicStoreDbContext db)
+            : base(db)
+        {
+        }
+
 		public async Task Delete(int labelId, string userId)
 		{
-			var labelFollow = _set.First(lf => lf.LabelId == labelId && lf.UserId == userId);
+			var labelFollow = await _set.FirstAsync(lf => lf.LabelId == labelId && lf.UserId == userId);
 			_set.Remove(labelFollow);
 			await SaveChanges();
 		}
 
 		public Task<bool> Exists(int labelId, string userId)
         {
-            return Task.Run(()=>_set.Any(f => f.LabelId == labelId && f.UserId == userId));
+            return _set.AnyAsync(f => f.LabelId == labelId && f.UserId == userId);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace SimpleMusicStore.Entities.Common
 
 		[Required]
 		public string UserId { get; set; }
-		public User User { get; set; }
+		public SimpleUser User { get; set; }
 
 		public DateTime Date { get; set; }
 	}

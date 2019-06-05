@@ -1,4 +1,6 @@
-﻿using SimpleMusicStore.Contracts.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using SimpleMusicStore.Contracts.Repositories;
+using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,11 +10,15 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories
 {
-    public class ArtistRepository : ListRepository<Artist>, IArtistRepository
+    public class ArtistRepository : DbRepository<Artist>, IArtistRepository
     {
+        public ArtistRepository(SimpleMusicStoreDbContext db)
+            :base(db)
+        {
+        }
         public Task<bool> Exists(int id)
         {
-            return Task.Run(() => _set.Any(a => a.Id == id));
+            return _set.AnyAsync(a => a.Id == id);
         }
     }
 }

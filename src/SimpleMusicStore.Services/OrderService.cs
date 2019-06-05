@@ -48,7 +48,7 @@ namespace SimpleMusicStore.Services
         {
             return new OrderCheckout
             {
-                Addresses = await _addresses.FindAll(_currentUser.Id),
+                Addresses =  _addresses.FindAll(_currentUser.Id),
                 Items = await Cart()
             };
         }

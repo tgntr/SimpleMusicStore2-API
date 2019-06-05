@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SimpleMusicStore.Entities\SimpleMusicStore.Entities.csproj" />
+    <ProjectReference Include="..\SimpleMusicStore.Data\SimpleMusicStore.Data.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.Repositories\SimpleMusicStore.Repositories.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.Services\SimpleMusicStore.Services.csproj" />
   </ItemGroup>

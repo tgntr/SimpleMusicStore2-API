@@ -10,6 +10,6 @@ namespace SimpleMusicStore.Contracts.Repositories
         Task<bool> Exists(int id);
         Task<bool> Exists(int id, string userId);
         //todo ICollection vs IEnumerable
-        Task<IEnumerable<AddressDetails>> FindAll(string userId);
+        IEnumerable<AddressDetails> FindAll(string userId);
     }
 }

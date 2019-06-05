@@ -13,7 +13,7 @@ namespace SimpleMusicStore.Entities
             Image = @"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/12in-Vinyl-LP-Record-Angle.jpg/330px-12in-Vinyl-LP-Record-Angle.jpg";
             Videos = new List<Video>();
             Tracks = new List<Track>();
-            WantedBy = new List<Wish>();
+            WishedBy = new List<Wish>();
             Orders = new List<Item>();
             DateAdded = DateTime.UtcNow;
             IsActive = true;
@@ -52,7 +52,7 @@ namespace SimpleMusicStore.Entities
         public int LabelId { get; set; }
         public Label Label { get; set; }
         
-        public ICollection<Wish> WantedBy { get; set; }
+        public ICollection<Wish> WishedBy { get; set; }
         public ICollection<Item> Orders { get; set; }
         public ICollection<Video> Videos { get; set; }
         public ICollection<Track> Tracks { get; set; }
