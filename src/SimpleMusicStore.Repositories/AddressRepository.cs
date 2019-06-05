@@ -27,10 +27,10 @@ namespace SimpleMusicStore.Repositories
             return Task.Run(() => _set.Any(a => a.Id == id && a.UserId == userId));
         }
 
-        public Task<IEnumerable<AddressDto>> FindAll(string userId)
+        public Task<IEnumerable<AddressDetails>> FindAll(string userId)
         {
             //TODO is it an okay way to map stuff? Is it good to map things here?
-            return Task.Run(() => _set.Where(a => a.UserId == userId).Select(_mapper.Map<AddressDto>));
+            return Task.Run(() => _set.Where(a => a.UserId == userId).Select(_mapper.Map<AddressDetails>));
         }
     }
 }

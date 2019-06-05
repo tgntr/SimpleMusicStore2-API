@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Services
 {
-    public interface IOrderService : ShoppingCart
+    public interface IOrderService : IShoppingCart
     {
         
         Task<OrderCheckout> Checkout();
