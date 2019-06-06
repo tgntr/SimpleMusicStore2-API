@@ -15,7 +15,6 @@ namespace SimpleMusicStore.Entities
         {
         }
 
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
 		//TODO check if works

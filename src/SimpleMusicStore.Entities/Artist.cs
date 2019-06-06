@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SimpleMusicStore.Entities
 {
-    public class Artist : Entity<int>
+    public class Artist : EntityWithCustomId<int>
 	{
         public Artist()
         {

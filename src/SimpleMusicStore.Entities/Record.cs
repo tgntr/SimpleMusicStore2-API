@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace SimpleMusicStore.Entities
 {
-    public class Record : Entity<int>
+    public class Record : EntityWithCustomId<int>
     {
         public Record()
         {

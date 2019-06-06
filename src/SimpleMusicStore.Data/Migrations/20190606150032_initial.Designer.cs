@@ -10,7 +10,7 @@ using SimpleMusicStore.Data;
 namespace SimpleMusicStore.Data.Migrations
 {
     [DbContext(typeof(SimpleMusicStoreDbContext))]
-    [Migration("20190606092440_initial")]
+    [Migration("20190606150032_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -133,7 +133,9 @@ namespace SimpleMusicStore.Data.Migrations
 
             modelBuilder.Entity("SimpleMusicStore.Entities.Address", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -234,7 +236,9 @@ namespace SimpleMusicStore.Data.Migrations
 
             modelBuilder.Entity("SimpleMusicStore.Entities.Order", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Date");
 
@@ -339,7 +343,9 @@ namespace SimpleMusicStore.Data.Migrations
 
             modelBuilder.Entity("SimpleMusicStore.Entities.Stock", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("DateAdded");
 
@@ -356,7 +362,9 @@ namespace SimpleMusicStore.Data.Migrations
 
             modelBuilder.Entity("SimpleMusicStore.Entities.Track", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Duration");
 
@@ -376,7 +384,9 @@ namespace SimpleMusicStore.Data.Migrations
 
             modelBuilder.Entity("SimpleMusicStore.Entities.Video", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("RecordId");
 

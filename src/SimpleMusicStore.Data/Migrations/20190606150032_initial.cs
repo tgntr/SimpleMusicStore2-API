@@ -98,7 +98,8 @@ namespace SimpleMusicStore.Data.Migrations
                 name: "Addresses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Country = table.Column<string>(maxLength: 20, nullable: false),
                     City = table.Column<string>(maxLength: 20, nullable: false),
                     Street = table.Column<string>(maxLength: 50, nullable: false),
@@ -288,7 +289,8 @@ namespace SimpleMusicStore.Data.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<string>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DeliveryAddressId = table.Column<int>(nullable: false)
@@ -314,7 +316,8 @@ namespace SimpleMusicStore.Data.Migrations
                 name: "Stock",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     RecordId = table.Column<int>(nullable: false),
                     DateAdded = table.Column<DateTime>(nullable: false),
                     Quantity = table.Column<int>(nullable: false)
@@ -334,7 +337,8 @@ namespace SimpleMusicStore.Data.Migrations
                 name: "Tracks",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Title = table.Column<string>(nullable: false),
                     Duration = table.Column<string>(nullable: true),
                     Url = table.Column<string>(nullable: true),
@@ -355,7 +359,8 @@ namespace SimpleMusicStore.Data.Migrations
                 name: "Videos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Uri = table.Column<string>(nullable: false),
                     RecordId = table.Column<int>(nullable: false)
                 },

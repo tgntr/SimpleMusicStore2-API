@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SimpleMusicStore.Entities
 {
-    public class Label : Entity<int>
+    public class Label : EntityWithCustomId<int>
     {
         public Label()
         {
