@@ -16,7 +16,7 @@ namespace SimpleMusicStore.Entities
 
         [Required]
         public int ArtistId { get; set; }
-        public Artist Artist { get; set; }
+        public virtual Artist Artist { get; set; }
         
     }
 }

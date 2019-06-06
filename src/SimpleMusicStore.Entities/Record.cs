@@ -46,16 +46,16 @@ namespace SimpleMusicStore.Entities
 
         [Required]
         public int ArtistId { get; set; }
-        public Artist Artist { get; set; }
+        public virtual Artist Artist { get; set; }
 
         [Required]
         public int LabelId { get; set; }
-        public Label Label { get; set; }
+        public virtual Label Label { get; set; }
         
-        public ICollection<Wish> WishedBy { get; set; }
-        public ICollection<Item> Orders { get; set; }
-        public ICollection<Video> Videos { get; set; }
-        public ICollection<Track> Tracks { get; set; }
-        public ICollection<Stock> Stocks { get; set; }
+        public virtual ICollection<Wish> WishedBy { get; set; }
+        public virtual ICollection<Item> Orders { get; set; }
+        public virtual ICollection<Video> Videos { get; set; }
+        public virtual ICollection<Track> Tracks { get; set; }
+        public virtual ICollection<Stock> Stocks { get; set; }
     }
 }

@@ -16,6 +16,6 @@ namespace SimpleMusicStore.Entities
 
         [Required]
         public int LabelId { get; set; }
-        public Label Label { get; set; }
+        public virtual Label Label { get; set; }
     }
 }

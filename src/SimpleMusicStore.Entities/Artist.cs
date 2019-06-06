@@ -22,8 +22,8 @@ namespace SimpleMusicStore.Entities
         public string Image { get; set; }
 
         //TODO should navigation properties be virtual?
-        public ICollection<Record> Records { get; set; }
+        public virtual ICollection<Record> Records { get; set; }
 
-        public ICollection<ArtistFollow> Followers { get; set; }
+        public virtual ICollection<ArtistFollow> Followers { get; set; }
     }
 }

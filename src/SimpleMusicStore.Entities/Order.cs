@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 
@@ -14,6 +15,7 @@ namespace SimpleMusicStore.Entities
         {
         }
 
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
 		//TODO check if works
@@ -21,9 +23,9 @@ namespace SimpleMusicStore.Entities
 
         [Required]
         public int DeliveryAddressId { get; set; }
-        public Address DeliveryAddress { get; set; }
+        public virtual Address DeliveryAddress { get; set; }
 
-        public ICollection<Item> Items { get; set; }
+        public virtual ICollection<Item> Items { get; set; }
 
     }
 }

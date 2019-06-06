@@ -20,9 +20,9 @@ namespace SimpleMusicStore.Entities
         [Url]
         public string Image { get; set; } 
 
-        public ICollection<Record> Records { get; set; }
+        public virtual ICollection<Record> Records { get; set; }
 
-        public ICollection<LabelFollow> Followers { get; set; }
+        public virtual ICollection<LabelFollow> Followers { get; set; }
 
     }
 }

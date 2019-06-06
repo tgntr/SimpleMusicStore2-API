@@ -26,11 +26,11 @@ namespace SimpleMusicStore.Api
         {
             //TODO Environment class to access appsettings values
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDatabase(Configuration["Database:Connection"]);
             services.AddJwtAuthentication(JwtPayloadSection());
             services.AddCustomServices(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton(ConnectionMultiplexer.Connect(Configuration["Redis:Connection"]).GetDatabase());
-            services.AddDatabase(Configuration["Database:Connection"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

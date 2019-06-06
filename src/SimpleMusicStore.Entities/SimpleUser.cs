@@ -16,11 +16,11 @@ namespace SimpleMusicStore.Entities
             Orders = new List<Order>();
         }
 
-        public ICollection<Address> Addresses { get; set; }
-        public ICollection<ArtistFollow> FollowedArtists { get; set; }
-        public ICollection<LabelFollow> FollowedLabels { get; set; }
-        public ICollection<Wish> Wishlist { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Address> Addresses { get; set; }
+        public virtual ICollection<ArtistFollow> FollowedArtists { get; set; }
+        public virtual ICollection<LabelFollow> FollowedLabels { get; set; }
+        public virtual ICollection<Wish> Wishlist { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
         
     }
 }
