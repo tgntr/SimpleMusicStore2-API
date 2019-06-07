@@ -13,7 +13,7 @@ namespace SimpleMusicStore.Entities
 
         [Required]
         public int RecordId { get; set; }
-        public Record Record { get; set; }
+        public virtual Record Record { get; set; }
         public DateTime DateAdded { get; set; }
         public int Quantity { get; set; }
     }

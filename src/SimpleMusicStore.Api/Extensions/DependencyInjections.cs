@@ -33,7 +33,7 @@ namespace SimpleMusicStore.Api.Extensions
             services.AddScoped<IClaimHandler, ClaimHandler>();
             services.AddScoped<IClaimAccessor, ClaimAccessor>();
             services.AddScoped<IRecordService, RecordService>();
-
+            services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IServiceValidations, ServiceValidations>();
             services.AddScoped<IShoppingCart, ShoppingCartCacheProxy>();
             services.AddScoped<ILabelService, LabelService>();

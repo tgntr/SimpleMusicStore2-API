@@ -19,16 +19,6 @@ namespace SimpleMusicStore.Auth.Extensions
             	expires: config.ExpirationDate(),
             	signingCredentials: config.SigningCredentials()
             );
-
-            //var securityTokenDescriptor = new SecurityTokenDescriptor
-            //{
-            //    Audience = config.Audience,
-            //    Issuer = config.Issuer,
-            //    Subject = new ClaimsIdentity(claims),
-            //    Expires = config.ExpirationDate(),
-            //    SigningCredentials = config.SigningCredentials()
-            //};
-            //return new JwtSecurityTokenHandler().CreateToken(securityTokenDescriptor);
         }
 
 		public static TokenValidationParameters ValidationParameters(this JwtConfiguration config)

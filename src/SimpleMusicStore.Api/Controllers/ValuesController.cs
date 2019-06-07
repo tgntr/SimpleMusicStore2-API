@@ -3,26 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.AuthenticationProviders;
 
 namespace SimpleMusicStore.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ValuesController : ControllerBase
+    public class ValuesController : Controller
     {
-		public ValuesController(IOptions<JwtConfiguration> config)
+        private readonly UserManager<SimpleUser> _users;
+
+        public ValuesController(IOptions<JwtConfiguration> config, UserManager<SimpleUser> users)
+            : base()
 		{
 			var a = config;
+            _users = users;
 		}
         // GET api/values
         [HttpGet]
-		[Authorize(Policy = "ApiUser")]
-		public ActionResult<IEnumerable<string>> Get()
+		public async Task Test()
         {
-            return new string[] { "value1", "value2" };
+            await _users.CreateAsync(new SimpleUser { UserName = "tgntr" }, "test");
         }
 
         // GET api/values/5

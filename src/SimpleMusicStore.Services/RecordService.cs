@@ -46,7 +46,7 @@ namespace SimpleMusicStore.Services
 		private async Task AddRecordToStore(RecordInfo recordInfo, decimal price)
 		{
 			var record = _mapper.Map<Record>(recordInfo);
-			record.Price = record.Price;
+			record.Price = price;
 			await _records.Add(record);
 			await _records.SaveChanges();
 		}

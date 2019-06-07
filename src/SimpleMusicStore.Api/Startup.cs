@@ -8,6 +8,7 @@ using SimpleMusicStore.Api.Extensions;
 using Microsoft.AspNetCore.Http;
 using System;
 using StackExchange.Redis;
+using SimpleMusicStore.Data;
 
 namespace SimpleMusicStore.Api
 {
@@ -25,6 +26,7 @@ namespace SimpleMusicStore.Api
         {
             //TODO Environment class to access appsettings values
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDatabase(Configuration["Database:Connection"]);
             services.AddJwtAuthentication(JwtPayloadSection());
             services.AddCustomServices(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

@@ -11,6 +11,7 @@ namespace SimpleMusicStore.Entities
             Orders = new List<Order>();
             IsActive = true;
         }
+
         [MinLength(3)]
         [MaxLength(20)]
         [Required]
@@ -26,7 +27,7 @@ namespace SimpleMusicStore.Entities
         public bool IsActive { get; set; }
         [Required]
         public string UserId { get; set; }
-        public User User { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public virtual SimpleUser User { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

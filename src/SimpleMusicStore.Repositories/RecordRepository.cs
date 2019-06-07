@@ -1,4 +1,6 @@
-﻿using SimpleMusicStore.Contracts.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using SimpleMusicStore.Contracts.Repositories;
+using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,8 +10,13 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories
 {
-    public class RecordRepository : ListRepository<Record>, IRecordRepository
+    public class RecordRepository : DbRepository<Record>, IRecordRepository
     {
+        public RecordRepository(SimpleMusicStoreDbContext db)
+            : base(db)
+        {
+
+        }
 		public async Task<int> Availability(int id)
 		{
 			return (await Find(id)).Quantity;
@@ -18,12 +25,12 @@ namespace SimpleMusicStore.Repositories
 		public Task<bool> Exists(int id)
         {
             //TODO faster way
-            return Task.Run(() => _set.Any(r => r.Id == id));
+            return _set.AnyAsync(r => r.Id == id);
         }
 
         public Task<Record> Find(int id)
         {
-            return Task.Run(() => _set.FirstOrDefault(r => r.Id == id));
+            return _set.FirstOrDefaultAsync(r => r.Id == id);
         }
     }
 }

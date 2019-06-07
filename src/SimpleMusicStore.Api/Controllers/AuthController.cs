@@ -11,9 +11,7 @@ using SimpleMusicStore.Models.AuthenticationProviders;
 
 namespace SimpleMusicStore.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : Controller
     {
 		private readonly AuthenticationHandler _authenticator;
 		
@@ -24,7 +22,7 @@ namespace SimpleMusicStore.Api.Controllers
 		}
 
 		[HttpPost]
-		public async Task<string> Post([FromBody] AuthenticationRequest credentials)
+		public async Task<string> Login([FromBody] AuthenticationRequest credentials)
 		{
             return await _authenticator.Authenticate(credentials);
 		}
