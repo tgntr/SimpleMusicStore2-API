@@ -6,7 +6,6 @@ using System.Text;
 
 namespace SimpleMusicStore.Models.Entities
 {
-	//todo chec if data entities can inherit from abstract classes
 	public abstract class EntityWithCustomId<T>
 	{
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
