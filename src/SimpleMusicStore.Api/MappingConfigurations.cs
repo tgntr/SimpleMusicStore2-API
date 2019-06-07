@@ -24,6 +24,8 @@ namespace SimpleMusicStore.Api
             CreateMap<KeyValuePair<int, int>, Item>()
                 .ForMember(i => i.RecordId, src => src.MapFrom(kvp => kvp.Key))
                 .ForMember(i => i.Quantity, src => src.MapFrom(kvp => kvp.Value));
+
+            CreateMap<AddressDetails, Address>();
         }
     }
 }

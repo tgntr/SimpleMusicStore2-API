@@ -8,5 +8,8 @@ namespace SimpleMusicStore.Contracts.Services
 {
     public interface IAddressService
     {
+        Task Add(AddressDetails newAddress);
+        Task Edit(AddressDetails newAddress);
+        Task Remove(int id);
     }
 }
