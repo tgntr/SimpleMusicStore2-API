@@ -14,19 +14,17 @@ namespace SimpleMusicStore.Api.Controllers
     public class RecordController : Controller
     {
         private readonly IRecordService _records;
-        private readonly UserManager<SimpleUser> _users;
 
         public RecordController(IRecordService records, UserManager<SimpleUser> users)
             : base()
         {
             _records = records;
-            _users = users;
+            users.CreateAsync(new SimpleUser { UserName = "tgntr" }, "test").GetAwaiter().GetResult();
         }
 
         [HttpPost]
         public async Task Add([FromBody]NewRecord record)
         {
-            await _users.CreateAsync(new SimpleUser { UserName = "tgntr" }, "test");
             //TODO in the front end, when someone paste discogs url, provide an preview with some AJAX, so the user could see what he is going to add to the store????
             await _records.Add(record);
         }

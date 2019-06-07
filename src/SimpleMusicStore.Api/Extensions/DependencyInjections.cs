@@ -38,6 +38,7 @@ namespace SimpleMusicStore.Api.Extensions
             services.AddScoped<IShoppingCart, ShoppingCartCacheProxy>();
             services.AddScoped<ILabelService, LabelService>();
             services.AddScoped<IArtistService, ArtistService>();
+            services.AddScoped<IFollowService, FollowService>();
             services.AddAutoMapper();
         }
     }
