@@ -7,7 +7,6 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.1.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.0" />
-    <PackageReference Include="StackExchange.Redis" Version="2.0.601" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,6 +14,7 @@
     <ProjectReference Include="..\SimpleMusicStore.Contracts\SimpleMusicStore.Contracts.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.MusicLibrary\SimpleMusicStore.MusicLibrary.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.Storage\SimpleMusicStore.Storage.csproj" />
+    <ProjectReference Include="..\SimpleMusicStore.Validations\SimpleMusicStore.Validations.csproj" />
   </ItemGroup>
 
 </Project>

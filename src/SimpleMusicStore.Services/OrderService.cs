@@ -1,16 +1,17 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.View;
+using SimpleMusicStore.ShoppingCart;
+using StackExchange.Redis;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
 {
-    class OrderService : Redis, IOrderService
+    public class OrderService : ShoppingCartCacheProxy, IOrderService
     {
         private readonly IAddressRepository _addresses;
         private readonly IOrderRepository _orders;
@@ -21,8 +22,9 @@ namespace SimpleMusicStore.Services
             IOrderRepository orders,
             IRecordRepository records,
             IServiceValidations validator,
-            IClaimAccessor currentUser)
-            : base(currentUser, records, mapper, validator)
+            IClaimAccessor currentUser,
+            IDatabase cacheProvider)
+            : base(currentUser, records, mapper, cacheProvider, validator)
         {
             _addresses = addresses;
             _orders = orders;
@@ -30,13 +32,13 @@ namespace SimpleMusicStore.Services
 
         public async Task<OrderCheckout> Checkout()
         {
-            _validator.CartIsNotEmpty();
+            _validator.CartIsNotEmpty(Items);
             return await GenerateOrderCheckoutDetailsView();
         }
 
         public async Task Complete(int addressId)
         {
-            _validator.CartIsNotEmpty();
+            _validator.CartIsNotEmpty(Items);
             await _validator.AddressIsValid(addressId);
             await AddNewOrder(addressId);
             await EmptyCart();
@@ -53,11 +55,11 @@ namespace SimpleMusicStore.Services
 
         private async Task AddNewOrder(int addressId)
         {
-            Order order = new Order
+            var order = new Entities.Order
             {
                 DeliveryAddressId = addressId,
                 UserId = _currentUser.Id,
-                Items = _items.Select(i => _mapper.Map<Item>(i)).ToList()
+                Items = Items.Select(i => _mapper.Map<Item>(i)).ToList()
             };
 
             await _orders.Add(order);

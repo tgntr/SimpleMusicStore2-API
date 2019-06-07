@@ -10,14 +10,14 @@ namespace SimpleMusicStore.Repositories
 {
     public class ArtistFollowRepository : ListRepository<ArtistFollow>, IArtistFollowRepository
     {
-		public async Task Delete(int artistId, string userId)
-		{
-			var artistFollow = _set.First(af => af.ArtistId == artistId && af.UserId == userId);
-			_set.Remove(artistFollow);
-			await SaveChanges();
-		}
+        public async Task Delete(int artistId, string userId)
+        {
+            var artistFollow = _set.First(af => af.ArtistId == artistId && af.UserId == userId);
+            _set.Remove(artistFollow);
+            await SaveChanges();
+        }
 
-		public Task<bool> Exists(int artistId, string userId)
+        public Task<bool> Exists(int artistId, string userId)
         {
             return Task.Run(() => _set.Any(f => f.ArtistId == artistId && f.UserId == userId));
         }

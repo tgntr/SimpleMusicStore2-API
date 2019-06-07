@@ -1,22 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Entities;
-using SimpleMusicStore.Models.AuthenticationProviders;
 using System;
 using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleMusicStore.Services
+namespace SimpleMusicStore.Validations
 {
     public class ServiceValidations : IServiceValidations
     {
         private readonly IAddressRepository _addresses;
-        private readonly ShoppingCart _cart;
         private readonly IWishRepository _wishes;
         private readonly IRecordRepository _records;
         private readonly IArtistFollowRepository _artistFollows;
@@ -29,7 +24,6 @@ namespace SimpleMusicStore.Services
         public ServiceValidations(
             IAddressRepository addresses,
             IClaimAccessor currentUser,
-            ShoppingCart cart,
             IWishRepository wishes,
             IRecordRepository records,
             IArtistFollowRepository artistFollows,
@@ -39,7 +33,6 @@ namespace SimpleMusicStore.Services
             UserManager<User> users)
         {
             _addresses = addresses;
-            _cart = cart;
             _wishes = wishes;
             _records = records;
             _artistFollows = artistFollows;
@@ -55,9 +48,9 @@ namespace SimpleMusicStore.Services
                 throw new ArgumentException("Invalid address!");
         }
 
-        public void CartIsNotEmpty()
+        public void CartIsNotEmpty(IDictionary<int, int> items)
         {
-            if (_cart.IsEmpty())
+            if (items.Count == 0)
                 throw new OperationCanceledException("Cart is empty!");
         }
 
@@ -139,17 +132,17 @@ namespace SimpleMusicStore.Services
                 throw new ArgumentException("Invalid record id!");
         }
 
-        public void ItemIsInCart(int itemId)
+        public void ItemIsInCart(int itemId, IDictionary<int, int> items)
         {
-            if (!_cart.Items.ContainsKey(itemId))
+            if (!items.ContainsKey(itemId))
                 throw new ArgumentException("Cart does not contain such record!");
         }
 
-        public async Task ItemIsInStock(int itemId)
+        public async Task ItemIsInStock(int itemId, IDictionary<int, int> items)
         {
             var quantity = 0;
-            if (_cart.Items.ContainsKey(itemId))
-                quantity = _cart.Items[itemId];
+            if (items.ContainsKey(itemId))
+                quantity = items[itemId];
 
             if (await _records.Availability(itemId) <= quantity)
                 throw new ArgumentException("Required quantity is not available!");
