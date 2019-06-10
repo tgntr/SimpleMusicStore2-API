@@ -51,5 +51,10 @@ namespace SimpleMusicStore.Api.Controllers
         {
             await _orders.Complete(id);
         }
+
+        public async Task<OrderView> Details(int id)
+        {
+            return await _orders.Find(id);
+        }
     }
 }

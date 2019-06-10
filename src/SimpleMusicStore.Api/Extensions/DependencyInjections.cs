@@ -40,6 +40,7 @@ namespace SimpleMusicStore.Api.Extensions
             services.AddScoped<IArtistService, ArtistService>();
             services.AddScoped<IFollowService, FollowService>();
             services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<IActivityService, ActivityService>();
             services.AddAutoMapper();
         }
     }

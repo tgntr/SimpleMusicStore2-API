@@ -27,5 +27,6 @@ namespace SimpleMusicStore.Contracts.Services
         void CartIsNotEmpty(IDictionary<int, int> items);
         Task AddressIsValid(int id);
         Task CredentialsAreValid(SimpleUser user, string pasword);
+        Task OrderIsValid(int orderId);
     }
 }

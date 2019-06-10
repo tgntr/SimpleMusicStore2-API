@@ -4,10 +4,10 @@ using System.Text;
 
 namespace SimpleMusicStore.Models.View
 {
-    public class ArtistDetails
+    public class OrderDetails
     {
-        public string Name { get; set; }
         public int Id { get; set; }
-        public string Image { get; set; }
+        public decimal TotalPrice { get; set; }
+        public DateTime Date { get; set; }
     }
 }

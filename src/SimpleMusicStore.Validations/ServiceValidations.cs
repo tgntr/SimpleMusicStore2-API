@@ -18,6 +18,7 @@ namespace SimpleMusicStore.Validations
         private readonly IArtistRepository _artists;
         private readonly ILabelRepository _labels;
         private readonly ILabelFollowRepository _labelFollows;
+        private readonly IOrderRepository _orders;
         private readonly UserManager<SimpleUser> _users;
         private readonly IClaimAccessor _currentUser;
 
@@ -30,6 +31,7 @@ namespace SimpleMusicStore.Validations
             IArtistRepository artists,
             ILabelRepository labels,
             ILabelFollowRepository labelFollows,
+            IOrderRepository orders,
             UserManager<SimpleUser> users)
         {
             _addresses = addresses;
@@ -39,6 +41,7 @@ namespace SimpleMusicStore.Validations
             _artists = artists;
             _labels = labels;
             _labelFollows = labelFollows;
+            _orders = orders;
             _users = users;
             _currentUser = currentUser;
         }
@@ -151,7 +154,13 @@ namespace SimpleMusicStore.Validations
         public async Task CredentialsAreValid(SimpleUser user, string password)
         {
             if (!await _users.CheckPasswordAsync(user, password))
-                throw new ArgumentException("Invalid credentials");
+                throw new ArgumentException("Invalid credentials!");
+        }
+
+        public async Task OrderIsValid(int orderId)
+        {
+            if (!await _orders.Exists(orderId, _currentUser.Id))
+                throw new ArgumentException("Invalid order!");
         }
     }
 }

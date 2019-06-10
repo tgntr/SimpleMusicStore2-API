@@ -26,6 +26,21 @@ namespace SimpleMusicStore.Api
                 .ForMember(i => i.Quantity, src => src.MapFrom(kvp => kvp.Value));
 
             CreateMap<AddressDetails, Address>();
+            CreateMap<Address, AddressDetails>();
+            CreateMap<Record, RecordDetails>();
+            CreateMap<Record, RecordView>();
+            CreateMap<Label, LabelDetails>();
+            CreateMap<Artist, ArtistDetails>();
+            CreateMap<Order, OrderDetails>();
+            CreateMap<Item, ItemDetails>()
+                .ForMember(id => id.Id, src => src.MapFrom(i => i.Record.Id))
+                .ForMember(id => id.Title, src => src.MapFrom(i => i.Record.Title))
+                .ForMember(id => id.Image, src => src.MapFrom(i => i.Record.Image))
+                .ForMember(id => id.Label, src => src.MapFrom(i => i.Record.Label))
+                .ForMember(id => id.Artist, src => src.MapFrom(i => i.Record.Artist))
+                .ForMember(id => id.Price, src => src.MapFrom(i => i.Record.Price))
+                .ForMember(id => id.Quantity, src => src.MapFrom(i => i.Quantity));
+            CreateMap<Order, OrderView>();
         }
     }
 }
