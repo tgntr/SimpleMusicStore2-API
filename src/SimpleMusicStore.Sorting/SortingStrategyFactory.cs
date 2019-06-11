@@ -1,9 +1,7 @@
-﻿using SimpleMusicStore.Contracts;
+﻿using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Sorting;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SimpleMusicStore.Sorting
 {
@@ -16,15 +14,14 @@ namespace SimpleMusicStore.Sorting
             _currentUser = currentUser;
         }
 
-        public SortingStrategy Create(string sort)
+        public SortingStrategy Create(SortTypes sort)
         {
-            sort = sort.ToLower();
-            if (sort == "recommended" && _currentUser.IsAuthenticated)
-                return new Recommended(_currentUser);
-            else if (sort == "newest")
-                return new Newest();
+            if (sort == SortTypes.Recommendation && _currentUser.IsAuthenticated)
+                return new RecommendationSort(_currentUser);
+            else if (sort == SortTypes.DateAdded)
+                return new DateAddedSort();
             else
-                return new Popularity();
+                return new PopularitySort();
         }
     }
 }

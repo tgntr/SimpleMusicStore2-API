@@ -13,8 +13,6 @@ namespace SimpleMusicStore.Contracts.Services
         void ItemIsInCart(int itemId, IDictionary<int, int> items);
         Task ItemExists(int itemId);
         Task RecordIsNotInStore(int id);
-        Task LabelDoesNotExist(int discogsId);
-        Task ArtistDoesNotExist(int discogsId);
         Task LabelIsFollowed(int labelId);
         Task ArtistIsFollowed(int artistId);
         Task RecordIsInWishlist(int recordId);

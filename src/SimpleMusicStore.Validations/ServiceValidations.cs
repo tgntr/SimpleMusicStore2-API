@@ -111,18 +111,6 @@ namespace SimpleMusicStore.Validations
                 throw new ArgumentException("Label is not followed!");
         }
 
-        public async Task ArtistDoesNotExist(int discogsId)
-        {
-            if (await _artists.Exists(discogsId))
-                return;
-        }
-
-        public async Task LabelDoesNotExist(int discogsId)
-        {
-            if (await _labels.Exists(discogsId))
-                return;
-        }
-
         public async Task RecordIsNotInStore(int id)
         {
             if (await _records.Exists(id))

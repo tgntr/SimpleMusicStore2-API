@@ -9,11 +9,11 @@ using System.Text;
 
 namespace SimpleMusicStore.Sorting
 {
-    public class Recommended : SortingStrategy
+    public class RecommendationSort : SortingStrategy
     {
         private readonly ICurrentUser _currentUser;
 
-        public Recommended(ICurrentUser currentUser)
+        public RecommendationSort(ICurrentUser currentUser)
         {
             _currentUser = currentUser;
         }

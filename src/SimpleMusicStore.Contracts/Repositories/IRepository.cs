@@ -9,7 +9,6 @@ namespace SimpleMusicStore.Contracts.Repositories
     public interface IRepository<TEntity>
         where TEntity : class
     {
-        IEnumerable<TEntity> All();
 
         Task Add(TEntity entity);
 

@@ -14,12 +14,9 @@ namespace SimpleMusicStore.Repositories
 {
     public class OrderRepository : DbRepository<Order>, IOrderRepository
     {
-        private readonly IMapper _mapper;
-
         public OrderRepository(SimpleMusicStoreDbContext db, IMapper mapper)
-            :base(db)
+            :base(db, mapper)
         {
-            _mapper = mapper;
         }
 
         public async Task<OrderView> Find(int id)

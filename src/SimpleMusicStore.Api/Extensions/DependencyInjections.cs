@@ -6,10 +6,12 @@ using SimpleMusicStore.Contracts;
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Contracts.Sorting;
 using SimpleMusicStore.MusicLibrary;
 using SimpleMusicStore.Repositories;
 using SimpleMusicStore.Services;
 using SimpleMusicStore.ShoppingCart;
+using SimpleMusicStore.Sorting;
 using SimpleMusicStore.Storage;
 using SimpleMusicStore.Validations;
 
@@ -42,6 +44,7 @@ namespace SimpleMusicStore.Api.Extensions
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<IActivityService, ActivityService>();
             services.AddScoped<ICurrentUser, CurrentUser>();
+            services.AddScoped<ISortingStrategyFactory, SortingStrategyFactory>();
             services.AddAutoMapper();
         }
     }

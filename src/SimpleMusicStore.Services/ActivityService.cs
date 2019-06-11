@@ -24,6 +24,7 @@ namespace SimpleMusicStore.Services
         public IEnumerable<RecordDetails> Wishlist()
         {
             //Reverse will order them by activity date, so the newest activities will be on top
+            //TODO check if Reverse does the job
             return _currentUser.Wishlist().Reverse();
         }
 

@@ -14,12 +14,9 @@ namespace SimpleMusicStore.Repositories
 {
     public class AddressRepository : DbRepository<Address>, IAddressRepository
     {
-        private readonly IMapper _mapper;
-
         public AddressRepository(SimpleMusicStoreDbContext db, IMapper mapper)
-            : base(db)
+            : base(db, mapper)
         {
-            _mapper = mapper;
         }
 
         public async Task Edit(AddressDetails address)

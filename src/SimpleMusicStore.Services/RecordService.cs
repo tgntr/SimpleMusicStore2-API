@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Contracts.Sorting;
 using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.MusicLibraries;
+using SimpleMusicStore.Models.View;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
@@ -18,6 +22,7 @@ namespace SimpleMusicStore.Services
 		private readonly ILabelService _labels;
 		private readonly IArtistService _artists;
         private readonly IServiceValidations _validator;
+        private readonly ISortingStrategyFactory _sorting;
 
         public RecordService(
 			MusicSource source,
@@ -25,13 +30,15 @@ namespace SimpleMusicStore.Services
 			IMapper mapper,
 			ILabelService labels,
 			IArtistService artists,
-            IServiceValidations validator)
+            IServiceValidations validator,
+            ISortingStrategyFactory sorting)
 		{
 			_discogs = source;
 			_records = records;
 			_mapper = mapper;
 			_artists = artists;
             _validator = validator;
+            _sorting = sorting;
             _labels = labels;
 		}
 
@@ -43,6 +50,20 @@ namespace SimpleMusicStore.Services
 			await AddRecordToStore(recordInfo, record.Price);
 		}
 
+        public NewsFeed NewsFeed()
+        {
+            return new NewsFeed
+            {
+                Recommended = RecordsSortedBy(SortTypes.Recommendation),
+                MostPopular = RecordsSortedBy(SortTypes.Popularity),
+                Newest = RecordsSortedBy(SortTypes.DateAdded)
+            };
+        }
+
+        private IEnumerable<RecordDetails> RecordsSortedBy(SortTypes sort)
+        {
+            return _sorting.Create(sort).Sort(_records.All());
+        }
 		private async Task AddRecordToStore(RecordInfo recordInfo, decimal price)
 		{
 			var record = _mapper.Map<Record>(recordInfo);

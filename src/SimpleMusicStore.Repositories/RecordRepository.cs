@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +14,18 @@ namespace SimpleMusicStore.Repositories
 {
     public class RecordRepository : DbRepository<Record>, IRecordRepository
     {
-        public RecordRepository(SimpleMusicStoreDbContext db)
-            : base(db)
+        public RecordRepository(SimpleMusicStoreDbContext db, IMapper mapper)
+            : base(db, mapper)
         {
 
         }
-		public async Task<int> Availability(int id)
+
+        public IEnumerable<RecordDetails> All()
+        {
+            return _set.Select(_mapper.Map<RecordDetails>);
+        }
+
+        public async Task<int> Availability(int id)
 		{
 			return (await Find(id)).Quantity;
 		}

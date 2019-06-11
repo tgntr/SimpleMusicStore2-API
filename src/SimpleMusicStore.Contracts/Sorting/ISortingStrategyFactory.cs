@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SimpleMusicStore.Constants;
 
 namespace SimpleMusicStore.Contracts.Sorting
 {
     public interface ISortingStrategyFactory
     {
-        SortingStrategy Create(string sort);
+        SortingStrategy Create(SortTypes sort);
     }
 }

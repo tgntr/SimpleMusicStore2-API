@@ -29,8 +29,8 @@ namespace SimpleMusicStore.Services
 
         public async Task Add(int discogsId)
         {
-            await _validator.LabelDoesNotExist(discogsId);
-            await AddLabel(discogsId);
+            if (!await _labels.Exists(discogsId))
+                await AddLabel(discogsId);
         }
 
         private async Task AddLabel(int discogsId)
