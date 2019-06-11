@@ -15,6 +15,6 @@ namespace SimpleMusicStore.Contracts.Repositories
 
         void Delete(TEntity entity);
 
-        Task<int> SaveChanges();
+        Task SaveChanges();
     }
 }

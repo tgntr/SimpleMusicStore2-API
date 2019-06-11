@@ -13,5 +13,7 @@ namespace SimpleMusicStore.Models.View
         public LabelDetails Label { get; set; }
         public ArtistDetails Artist { get; set; }
         public decimal Price { get; set; }
+        public int Popularity { get; set; }
+
     }
 }

@@ -22,7 +22,7 @@ namespace SimpleMusicStore.Api.Controllers
             _records = records;
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize]
         [HttpPost]
         public async Task Add([FromBody]NewRecord record)
         {

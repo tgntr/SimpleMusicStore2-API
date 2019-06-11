@@ -14,44 +14,32 @@ namespace SimpleMusicStore.Services
 {
     public class ActivityService : IActivityService
     {
-        private readonly SimpleUser _currentUser;
-        private readonly IMapper _mapper;
-        public ActivityService(UserManager<SimpleUser> users, IClaimAccessor currentUser, IMapper mapper)
+        private readonly ICurrentUser _currentUser;
+
+        public ActivityService(ICurrentUser currentUser)
         {
-            //todo too ugly
-            _currentUser = users.FindByIdAsync(currentUser.Id).GetAwaiter().GetResult();
-            _mapper = mapper;
+            _currentUser = currentUser;
         }
 
         public IEnumerable<RecordDetails> Wishlist()
         {
-            return _currentUser.Wishlist
-                .OrderByDescending(w => w.Date)
-                .Select(w => w.Record)
-                .Select(_mapper.Map<RecordDetails>);
+            //Reverse will order them by activity date, so the newest activities will be on top
+            return _currentUser.Wishlist().Reverse();
         }
 
         public IEnumerable<ArtistDetails> FollowedArtists()
         {
-            return _currentUser.FollowedArtists
-                .OrderByDescending(fa=>fa.Date)
-                .Select(fa => fa.Artist)
-                .Select(_mapper.Map<ArtistDetails>);
+            return _currentUser.FollowedArtists().Reverse();
         }
 
         public IEnumerable<LabelDetails> FollowedLabels()
         {
-            return _currentUser.FollowedLabels
-                .OrderByDescending(fl=>fl.Date)
-                .Select(fl => fl.Label)
-                .Select(_mapper.Map<LabelDetails>);
+            return _currentUser.FollowedLabels().Reverse();
         }
 
         public IEnumerable<OrderDetails> Orders()
         {
-            return _currentUser.Orders
-                .OrderByDescending(o => o.Date)
-                .Select(_mapper.Map<OrderDetails>);
+            return _currentUser.Orders<OrderDetails>().Reverse();
         }
     }
 }
