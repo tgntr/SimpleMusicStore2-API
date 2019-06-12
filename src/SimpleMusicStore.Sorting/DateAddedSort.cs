@@ -8,7 +8,7 @@ using System.Text;
 
 namespace SimpleMusicStore.Sorting
 {
-    public class DateAddedSort : SortingStrategy
+    public class DateAddedSort : SortType
     {
         public IEnumerable<RecordDetails> Sort(IEnumerable<RecordDetails> records)
         {

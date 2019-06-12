@@ -9,11 +9,11 @@ using System.Text;
 
 namespace SimpleMusicStore.Sorting
 {
-    public class RecommendationSort : SortingStrategy
+    public class RecommendationSort : SortType
     {
-        private readonly ICurrentUser _currentUser;
+        private readonly ICurrentUserActivities _currentUser;
 
-        public RecommendationSort(ICurrentUser currentUser)
+        public RecommendationSort(ICurrentUserActivities currentUser)
         {
             _currentUser = currentUser;
         }
@@ -31,30 +31,30 @@ namespace SimpleMusicStore.Sorting
 
         private int IsArtistFollowed(RecordDetails record)
         {
-            if (_currentUser.FollowedArtists().Any(fa => fa.Id == record.Artist.Id))
-                return 10;
+            if (_currentUser.FollowedArtists.Any(fa => fa.Id == record.Artist.Id))
+                return 2;
             else
                 return 0;
         }
         
         private int IsLabelFollowed(RecordDetails record)
         {
-            if (_currentUser.FollowedLabels().Any(fa => fa.Id == record.Label.Id))
-                return 10;
+            if (_currentUser.FollowedLabels.Any(fa => fa.Id == record.Label.Id))
+                return 2;
             else
                 return 0;
         }
 
         private int LabelAndArtistOrderCount(RecordDetails record)
         {
-            return _currentUser.Orders<OrderView>().Sum(o => o.Items
+            return _currentUser.Orders.Sum(o => o.Items
                         .Where(i => i.Artist.Id == record.Artist.Id || i.Label.Id == record.Label.Id)
                         .Sum(i => i.Quantity));
         }
 
         private bool UserHasAlreadyOrderedTheRecord(RecordDetails record)
         {
-            return _currentUser.Orders<OrderView>().Any(o => o.Items.Any(i => i.Id == record.Id));
+            return _currentUser.Orders.Any(o => o.Items.Any(i => i.Id == record.Id));
         }
     }
 }

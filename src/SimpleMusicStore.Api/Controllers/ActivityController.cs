@@ -12,31 +12,31 @@ namespace SimpleMusicStore.Api.Controllers
     [Authorize]
     public class ActivityController : Controller
     {
-        private readonly IActivityService _activities;
+        private readonly ICurrentUserActivities _currentUser;
 
-        public ActivityController(IActivityService activities)
+        public ActivityController(ICurrentUserActivities currentUser)
             :base()
         {
-            _activities = activities;
+            _currentUser = currentUser;
         }
         public IEnumerable<RecordDetails> Wishlist()
         {
-            return _activities.Wishlist();
+            return _currentUser.WishlistOrdered;
         }
 
         public IEnumerable<ArtistDetails> FollowedArtists()
         {
-            return _activities.FollowedArtists();
+            return _currentUser.FollowedArtistsOrdered;
         }
 
         public IEnumerable<LabelDetails> FollowedLabels()
         {
-            return _activities.FollowedLabels();
+            return _currentUser.FollowedLabelsOrdered;
         }
 
         public IEnumerable<OrderDetails> Orders()
         {
-            return _activities.Orders();
+            return _currentUser.OrdersOrdered;
         }
     }
 }

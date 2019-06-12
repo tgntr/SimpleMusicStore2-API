@@ -5,12 +5,16 @@ using System.Text;
 
 namespace SimpleMusicStore.Contracts.Services
 {
-    public interface ICurrentUser
+    public interface ICurrentUserActivities
     {
-        IEnumerable<RecordDetails> Wishlist();
-        IEnumerable<ArtistDetails> FollowedArtists();
-        IEnumerable<LabelDetails> FollowedLabels();
-        IEnumerable<T> Orders<T>();
+        IEnumerable<RecordDetails> Wishlist { get; }
+        IEnumerable<ArtistDetails> FollowedArtists { get; }
+        IEnumerable<LabelDetails> FollowedLabels { get; }
+        IEnumerable<RecordDetails> WishlistOrdered { get; }
+        IEnumerable<ArtistDetails> FollowedArtistsOrdered { get; }
+        IEnumerable<LabelDetails> FollowedLabelsOrdered { get; }
+        IEnumerable<OrderView> Orders { get; }
+        IEnumerable<OrderDetails> OrdersOrdered { get; }
         bool IsAuthenticated { get; }
     }
 }

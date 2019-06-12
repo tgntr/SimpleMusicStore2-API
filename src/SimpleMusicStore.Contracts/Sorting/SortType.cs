@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace SimpleMusicStore.Contracts.Sorting
 {
-    public interface SortingStrategy
+    public interface SortType
     {
         IEnumerable<RecordDetails> Sort(IEnumerable<RecordDetails> records);
     }
