@@ -53,9 +53,9 @@ namespace SimpleMusicStore.Services
         {
             return new NewsFeed
             {
-                Recommended = _sorter.Sort(SortTypes.Recommendation, _records.All()),
-                MostPopular = _sorter.Sort(SortTypes.Popularity, _records.All()),
-                Newest = _sorter.Sort(SortTypes.DateAdded, _records.All())
+                Recommended = _sorter.Sort(SortTypes.Recommendation, _records.FindAll()),
+                MostPopular = _sorter.Sort(SortTypes.Popularity, _records.FindAll()),
+                Newest = _sorter.Sort(SortTypes.DateAdded, _records.FindAll())
             };
         }
 

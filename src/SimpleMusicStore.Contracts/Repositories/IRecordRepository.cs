@@ -1,4 +1,5 @@
 ﻿using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,9 @@ namespace SimpleMusicStore.Contracts.Repositories
         Task<bool> Exists(int id);
         Task<Record> Find(int id);
 		Task<int> Availability(int id);
-        IEnumerable<RecordDetails> All();
+        IEnumerable<RecordDetails> FindAll();
+        IEnumerable<RecordDetails> FindAll(FilterCriterias criterias);
+        IEnumerable<string> AvailableFormats();
+        IEnumerable<string> AvailableGenres();
     }
 }
