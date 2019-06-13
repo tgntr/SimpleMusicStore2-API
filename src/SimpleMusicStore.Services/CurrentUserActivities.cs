@@ -13,10 +13,10 @@ namespace SimpleMusicStore.Services
 {
     public class CurrentUserActivities : ICurrentUserActivities
     {
-        private readonly SimpleUser _currentUser;
+        private readonly User _currentUser;
         private readonly IMapper _mapper;
 
-        public CurrentUserActivities(UserManager<SimpleUser> users, IClaimAccessor currentUserClaims, IMapper mapper)
+        public CurrentUserActivities(UserManager<User> users, IClaimAccessor currentUserClaims, IMapper mapper)
         {
             IsAuthenticated = currentUserClaims.IsAuthenticated;
             _mapper = mapper;

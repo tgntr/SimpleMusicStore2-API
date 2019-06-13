@@ -19,7 +19,7 @@ namespace SimpleMusicStore.Validations
         private readonly ILabelRepository _labels;
         private readonly ILabelFollowRepository _labelFollows;
         private readonly IOrderRepository _orders;
-        private readonly UserManager<SimpleUser> _users;
+        private readonly UserManager<User> _users;
         private readonly IClaimAccessor _currentUser;
 
         public ServiceValidations(
@@ -32,7 +32,7 @@ namespace SimpleMusicStore.Validations
             ILabelRepository labels,
             ILabelFollowRepository labelFollows,
             IOrderRepository orders,
-            UserManager<SimpleUser> users)
+            UserManager<User> users)
         {
             _addresses = addresses;
             _wishes = wishes;
@@ -139,7 +139,7 @@ namespace SimpleMusicStore.Validations
                 throw new ArgumentException("Required quantity is not available!");
         }
 
-        public async Task CredentialsAreValid(SimpleUser user, string password)
+        public async Task CredentialsAreValid(User user, string password)
         {
             if (!await _users.CheckPasswordAsync(user, password))
                 throw new ArgumentException("Invalid credentials!");

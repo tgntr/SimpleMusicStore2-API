@@ -12,7 +12,7 @@ namespace SimpleMusicStore.Auth
 {
     public class ClaimHandler : IClaimHandler
     {
-        public Claim[] GenerateClaims(SimpleUser user, bool isAdmin)
+        public Claim[] GenerateClaims(User user, bool isAdmin)
         {
             return new Claim[]
             {
