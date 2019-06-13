@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Contracts.Services;
 
 namespace SimpleMusicStore.Api.Controllers
 {
+    [Authorize]
     public class FollowController : Controller
     {
         private readonly IFollowService _follows;

@@ -9,7 +9,7 @@ using SimpleMusicStore.Entities;
 
 namespace SimpleMusicStore.Data
 {
-    public class SimpleMusicStoreDbContext : IdentityDbContext<SimpleUser>
+    public class SimpleMusicStoreDbContext : IdentityDbContext<User>
     {
         public SimpleMusicStoreDbContext(DbContextOptions<SimpleMusicStoreDbContext> options)
             : base(options)

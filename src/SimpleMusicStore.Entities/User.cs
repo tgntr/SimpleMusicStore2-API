@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace SimpleMusicStore.Entities
 {
-    public class SimpleUser : IdentityUser
+    public class User : IdentityUser
     {
-        public SimpleUser()
+        public User()
         {
             Addresses = new List<Address>();
             FollowedArtists = new List<ArtistFollow>();

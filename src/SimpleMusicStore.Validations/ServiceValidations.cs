@@ -18,7 +18,8 @@ namespace SimpleMusicStore.Validations
         private readonly IArtistRepository _artists;
         private readonly ILabelRepository _labels;
         private readonly ILabelFollowRepository _labelFollows;
-        private readonly UserManager<SimpleUser> _users;
+        private readonly IOrderRepository _orders;
+        private readonly UserManager<User> _users;
         private readonly IClaimAccessor _currentUser;
 
         public ServiceValidations(
@@ -30,7 +31,8 @@ namespace SimpleMusicStore.Validations
             IArtistRepository artists,
             ILabelRepository labels,
             ILabelFollowRepository labelFollows,
-            UserManager<SimpleUser> users)
+            IOrderRepository orders,
+            UserManager<User> users)
         {
             _addresses = addresses;
             _wishes = wishes;
@@ -39,6 +41,7 @@ namespace SimpleMusicStore.Validations
             _artists = artists;
             _labels = labels;
             _labelFollows = labelFollows;
+            _orders = orders;
             _users = users;
             _currentUser = currentUser;
         }
@@ -108,18 +111,6 @@ namespace SimpleMusicStore.Validations
                 throw new ArgumentException("Label is not followed!");
         }
 
-        public async Task ArtistDoesNotExist(int discogsId)
-        {
-            if (await _artists.Exists(discogsId))
-                return;
-        }
-
-        public async Task LabelDoesNotExist(int discogsId)
-        {
-            if (await _labels.Exists(discogsId))
-                return;
-        }
-
         public async Task RecordIsNotInStore(int id)
         {
             if (await _records.Exists(id))
@@ -148,10 +139,16 @@ namespace SimpleMusicStore.Validations
                 throw new ArgumentException("Required quantity is not available!");
         }
 
-        public async Task CredentialsAreValid(SimpleUser user, string password)
+        public async Task CredentialsAreValid(User user, string password)
         {
             if (!await _users.CheckPasswordAsync(user, password))
-                throw new ArgumentException("Invalid credentials");
+                throw new ArgumentException("Invalid credentials!");
+        }
+
+        public async Task OrderIsValid(int orderId)
+        {
+            if (!await _orders.Exists(orderId, _currentUser.Id))
+                throw new ArgumentException("Invalid order!");
         }
     }
 }

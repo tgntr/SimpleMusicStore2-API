@@ -14,11 +14,11 @@ namespace SimpleMusicStore.Auth
     public class Jwt : AuthenticationHandler
     {
         private readonly IServiceValidations _validator;
-        private readonly UserManager<SimpleUser> _users;
+        private readonly UserManager<User> _users;
         private readonly JwtConfiguration _config;
         private readonly IClaimHandler _claimCreator;
 
-        public Jwt(IOptions<JwtConfiguration> config, IServiceValidations validator, UserManager<SimpleUser> users, IClaimHandler claimCreator)
+        public Jwt(IOptions<JwtConfiguration> config, IServiceValidations validator, UserManager<User> users, IClaimHandler claimCreator)
         {
             _validator = validator;
             _users = users;
@@ -34,7 +34,7 @@ namespace SimpleMusicStore.Auth
             return GenerateJwtToken(claims);
         }
 
-        private async Task<Claim[]> ExtractClaims(SimpleUser user)
+        private async Task<Claim[]> ExtractClaims(User user)
         {
             return _claimCreator.GenerateClaims(user, await _users.IsInRoleAsync(user, "Admin"));
         }

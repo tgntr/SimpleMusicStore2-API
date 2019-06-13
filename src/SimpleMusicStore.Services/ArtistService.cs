@@ -31,8 +31,8 @@ namespace SimpleMusicStore.Services
 
         public async Task Add(int discogsId)
         {
-            await _validator.ArtistDoesNotExist(discogsId);
-            await AddArtist(discogsId);
+            if (!await _artists.Exists(discogsId))
+                await AddArtist(discogsId);
         }
 
         private async Task AddArtist(int discogsId)

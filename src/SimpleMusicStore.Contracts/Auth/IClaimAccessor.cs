@@ -9,5 +9,6 @@ namespace SimpleMusicStore.Contracts.Auth
         string Id { get; }
         string Username { get; }
         bool IsAdmin { get; }
+        bool IsAuthenticated { get; }
     }
 }

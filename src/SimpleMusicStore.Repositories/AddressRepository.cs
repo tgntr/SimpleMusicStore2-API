@@ -14,17 +14,17 @@ namespace SimpleMusicStore.Repositories
 {
     public class AddressRepository : DbRepository<Address>, IAddressRepository
     {
-        private readonly IMapper _mapper;
-
         public AddressRepository(SimpleMusicStoreDbContext db, IMapper mapper)
-            : base(db)
+            : base(db, mapper)
         {
-            _mapper = mapper;
         }
 
-        public Task<bool> Exists(int id)
+        public async Task Edit(AddressDetails address)
         {
-            return _set.AnyAsync(a => a.Id == id);
+            var addressEntity = await Find(address.Id);
+            addressEntity.Street = address.Street;
+            addressEntity.City = address.City;
+            addressEntity.Country = address.Country;
         }
 
         public Task<bool> Exists(int id, string userId)
@@ -36,6 +36,17 @@ namespace SimpleMusicStore.Repositories
         {
             //TODO is it an okay way to map stuff? Is it good to map things here?
             return _set.Where(a => a.UserId == userId).Select(_mapper.Map<AddressDetails>);
+        }
+
+        public async Task Remove(int addressId)
+        {
+            var address = await Find(addressId);
+            address.IsActive = false;
+        }
+
+        private Task<Address> Find(int id)
+        {
+            return _set.FirstAsync(a => a.Id == id);
         }
     }
 }

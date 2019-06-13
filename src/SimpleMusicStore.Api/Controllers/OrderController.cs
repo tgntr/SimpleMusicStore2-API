@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Models.View;
 
 namespace SimpleMusicStore.Api.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly IOrderService _orders;
@@ -48,6 +50,11 @@ namespace SimpleMusicStore.Api.Controllers
         public async Task Complete(int id)
         {
             await _orders.Complete(id);
+        }
+
+        public async Task<OrderView> Details(int id)
+        {
+            return await _orders.Find(id);
         }
     }
 }

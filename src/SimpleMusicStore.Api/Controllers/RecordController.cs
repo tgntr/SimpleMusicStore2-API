@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,13 +16,13 @@ namespace SimpleMusicStore.Api.Controllers
     {
         private readonly IRecordService _records;
 
-        public RecordController(IRecordService records, UserManager<SimpleUser> users)
+        public RecordController(IRecordService records)
             : base()
         {
             _records = records;
-            users.CreateAsync(new SimpleUser { UserName = "tgntr" }, "test").GetAwaiter().GetResult();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task Add([FromBody]NewRecord record)
         {

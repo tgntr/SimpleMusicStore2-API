@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Repositories
 {
-    public interface IUserRepository : IRepository<SimpleUser>
+    public interface IUserRepository : IRepository<User>
     {
         Task<bool> IsValid(AuthenticationRequest request);
 
-        Task<SimpleUser> Find(string username);
+        Task<User> Find(string username);
     }
 }

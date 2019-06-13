@@ -16,7 +16,7 @@ namespace SimpleMusicStore.Data
                 options.UseLazyLoadingProxies()
                     .UseSqlServer(connectionString));
 
-            services.AddIdentity<SimpleUser, IdentityRole>(options =>
+            services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = false;
                 options.Password.RequireLowercase = false;

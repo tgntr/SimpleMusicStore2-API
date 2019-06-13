@@ -44,6 +44,12 @@ namespace SimpleMusicStore.Services
             await EmptyCart();
         }
 
+        public async Task<OrderView> Find(int orderId)
+        {
+            await _validator.OrderIsValid(orderId);
+            return await _orders.Find(orderId);
+        }
+
         private async Task<OrderCheckout> GenerateOrderCheckoutDetailsView()
         {
             return new OrderCheckout

@@ -6,8 +6,8 @@ namespace SimpleMusicStore.Contracts.Services
 {
     public interface IOrderService : IShoppingCart
     {
-        
         Task<OrderCheckout> Checkout();
         Task Complete(int addressId);
+        Task<OrderView> Find(int orderId);
     }
 }

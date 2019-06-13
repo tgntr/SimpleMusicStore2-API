@@ -9,6 +9,6 @@ namespace SimpleMusicStore.Contracts.Auth
 {
     public interface IClaimHandler
     {
-        Claim[] GenerateClaims(SimpleUser user, bool isAdmin);
+        Claim[] GenerateClaims(User user, bool isAdmin);
     }
 }
