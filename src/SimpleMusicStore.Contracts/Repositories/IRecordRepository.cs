@@ -11,7 +11,7 @@ namespace SimpleMusicStore.Contracts.Repositories
     public interface IRecordRepository : IRepository<Record>
     {
         Task<bool> Exists(int id);
-        Task<Record> Find(int id);
+        Task<RecordView> Find(int id);
 		Task<int> Availability(int id);
         IEnumerable<RecordDetails> FindAll();
         IEnumerable<RecordDetails> FindAll(FilterCriterias criterias);

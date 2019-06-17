@@ -54,6 +54,9 @@ namespace SimpleMusicStore.Api
                 .ForMember(rd => rd.Label, src => src.MapFrom(w => w.Record.Label))
                 .ForMember(rd => rd.Artist, src => src.MapFrom(w => w.Record.Artist))
                 .ForMember(rd => rd.Price, src => src.MapFrom(w => w.Record.Price));
+            CreateMap<RecordView, ItemDetails>();
+            CreateMap<Video, VideoDetails>();
+            CreateMap<Track, TrackDetails>();
         }
     }
 }

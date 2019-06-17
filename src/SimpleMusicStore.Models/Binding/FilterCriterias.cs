@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleMusicStore.Constants;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,5 +14,6 @@ namespace SimpleMusicStore.Models.Binding
         }
         public IEnumerable<string> Genres { get; set; }
         public IEnumerable<string> Formats { get; set; }
+        public string Sort { get; set; }
     }
 }

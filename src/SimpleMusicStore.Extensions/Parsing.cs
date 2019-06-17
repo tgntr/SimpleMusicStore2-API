@@ -7,7 +7,7 @@ namespace SimpleMusicStore.Extensions
 {
     public static class Parsing
     {
-        public static SortTypes AsEnum(this string sort)
+        public static SortTypes AsSortType(this string sort)
         {
             if (!Enum.TryParse(sort, true, out SortTypes result))
                 //TODO move this validation to ValidationService

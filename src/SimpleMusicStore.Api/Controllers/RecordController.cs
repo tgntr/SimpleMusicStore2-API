@@ -44,6 +44,11 @@ namespace SimpleMusicStore.Api.Controllers
             return _browser.Filter(criterias);
         }
 
+        public async Task<RecordView> Details(int id)
+        {
+            return await _records.Find(id);
+        }
+
 
     }
 }

@@ -12,5 +12,7 @@ namespace SimpleMusicStore.Contracts.Services
     {
         Task Add(NewRecord record);
         NewsFeed NewsFeed();
+
+        Task<RecordView> Find(int id);
     }
 }

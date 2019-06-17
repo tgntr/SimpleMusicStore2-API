@@ -75,10 +75,9 @@ namespace SimpleMusicStore.ShoppingCart
 			var cart = new List<CartItem>();
 			foreach (var item in _items)
 			{
-				var record = await _records.Find(item.Key);
-				var map = _mapper.Map<CartItem>(record);
-				map.Quantity = item.Value;
-				cart.Add(map);
+				var cartItem = _mapper.Map<CartItem>(await _records.Find(item.Key));
+				cartItem.Quantity = item.Value;
+				cart.Add(cartItem);
 			}
 			return cart;
 		}

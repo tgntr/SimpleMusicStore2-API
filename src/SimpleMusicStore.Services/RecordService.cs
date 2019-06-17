@@ -49,6 +49,12 @@ namespace SimpleMusicStore.Services
             await AddRecordToStore(recordInfo, record.Price);
         }
 
+        public async Task<RecordView> Find(int id)
+        {
+            await _validator.RecordExists(id);
+            return await _records.Find(id);
+        }
+
         public NewsFeed NewsFeed()
         {
             return new NewsFeed

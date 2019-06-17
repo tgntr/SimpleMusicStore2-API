@@ -28,7 +28,7 @@ namespace SimpleMusicStore.Repositories
 
         public async Task<int> Availability(int id)
 		{
-			return (await Find(id)).Quantity;
+			return (await _set.FirstOrDefaultAsync(r => r.Id == id)).Quantity;
 		}
 
 		public Task<bool> Exists(int id)
@@ -37,9 +37,9 @@ namespace SimpleMusicStore.Repositories
             return _set.AnyAsync(r => r.Id == id);
         }
 
-        public Task<Record> Find(int id)
+        public async Task<RecordView> Find(int id)
         {
-            return _set.FirstOrDefaultAsync(r => r.Id == id);
+            return _mapper.Map<RecordView>(await _set.FirstOrDefaultAsync(r => r.Id == id));
         }
 
         public IEnumerable<RecordDetails> FindAll(FilterCriterias criterias)
