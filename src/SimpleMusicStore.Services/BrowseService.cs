@@ -1,9 +1,11 @@
-﻿using SimpleMusicStore.Contracts.Repositories;
+﻿using SimpleMusicStore.Constants;
+using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Sorting;
 using SimpleMusicStore.Extensions;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
+using System;
 using System.Collections.Generic;
 
 namespace SimpleMusicStore.Services
@@ -25,13 +27,19 @@ namespace SimpleMusicStore.Services
             {
                 AvailableFormats = _records.AvailableFormats(),
                 AvailableGenres = _records.AvailableGenres(),
-                Records = _records.FindAll()
+                Records = _records.FindAll(),
+                AvailableSortTypes = ExtractAllSortTypes()
             };
         }
 
         public IEnumerable<RecordDetails> Filter(FilterCriterias criterias)
         {
             return _sorter.Sort(criterias.Sort.AsSortType(), _records.FindAll(criterias));
+        }
+
+        private IEnumerable<string> ExtractAllSortTypes()
+        {
+            return Enum.GetNames(typeof(SortTypes));
         }
     }
 }

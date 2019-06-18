@@ -42,7 +42,7 @@ namespace SimpleMusicStore.ShoppingCart
 		public virtual async Task DecreaseQuantity(int itemId)
 		{
 			_validator.ItemIsInCart(itemId, Items);
-			DecreaseItemQuantity(itemId);
+			await Task.Run(()=>DecreaseItemQuantity(itemId));
 		}
 
 		public virtual async Task IncreaseQuantity(int itemId)
@@ -54,7 +54,7 @@ namespace SimpleMusicStore.ShoppingCart
 		
 		public virtual async Task EmptyCart()
         {
-            _items = new Dictionary<int, int>();
+            await Task.Run(()=>_items = new Dictionary<int, int>());
         }
         
         public virtual async Task<ICollection<CartItem>> Cart()
@@ -65,7 +65,7 @@ namespace SimpleMusicStore.ShoppingCart
 		public virtual async Task RemoveFromCart(int itemId)
         {
             _validator.ItemIsInCart(itemId, Items);
-            _items.Remove(itemId);
+            await Task.Run(()=>_items.Remove(itemId));
         }
 
         public bool IsEmpty() => _items.Any();

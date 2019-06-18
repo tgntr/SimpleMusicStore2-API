@@ -8,6 +8,7 @@ namespace SimpleMusicStore.Models.Binding
     {
         //TODO [DiscogsUrl] move DiscogsUrlAttribute to another project, so there is not a circular dependency
         [Required]
+        [RegularExpression(DiscogsConstants.DISCOGS_URL_PATTERN)]
         [JsonProperty("discogsUrl")]
         public string DiscogsUrl { get; set; }
 

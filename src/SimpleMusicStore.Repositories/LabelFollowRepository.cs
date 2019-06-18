@@ -18,13 +18,18 @@ namespace SimpleMusicStore.Repositories
         }
 
 		public async Task Delete(int labelId, string userId)
-		{
-			var labelFollow = await _set.FirstAsync(lf => lf.LabelId == labelId && lf.UserId == userId);
-			_set.Remove(labelFollow);
-			await SaveChanges();
-		}
+        {
+            var labelFollow = await Find(labelId, userId);
+            _set.Remove(labelFollow);
+            await SaveChanges();
+        }
 
-		public Task<bool> Exists(int labelId, string userId)
+        private async Task<LabelFollow> Find(int labelId, string userId)
+        {
+            return await _set.FirstAsync(lf => lf.LabelId == labelId && lf.UserId == userId);
+        }
+
+        public Task<bool> Exists(int labelId, string userId)
         {
             return _set.AnyAsync(f => f.LabelId == labelId && f.UserId == userId);
         }
