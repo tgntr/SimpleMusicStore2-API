@@ -57,6 +57,8 @@ namespace SimpleMusicStore.Api
             CreateMap<RecordView, ItemDetails>();
             CreateMap<Video, VideoDetails>();
             CreateMap<Track, TrackDetails>();
+            CreateMap<Artist, ArtistView>();
+            CreateMap<Label, LabelView>();
         }
     }
 }

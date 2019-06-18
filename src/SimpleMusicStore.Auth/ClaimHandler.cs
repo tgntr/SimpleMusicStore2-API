@@ -16,9 +16,9 @@ namespace SimpleMusicStore.Auth
         {
             return new Claim[]
             {
-                new Claim(AuthClaimTypes.USERNAME, user.UserName),
-                new Claim(AuthClaimTypes.ID, user.Id),
-                new Claim(AuthClaimTypes.IS_ADMIN, isAdmin.ToString())
+                new Claim(AuthConstants.USERNAME, user.UserName),
+                new Claim(AuthConstants.ID, user.Id),
+                new Claim(AuthConstants.IS_ADMIN, isAdmin.ToString())
             };
         }
     }

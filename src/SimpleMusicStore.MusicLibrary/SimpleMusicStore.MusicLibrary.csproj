@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SimpleMusicStore.Contracts\SimpleMusicStore.Contracts.csproj" />
+    <ProjectReference Include="..\SimpleMusicStore.Extensions\SimpleMusicStore.Extensions.csproj" />
   </ItemGroup>
 
 </Project>

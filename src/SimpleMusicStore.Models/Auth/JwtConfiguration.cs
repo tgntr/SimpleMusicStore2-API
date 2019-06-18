@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace SimpleMusicStore.Models.AuthenticationProviders
+namespace SimpleMusicStore.Models.Auth
 {
     [JsonObject("JwtPayload")]
     public class JwtConfiguration

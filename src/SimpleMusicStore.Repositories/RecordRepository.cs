@@ -39,7 +39,7 @@ namespace SimpleMusicStore.Repositories
 
         public async Task<RecordView> Find(int id)
         {
-            return _mapper.Map<RecordView>(await _set.FirstOrDefaultAsync(r => r.Id == id));
+            return _mapper.Map<RecordView>(await _set.FirstAsync(r => r.Id == id));
         }
 
         public IEnumerable<RecordDetails> FindAll(FilterCriterias criterias)

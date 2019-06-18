@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SimpleMusicStore.Models.AuthenticationProviders;
+using SimpleMusicStore.Models.Auth;
 using System;
 
 namespace SimpleMusicStore.Auth.Extensions
@@ -20,7 +20,6 @@ namespace SimpleMusicStore.Auth.Extensions
             })
                 .AddJwtBearer(options =>
                 {
-                    //TODO should i move the lambda functions in the configurations extension?
                     options.RequireHttpsMetadata = false;
                     options.SaveToken = true;
                     options.TokenValidationParameters = config.JwtConfiguration().ValidationParameters();
@@ -28,7 +27,7 @@ namespace SimpleMusicStore.Auth.Extensions
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("ApiUser", policy => policy.RequireClaim("username"));
+                //EXAMPLE POLICY options.AddPolicy("ApiUser", policy => policy.RequireClaim("username"));
             });
         }
 

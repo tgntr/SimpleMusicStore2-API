@@ -1,5 +1,5 @@
 ﻿using SimpleMusicStore.Entities;
-using SimpleMusicStore.Models.AuthenticationProviders;
+using SimpleMusicStore.Models.Auth;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Repositories

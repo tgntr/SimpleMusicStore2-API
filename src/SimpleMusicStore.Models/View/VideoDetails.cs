@@ -7,7 +7,6 @@ namespace SimpleMusicStore.Models.View
 {
     public class VideoDetails
     {
-        public string Title { get; set; }
         public string Uri { get; set; }
         public string YoutubeId => Uri.Split("=").Last();
     }

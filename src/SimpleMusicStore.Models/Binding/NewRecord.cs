@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SimpleMusicStore.Constants;
 using System.ComponentModel.DataAnnotations;
 
 namespace SimpleMusicStore.Models.Binding
@@ -12,7 +13,7 @@ namespace SimpleMusicStore.Models.Binding
 
         [Required]
         [JsonProperty("price")]
-        [Range(1, 100.00, ErrorMessage = "Must be between 1$ and 100$")]
+        [Range(1, 100.00, ErrorMessage = ErrorMessages.PRICE_LIMIT)]
         public decimal Price { get; set; }
     }
 }

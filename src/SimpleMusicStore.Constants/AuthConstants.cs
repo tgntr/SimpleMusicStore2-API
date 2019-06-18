@@ -4,11 +4,12 @@ using System.Text;
 
 namespace SimpleMusicStore.Auth
 {
-    static class AuthClaimTypes
+    public static class AuthConstants
     {
         public const string
            ID = "id",
            USERNAME = "username",
-           IS_ADMIN = "isAdmin";
+           IS_ADMIN = "isAdmin",
+           ADMIN_ROLE = "Admin";
     }
 }

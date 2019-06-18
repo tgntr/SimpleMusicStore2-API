@@ -68,7 +68,7 @@ namespace SimpleMusicStore.ShoppingCart
             _items.Remove(itemId);
         }
 
-        public bool IsEmpty() => _items.Count() == 0;
+        public bool IsEmpty() => _items.Any();
 
 		private async Task<List<CartItem>> CurrentStateOfCart()
 		{
