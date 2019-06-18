@@ -41,12 +41,10 @@ namespace SimpleMusicStore.Api
             CreateMap<Order, OrderView>();
             CreateMap<ArtistFollow, ArtistDetails>()
                 .ForMember(ad => ad.Name, src => src.MapFrom(af => af.Artist.Name))
-                .ForMember(ad => ad.Id, src => src.MapFrom(af => af.Artist.Id))
-                .ForMember(ad => ad.Image, src => src.MapFrom(af => af.Artist.Image));
+                .ForMember(ad => ad.Id, src => src.MapFrom(af => af.Artist.Id));
             CreateMap<LabelFollow, LabelDetails>()
                 .ForMember(ld => ld.Name, src => src.MapFrom(lf => lf.Label.Name))
-                .ForMember(ld => ld.Id, src => src.MapFrom(lf => lf.Label.Id))
-                .ForMember(ld => ld.Image, src => src.MapFrom(lf => lf.Label.Image));
+                .ForMember(ld => ld.Id, src => src.MapFrom(lf => lf.Label.Id));
             CreateMap<Wish, RecordDetails>()
                 .ForMember(rd => rd.Id, src => src.MapFrom(w => w.Record.Id))
                 .ForMember(rd => rd.Title, src => src.MapFrom(w => w.Record.Title))
