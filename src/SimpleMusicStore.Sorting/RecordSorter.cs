@@ -22,6 +22,12 @@ namespace SimpleMusicStore.Sorting
                 return new RecommendationSort(_currentUser).Sort(records);
             else if (sort == SortTypes.DateAdded)
                 return new DateAddedSort().Sort(records);
+            else if (sort == SortTypes.ReleaseDate)
+                return new ReleaseDateSort().Sort(records);
+            else if (sort == SortTypes.PriceAscending)
+                return new PriceAscendingSort().Sort(records);
+            else if (sort == SortTypes.PriceDescending)
+                return new PriceDescendingSort().Sort(records);
             else
                 return new PopularitySort().Sort(records);
         }
