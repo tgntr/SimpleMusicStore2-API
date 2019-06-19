@@ -16,7 +16,7 @@ namespace SimpleMusicStore.Services
 {
     public class RecordService : IRecordService
     {
-        private readonly MusicSource _discogs;
+        //private readonly MusicSource _discogs;
         private readonly IRecordRepository _records;
         private readonly IMapper _mapper;
         private readonly ILabelService _labels;
@@ -25,7 +25,7 @@ namespace SimpleMusicStore.Services
         private readonly Sorter _sorter;
         private readonly ICurrentUserActivities _currentUser;
 
-        public RecordService(MusicSource source,
+        public RecordService(//MusicSource source,
             IRecordRepository records,
             IMapper mapper,
             ILabelService labels,
@@ -34,7 +34,7 @@ namespace SimpleMusicStore.Services
             Sorter sorter,
             ICurrentUserActivities currentUser)
         {
-            _discogs = source;
+            //_discogs = source;
             _records = records;
             _mapper = mapper;
             _artists = artists;
@@ -43,13 +43,19 @@ namespace SimpleMusicStore.Services
             _currentUser = currentUser;
             _labels = labels;
         }
-
-        public async Task Add(NewRecord record)
+        //TODO remove after test new way
+        //public async Task Add(NewRecord record)
+        //{
+        //    var recordInfo = await ExtractRecordInfo(record.DiscogsUrl);
+        //    await _validator.RecordIsNotInStore(recordInfo.Id);
+        //    CreateArtistAndLabelProfiles(recordInfo);
+        //    await AddRecordToStore(recordInfo);
+        //}
+        public async Task Add(RecordInfo record)
         {
-            var recordInfo = await ExtractRecordInfo(record.DiscogsUrl);
-            await _validator.RecordIsNotInStore(recordInfo.Id);
-            CreateArtistAndLabelProfiles(recordInfo);
-            await AddRecordToStore(recordInfo, record.Price);
+            await _validator.RecordIsNotInStore(record.Id);
+            CreateArtistAndLabelProfiles(record);
+            await AddRecordToStore(record);
         }
 
         public async Task<RecordView> Find(int id)
@@ -68,10 +74,10 @@ namespace SimpleMusicStore.Services
             };
         }
 
-        private async Task AddRecordToStore(RecordInfo recordInfo, decimal price)
+        private async Task AddRecordToStore(RecordInfo recordInfo)
         {
             var record = _mapper.Map<Record>(recordInfo);
-            record.Price = price;
+            record.Stocks.Add(new Stock { Quantity = recordInfo.Quantity });
             await _records.Add(record);
             await _records.SaveChanges();
         }
@@ -79,14 +85,15 @@ namespace SimpleMusicStore.Services
         private void CreateArtistAndLabelProfiles(RecordInfo recordInfo)
         {
             Task.WaitAll(
-                _artists.Add(recordInfo.ArtistId),
-                _labels.Add(recordInfo.LabelId));
+                _artists.Add(recordInfo.ArtistId()),
+                _labels.Add(recordInfo.LabelId()));
         }
 
-        private async Task<RecordInfo> ExtractRecordInfo(string url)
-        {
-            return await _discogs.Record(new Uri(url));
-        }
+        //TODO REMOVE AFTER TESTING THE NEW APPROACH
+        //private async Task<RecordInfo> ExtractRecordInfo(string url)
+        //{
+        //    return await _discogs.Record(new Uri(url));
+        //}
 
         private async Task<RecordView> GenerateRecordView(int id)
         {

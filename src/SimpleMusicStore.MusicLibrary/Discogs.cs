@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using SimpleMusicStore.MusicLibrary.Extensions;
 using Microsoft.Extensions.Configuration;
 using SimpleMusicStore.Constants;
+using SimpleMusicStore.Models.Binding;
 
-//TODO rename namespaces
 namespace SimpleMusicStore.MusicLibrary
 {
     public class Discogs : MusicSource

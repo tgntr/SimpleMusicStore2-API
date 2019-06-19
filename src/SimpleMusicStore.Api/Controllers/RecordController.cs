@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Contracts.Services;
-using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Api.Controllers
 {
@@ -27,8 +22,12 @@ namespace SimpleMusicStore.Api.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task Add([FromBody]NewRecord record)
+        public async Task Add([FromBody]RecordInfo record)
         {
+            if (!ModelState.IsValid)
+            {
+                var asd = 2;
+            }
             //TODO in the front end, when someone paste discogs url, provide an preview with some AJAX, so the user could see what he is going to add to the store????
             await _records.Add(record);
         }

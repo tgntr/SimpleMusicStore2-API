@@ -12,5 +12,10 @@ namespace SimpleMusicStore.Extensions
             else
                 throw new ArgumentException(ErrorMessages.UNSUPPORTED_SORT);
         }
+
+        public static Uri AsUri(this string url)
+        {
+            return new Uri(url);
+        }
     }
 }

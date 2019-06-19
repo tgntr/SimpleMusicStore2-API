@@ -1,4 +1,5 @@
-﻿using SimpleMusicStore.Models.MusicLibraries;
+﻿using SimpleMusicStore.Models.Binding;
+using SimpleMusicStore.Models.MusicLibraries;
 using System;
 using System.Threading.Tasks;
 

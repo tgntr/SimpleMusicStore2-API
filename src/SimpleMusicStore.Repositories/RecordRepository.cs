@@ -28,7 +28,7 @@ namespace SimpleMusicStore.Repositories
 
         public async Task<int> Availability(int id)
 		{
-			return (await _set.FirstOrDefaultAsync(r => r.Id == id)).Quantity;
+			return (await _set.FirstOrDefaultAsync(r => r.Id == id)).Availability();
 		}
 
 		public Task<bool> Exists(int id)
