@@ -44,12 +44,10 @@ namespace SimpleMusicStore.Services
         {
             await _validator.AddressIsValid(newAddress.Id);
             await _addresses.Edit(newAddress);
-            //TODO should i move all savechanges inside the repositories?
             await _addresses.SaveChanges();
         }
         private Address CreateAddress(AddressDetails address)
         {
-            //TODO should i do all the mappings inside the repositories?
             var addressEntity = _mapper.Map<Address>(address);
             addressEntity.UserId = _currentUser.Id;
             return addressEntity;

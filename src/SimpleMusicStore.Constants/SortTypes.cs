@@ -6,6 +6,9 @@ namespace SimpleMusicStore.Constants
     {
         Recommendation,
         Popularity,
-        DateAdded
+        DateAdded,
+        ReleaseDate,
+        PriceDescending,
+        PriceAscending
     }
 }

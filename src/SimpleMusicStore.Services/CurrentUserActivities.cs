@@ -26,6 +26,8 @@ namespace SimpleMusicStore.Services
             
         }
 
+        public bool IsAuthenticated { get; }
+
         public IEnumerable<RecordDetails> Wishlist =>
             MapWishesToDto(_currentUser.Wishlist);
 
@@ -53,13 +55,36 @@ namespace SimpleMusicStore.Services
                 .OrderByDescending(o=>o.Date)
                 .Select(_mapper.Map<OrderDetails>);
 
+        public bool IsRecordInWishlist(int recordId)
+        {
+            if (!IsAuthenticated)
+                return false;
+            else
+                return _currentUser.Wishlist.Any(w => w.RecordId == recordId);
+        }
+
+        public bool IsArtistFollowed(int artistId)
+        {
+            if (!IsAuthenticated)
+                return false;
+            else
+                return _currentUser.FollowedArtists.Any(af => af.ArtistId == artistId);
+        }
+
+        public bool IsLabelFollowed(int labelId)
+        {
+            if (!IsAuthenticated)
+                return false;
+            else 
+                return _currentUser.FollowedLabels.Any(lf => lf.LabelId == labelId);
+        }
+            
+
         private IEnumerable<RecordDetails> MapWishesToDto(IEnumerable<Wish> wishes) => 
             wishes.Select(_mapper.Map<RecordDetails>);
         private IEnumerable<LabelDetails> MapLabelFollowsToDto(IEnumerable<LabelFollow> labelFollows) => 
             labelFollows.Select(_mapper.Map<LabelDetails>);
         private IEnumerable<ArtistDetails> MapArtistFollowsToDto(IEnumerable<ArtistFollow> artistFollows) => 
             artistFollows.Select(_mapper.Map<ArtistDetails>);
-
-        public bool IsAuthenticated { get; }
     }
 }

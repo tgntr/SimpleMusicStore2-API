@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleMusicStore.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +26,16 @@ namespace SimpleMusicStore.Models.MusicLibraries
         public ICollection<RecordFormatInfo> Formats { get; set; }
 
         public string Format => Formats.First().Name;
-        public string Image => Images.First().Uri;
+        public string Image
+        {
+            get
+            {
+                if (Images is null || !Images.Any())
+                    return DiscogsConstants.DEFAULT_IMAGE;
+                else
+                    return Images.First().Uri;
+            }
+        }
         public int ArtistId => Artists.First().Id;
         public int LabelId => Labels.First().Id;
         public string Genre => Genres.First();

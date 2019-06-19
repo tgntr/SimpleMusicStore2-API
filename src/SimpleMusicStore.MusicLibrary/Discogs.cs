@@ -7,49 +7,52 @@ using System.Net;
 using System.Threading.Tasks;
 using SimpleMusicStore.MusicLibrary.Extensions;
 using Microsoft.Extensions.Configuration;
+using SimpleMusicStore.Constants;
 
 //TODO rename namespaces
 namespace SimpleMusicStore.MusicLibrary
 {
     public class Discogs : MusicSource
     {
-		private const string
-			CONTENT_RELEASE = "releases",
-			CONTENT_LABEL = "labels",
-			CONTENT_ARTIST = "artists",
-			CONTENT_MASTER = "masters",
-			PARAMETER_SPLITTER = "/";
 
-        //private readonly WebClient _web;
-        //TODO hide key and secret best practice
-        private readonly string _urlFormat = "https://api.discogs.com/{0}/{1}?key=VpQTKELQqmtSDIXYycSF&secret=cOgmwRrXvdWmubVEeKYYIuZyjyHBaQfr";
+        private readonly string _key;
+        private readonly string _secret;
+        private readonly string _urlFormat = "https://api.discogs.com/{0}/{1}?key={2}&secret={3}";
 
         public Discogs(IConfigurationSection credentials)
         {
-            
+            _key = credentials["Key"];
+            _secret = credentials["Secret"];
         }
         public async Task<RecordInfo> Record(Uri uri)
         {
             var discogsId = await FindId(uri);
-            return  await DownloadContent<RecordInfo>(CONTENT_RELEASE, discogsId);
+            return  await DownloadContent<RecordInfo>(DiscogsConstants.RELEASE, discogsId);
         }
 
         public async Task<LabelInfo> Label(int id)
         {
-            return await DownloadContent<LabelInfo>(CONTENT_LABEL, id);
+            return await DownloadContent<LabelInfo>(DiscogsConstants.LABEL, id);
         }
 
         public async Task<ArtistInfo> Artist(int id)
         {
-            return await DownloadContent<ArtistInfo>(CONTENT_ARTIST, id);
+            if (id == DiscogsConstants.VARIOUS_ARTISTS_ID)
+            {
+                return new ArtistInfo { Id = DiscogsConstants.VARIOUS_ARTISTS_ID, Name = DiscogsConstants.VARIOUS_ARTISTS };
+            }
+            else
+            {
+                return await DownloadContent<ArtistInfo>(DiscogsConstants.ARTIST, id);
+            }
         }
 
         private async Task<int> FindId(Uri uri)
         {
             if (IsMasterUrl(uri))
-                return (await DownloadContent<MasterInfo>(CONTENT_MASTER, uri.Id())).Main_Release;
+                return (await DownloadContent<MasterInfo>(DiscogsConstants.MASTER, uri.FindDiscogsId())).Main_Release;
 
-            return uri.Id();
+            return uri.FindDiscogsId();
         }
 
         private async Task<T> DownloadContent<T>(string contentType, int discogsId)
@@ -68,12 +71,12 @@ namespace SimpleMusicStore.MusicLibrary
 
         private bool IsMasterUrl(Uri uri)
         {
-            return uri.AbsolutePath.Split(PARAMETER_SPLITTER).Contains(CONTENT_MASTER);
+            return uri.AbsolutePath.Split(DiscogsConstants.PARAMETER_SPLITTER).Contains(DiscogsConstants.MASTER);
         }
 
         private string GenerateUrl(string contentType, int discogsId)
         {
-            return string.Format(_urlFormat, contentType, discogsId);
+            return string.Format(_urlFormat, contentType, discogsId, _key, _secret);
         }
     }
 }

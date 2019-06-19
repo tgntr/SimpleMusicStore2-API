@@ -1,4 +1,5 @@
 ﻿using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,5 +10,6 @@ namespace SimpleMusicStore.Contracts.Repositories
     public interface ILabelRepository : IRepository<Label>
     {
         Task<bool> Exists(int id);
+        Task<LabelView> Find(int id);
     }
 }

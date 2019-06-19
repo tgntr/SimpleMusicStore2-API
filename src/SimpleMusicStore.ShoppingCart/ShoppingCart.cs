@@ -34,7 +34,7 @@ namespace SimpleMusicStore.ShoppingCart
 
         public virtual async Task AddToCart(int itemId)
 		{
-			await _validator.ItemExists(itemId);
+			await _validator.RecordExists(itemId);
 			await _validator.ItemIsInStock(itemId, Items);
 			await AddItemToShoppingCart(itemId);
 		}
@@ -42,7 +42,7 @@ namespace SimpleMusicStore.ShoppingCart
 		public virtual async Task DecreaseQuantity(int itemId)
 		{
 			_validator.ItemIsInCart(itemId, Items);
-			DecreaseItemQuantity(itemId);
+			await Task.Run(()=>DecreaseItemQuantity(itemId));
 		}
 
 		public virtual async Task IncreaseQuantity(int itemId)
@@ -54,7 +54,7 @@ namespace SimpleMusicStore.ShoppingCart
 		
 		public virtual async Task EmptyCart()
         {
-            _items = new Dictionary<int, int>();
+            await Task.Run(()=>_items = new Dictionary<int, int>());
         }
         
         public virtual async Task<ICollection<CartItem>> Cart()
@@ -65,20 +65,19 @@ namespace SimpleMusicStore.ShoppingCart
 		public virtual async Task RemoveFromCart(int itemId)
         {
             _validator.ItemIsInCart(itemId, Items);
-            _items.Remove(itemId);
+            await Task.Run(()=>_items.Remove(itemId));
         }
 
-        public bool IsEmpty() => _items.Count() == 0;
+        public bool IsEmpty() => _items.Any();
 
 		private async Task<List<CartItem>> CurrentStateOfCart()
 		{
 			var cart = new List<CartItem>();
 			foreach (var item in _items)
 			{
-				var record = await _records.Find(item.Key);
-				var map = _mapper.Map<CartItem>(record);
-				map.Quantity = item.Value;
-				cart.Add(map);
+				var cartItem = _mapper.Map<CartItem>(await _records.Find(item.Key));
+				cartItem.Quantity = item.Value;
+				cart.Add(cartItem);
 			}
 			return cart;
 		}

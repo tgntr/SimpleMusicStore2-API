@@ -1,5 +1,5 @@
 ﻿using SimpleMusicStore.Entities;
-using SimpleMusicStore.Models.AuthenticationProviders;
+using SimpleMusicStore.Models.Auth;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +11,6 @@ namespace SimpleMusicStore.Contracts.Services
     {
         Task ItemIsInStock(int itemId, IDictionary<int, int> items);
         void ItemIsInCart(int itemId, IDictionary<int, int> items);
-        Task ItemExists(int itemId);
         Task RecordIsNotInStore(int id);
         Task LabelIsFollowed(int labelId);
         Task ArtistIsFollowed(int artistId);
@@ -26,5 +25,6 @@ namespace SimpleMusicStore.Contracts.Services
         Task AddressIsValid(int id);
         Task CredentialsAreValid(User user, string pasword);
         Task OrderIsValid(int orderId);
+        void SearchTermIsNotEmpty(string searchTerm);
     }
 }

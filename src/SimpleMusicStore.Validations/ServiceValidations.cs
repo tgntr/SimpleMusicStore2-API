@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
@@ -48,85 +49,79 @@ namespace SimpleMusicStore.Validations
         public async Task AddressIsValid(int id)
         {
             if (!await _addresses.Exists(id, _currentUser.Id))
-                throw new ArgumentException("Invalid address!");
+                throw new ArgumentException(ErrorMessages.INVALID_ADDRESS);
         }
 
         public void CartIsNotEmpty(IDictionary<int, int> items)
         {
             if (items.Count == 0)
-                throw new OperationCanceledException("Cart is empty!");
+                throw new OperationCanceledException(ErrorMessages.EMPTY_CART);
         }
 
         public async Task RecordIsNotInWishlist(int recordId)
         {
             if (await _wishes.Exists(recordId, _currentUser.Id))
-                throw new ArgumentException("Record is already in wishlist!");
+                throw new ArgumentException(ErrorMessages.RECORD_IS_IN_WISHLIST);
         }
 
         public async Task RecordExists(int recordId)
         {
             if (!await _records.Exists(recordId))
-                throw new ArgumentException("Record does not exist!");
+                throw new ArgumentException(ErrorMessages.INVALID_RECORD);
         }
 
         public async Task ArtistIsNotFollowed(int artistId)
         {
             if (await _artistFollows.Exists(artistId, _currentUser.Id))
-                throw new ArgumentException("Artist is already followed!");
+                throw new ArgumentException(ErrorMessages.ARTIST_IS_FOLLOWED);
         }
 
         public async Task ArtistExists(int artistId)
         {
             if (!await _artists.Exists(artistId))
-                throw new ArgumentException("Artist does not exist!");
+                throw new ArgumentException(ErrorMessages.INVALID_ARTIST);
         }
 
         public async Task LabelIsNotFollowed(int labelId)
         {
             if (await _labelFollows.Exists(labelId, _currentUser.Id))
-                throw new ArgumentException("Label is already followed!");
+                throw new ArgumentException(ErrorMessages.LABEL_IS_FOLLOWED);
         }
 
         public async Task LabelExists(int labelId)
         {
             if (!await _labels.Exists(labelId))
-                throw new ArgumentException("Label does not exist!");
+                throw new ArgumentException(ErrorMessages.INVALID_LABEL);
         }
 
         public async Task RecordIsInWishlist(int recordId)
         {
             if (!await _wishes.Exists(recordId, _currentUser.Id))
-                throw new ArgumentException("Record is not in wishlist!");
+                throw new ArgumentException(ErrorMessages.RECORD_NOT_IN_WISHLIST);
         }
 
         public async Task ArtistIsFollowed(int artistId)
         {
             if (!await _artistFollows.Exists(artistId, _currentUser.Id))
-                throw new ArgumentException("Artist is not followed!");
+                throw new ArgumentException(ErrorMessages.ARTIST_NOT_FOLLOWED);
         }
 
         public async Task LabelIsFollowed(int labelId)
         {
             if (!await _labelFollows.Exists(labelId, _currentUser.Id))
-                throw new ArgumentException("Label is not followed!");
+                throw new ArgumentException(ErrorMessages.LABEL_NOT_FOLLOWED);
         }
 
         public async Task RecordIsNotInStore(int id)
         {
             if (await _records.Exists(id))
-                throw new ArgumentException("Record is already in store!");
-        }
-
-        public async Task ItemExists(int itemId)
-        {
-            if (!await _records.Exists(itemId))
-                throw new ArgumentException("Invalid record id!");
+                throw new ArgumentException(ErrorMessages.RECORD_ALREADY_EXISTS);
         }
 
         public void ItemIsInCart(int itemId, IDictionary<int, int> items)
         {
             if (!items.ContainsKey(itemId))
-                throw new ArgumentException("Cart does not contain such record!");
+                throw new ArgumentException(ErrorMessages.ITEM_NOT_IN_CART);
         }
 
         public async Task ItemIsInStock(int itemId, IDictionary<int, int> items)
@@ -136,19 +131,25 @@ namespace SimpleMusicStore.Validations
                 quantity = items[itemId];
 
             if (await _records.Availability(itemId) <= quantity)
-                throw new ArgumentException("Required quantity is not available!");
+                throw new ArgumentException(ErrorMessages.UNAVAILABLE_QUANTITY);
         }
 
         public async Task CredentialsAreValid(User user, string password)
         {
             if (!await _users.CheckPasswordAsync(user, password))
-                throw new ArgumentException("Invalid credentials!");
+                throw new ArgumentException(ErrorMessages.INVALID_CREDENTIALS);
         }
 
         public async Task OrderIsValid(int orderId)
         {
             if (!await _orders.Exists(orderId, _currentUser.Id))
-                throw new ArgumentException("Invalid order!");
+                throw new ArgumentException(ErrorMessages.INVALID_ORDER);
+        }
+
+        public void SearchTermIsNotEmpty(string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+                throw new ArgumentException(ErrorMessages.INVALID_SEARCH_TERM);
         }
     }
 }

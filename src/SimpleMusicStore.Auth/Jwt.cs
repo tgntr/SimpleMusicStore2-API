@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using SimpleMusicStore.Contracts.Auth;
-using SimpleMusicStore.Models.AuthenticationProviders;
+using SimpleMusicStore.Models.Auth;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using SimpleMusicStore.Auth.Extensions;
@@ -36,7 +36,7 @@ namespace SimpleMusicStore.Auth
 
         private async Task<Claim[]> ExtractClaims(User user)
         {
-            return _claimCreator.GenerateClaims(user, await _users.IsInRoleAsync(user, "Admin"));
+            return _claimCreator.GenerateClaims(user, await _users.IsInRoleAsync(user, AuthConstants.ADMIN_ROLE));
         }
 
         private string GenerateJwtToken(Claim[] claims)

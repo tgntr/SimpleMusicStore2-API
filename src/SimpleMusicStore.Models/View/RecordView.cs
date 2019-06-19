@@ -11,12 +11,12 @@ namespace SimpleMusicStore.Models.View
         public string Image { get; set; }
         public string Genre { get; set; }
         public int Year { get; set; }
-        public ICollection<VideoDetails> Videos { get; set; }
-        public ICollection<TrackDetails> Tracks { get; set; }
+        public IEnumerable<VideoDetails> Videos { get; set; }
+        public IEnumerable<TrackDetails> Tracks { get; set; }
         public ArtistDetails Artist { get; set; }
         public LabelDetails Label { get; set; }
         public decimal Price { get; set; }
         public string Format { get; set; }
-        public bool IsFollowed { get; set; }
+        public bool IsInWishlist { get; set; }
     }
 }

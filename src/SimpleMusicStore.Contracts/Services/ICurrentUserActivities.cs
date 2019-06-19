@@ -15,6 +15,9 @@ namespace SimpleMusicStore.Contracts.Services
         IEnumerable<LabelDetails> FollowedLabelsOrdered { get; }
         IEnumerable<OrderView> Orders { get; }
         IEnumerable<OrderDetails> OrdersOrdered { get; }
+        bool IsRecordInWishlist(int recordId);
+        bool IsArtistFollowed(int artistId);
+        bool IsLabelFollowed(int labelId);
         bool IsAuthenticated { get; }
     }
 }

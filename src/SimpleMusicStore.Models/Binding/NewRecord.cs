@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SimpleMusicStore.Constants;
 using System.ComponentModel.DataAnnotations;
 
 namespace SimpleMusicStore.Models.Binding
@@ -7,12 +8,13 @@ namespace SimpleMusicStore.Models.Binding
     {
         //TODO [DiscogsUrl] move DiscogsUrlAttribute to another project, so there is not a circular dependency
         [Required]
+        [RegularExpression(DiscogsConstants.DISCOGS_URL_PATTERN)]
         [JsonProperty("discogsUrl")]
         public string DiscogsUrl { get; set; }
 
         [Required]
         [JsonProperty("price")]
-        [Range(1, 100.00, ErrorMessage = "Must be between 1$ and 100$")]
+        [Range(1, 100.00, ErrorMessage = ErrorMessages.PRICE_LIMIT)]
         public decimal Price { get; set; }
     }
 }

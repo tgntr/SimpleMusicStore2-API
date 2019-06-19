@@ -16,22 +16,18 @@ namespace SimpleMusicStore.Sorting
             _currentUser = currentUser;
         }
 
-        public SortType Create(SortTypes sort)
-        {
-            if (sort == SortTypes.Recommendation && _currentUser.IsAuthenticated)
-                return new RecommendationSort(_currentUser);
-            else if (sort == SortTypes.DateAdded)
-                return new DateAddedSort();
-            else
-                return new PopularitySort();
-        }
-
         public IEnumerable<RecordDetails> Sort(SortTypes sort, IEnumerable<RecordDetails> records)
         {
             if (sort == SortTypes.Recommendation && _currentUser.IsAuthenticated)
                 return new RecommendationSort(_currentUser).Sort(records);
             else if (sort == SortTypes.DateAdded)
                 return new DateAddedSort().Sort(records);
+            else if (sort == SortTypes.ReleaseDate)
+                return new ReleaseDateSort().Sort(records);
+            else if (sort == SortTypes.PriceAscending)
+                return new PriceAscendingSort().Sort(records);
+            else if (sort == SortTypes.PriceDescending)
+                return new PriceDescendingSort().Sort(records);
             else
                 return new PopularitySort().Sort(records);
         }

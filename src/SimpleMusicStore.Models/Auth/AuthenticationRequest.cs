@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace SimpleMusicStore.Models.AuthenticationProviders
+namespace SimpleMusicStore.Models.Auth
 {
     public class AuthenticationRequest
     {

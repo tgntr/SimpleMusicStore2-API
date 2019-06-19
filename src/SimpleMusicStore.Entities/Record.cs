@@ -10,9 +10,8 @@ namespace SimpleMusicStore.Entities
     {
         public Record()
         {
-            Image = @"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/12in-Vinyl-LP-Record-Angle.jpg/330px-12in-Vinyl-LP-Record-Angle.jpg";
             Videos = new List<Video>();
-            Tracks = new List<Track>();
+            Tracklist = new List<Track>();
             WishedBy = new List<Wish>();
             Orders = new List<Item>();
             DateAdded = DateTime.UtcNow;
@@ -55,7 +54,7 @@ namespace SimpleMusicStore.Entities
         public virtual ICollection<Wish> WishedBy { get; set; }
         public virtual ICollection<Item> Orders { get; set; }
         public virtual ICollection<Video> Videos { get; set; }
-        public virtual ICollection<Track> Tracks { get; set; }
+        public virtual ICollection<Track> Tracklist { get; set; }
         public virtual ICollection<Stock> Stocks { get; set; }
         public int Popularity => (Orders.Sum(o => o.Quantity) * 2) + WishedBy.Count;
     }

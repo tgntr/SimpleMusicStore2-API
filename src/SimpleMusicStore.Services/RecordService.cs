@@ -23,6 +23,7 @@ namespace SimpleMusicStore.Services
         private readonly IArtistService _artists;
         private readonly IServiceValidations _validator;
         private readonly Sorter _sorter;
+        private readonly ICurrentUserActivities _currentUser;
 
         public RecordService(MusicSource source,
             IRecordRepository records,
@@ -30,7 +31,8 @@ namespace SimpleMusicStore.Services
             ILabelService labels,
             IArtistService artists,
             IServiceValidations validator,
-            Sorter sorter)
+            Sorter sorter,
+            ICurrentUserActivities currentUser)
         {
             _discogs = source;
             _records = records;
@@ -38,6 +40,7 @@ namespace SimpleMusicStore.Services
             _artists = artists;
             _validator = validator;
             _sorter = sorter;
+            _currentUser = currentUser;
             _labels = labels;
         }
 
@@ -49,13 +52,19 @@ namespace SimpleMusicStore.Services
             await AddRecordToStore(recordInfo, record.Price);
         }
 
+        public async Task<RecordView> Find(int id)
+        {
+            await _validator.RecordExists(id);
+            return await GenerateRecordView(id);
+        }
+
         public NewsFeed NewsFeed()
         {
             return new NewsFeed
             {
-                Recommended = _sorter.Sort(SortTypes.Recommendation, _records.All()),
-                MostPopular = _sorter.Sort(SortTypes.Popularity, _records.All()),
-                Newest = _sorter.Sort(SortTypes.DateAdded, _records.All())
+                Recommended = _sorter.Sort(SortTypes.Recommendation, _records.FindAll()),
+                MostPopular = _sorter.Sort(SortTypes.Popularity, _records.FindAll()),
+                Newest = _sorter.Sort(SortTypes.DateAdded, _records.FindAll())
             };
         }
 
@@ -77,6 +86,13 @@ namespace SimpleMusicStore.Services
         private async Task<RecordInfo> ExtractRecordInfo(string url)
         {
             return await _discogs.Record(new Uri(url));
+        }
+
+        private async Task<RecordView> GenerateRecordView(int id)
+        {
+            var record = await _records.Find(id);
+            record.IsInWishlist = _currentUser.IsRecordInWishlist(id);
+            return record;
         }
     }
 }
