@@ -25,7 +25,8 @@ namespace SimpleMusicStore.Constants
             UNAVAILABLE_QUANTITY = "Required quantity is not available!",
             INVALID_CREDENTIALS = "Invalid credentials!",
             INVALID_ORDER = "Invalid order!",
-            INVALID_SEARCH_TERM = "Search term must not be empty!";
+            INVALID_SEARCH_TERM = "Search term must not be empty!",
+            INVALID_FILE = "Track preview must be in mp3 format!";
 
 
 

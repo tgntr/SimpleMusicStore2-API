@@ -26,5 +26,6 @@ namespace SimpleMusicStore.Contracts.Services
         Task CredentialsAreValid(User user, string pasword);
         Task OrderIsValid(int orderId);
         void SearchTermIsNotEmpty(string searchTerm);
+        void FileIsMP3(string contentType);
     }
 }

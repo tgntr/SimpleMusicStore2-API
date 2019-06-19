@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Contracts;
 using SimpleMusicStore.Extensions;
@@ -10,6 +11,7 @@ using SimpleMusicStore.Models.MusicLibraries;
 
 namespace SimpleMusicStore.Api.Controllers
 {
+    [Authorize]
     public class DiscogsController : Controller
     {
         private readonly MusicSource _discogs;

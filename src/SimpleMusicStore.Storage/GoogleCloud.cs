@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Google.Apis.Auth.OAuth2;
 using SimpleMusicStore.Contracts;
+using SimpleMusicStore.Contracts.Services;
 
 namespace SimpleMusicStore.Storage
 {
@@ -10,26 +11,30 @@ namespace SimpleMusicStore.Storage
     {
         private const string BUCKET_NAME = "simplemusicstore";
 
-
         private readonly StorageClient _storage;
+        private readonly IServiceValidations _validator;
 
-        public GoogleCloud()
+        public GoogleCloud(IServiceValidations validator)
         {
             //TODO move credentials file
-            //var credentials = GoogleCredential.GetApplicationDefault();
             _storage = StorageClient.Create();
+            _validator = validator;
         }
 
-        public async Task Upload(IFormFile file)
+        public async Task<string> Upload(IFormFile file, string fileName)
         {
-            //TODO generate unique names because a file with the same name overrides the previous one
-            await _storage.UploadObjectAsync(
+            //TODO move this validation where it belongs
+            _validator.FileIsMP3(file.ContentType);
+
+            var track = await _storage.UploadObjectAsync(
                 bucket: BUCKET_NAME,
-                objectName: file.FileName,
+                objectName: fileName,
                 contentType: file.ContentType,
                 source: file.OpenReadStream(),
                 options: PublicReadAccess()
             );
+
+            return track.MediaLink;
         }
 
         private UploadObjectOptions PublicReadAccess()

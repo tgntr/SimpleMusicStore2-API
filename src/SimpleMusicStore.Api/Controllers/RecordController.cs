@@ -24,11 +24,6 @@ namespace SimpleMusicStore.Api.Controllers
         [HttpPost]
         public async Task Add([FromBody]RecordInfo record)
         {
-            if (!ModelState.IsValid)
-            {
-                var asd = 2;
-            }
-            //TODO in the front end, when someone paste discogs url, provide an preview with some AJAX, so the user could see what he is going to add to the store????
             await _records.Add(record);
         }
 

@@ -151,5 +151,12 @@ namespace SimpleMusicStore.Validations
             if (string.IsNullOrEmpty(searchTerm))
                 throw new ArgumentException(ErrorMessages.INVALID_SEARCH_TERM);
         }
+
+        public void FileIsMP3(string contentType)
+        {
+            //TODO find a place for that magic string
+            if (contentType != "audio/mpeg")
+                throw new ArgumentException(ErrorMessages.INVALID_FILE);
+        }
     }
 }
