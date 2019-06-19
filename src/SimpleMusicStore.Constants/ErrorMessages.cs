@@ -24,7 +24,8 @@ namespace SimpleMusicStore.Constants
             ITEM_NOT_IN_CART = "Cart does not contain such record!",
             UNAVAILABLE_QUANTITY = "Required quantity is not available!",
             INVALID_CREDENTIALS = "Invalid credentials!",
-            INVALID_ORDER = "Invalid order!";
+            INVALID_ORDER = "Invalid order!",
+            INVALID_SEARCH_TERM = "Search term must not be empty!";
 
 
 

@@ -51,6 +51,11 @@ namespace SimpleMusicStore.Repositories
             return filteredRecords.Select(_mapper.Map<RecordDetails>);
         }
 
+        public IEnumerable<RecordDetails> FindAll(string[] keywords)
+        {
+            return FilterByKeywords(keywords).Select(_mapper.Map<RecordDetails>);
+        }
+
         public IEnumerable<string> AvailableFormats()
         {
             //TODO CACHE
@@ -75,6 +80,15 @@ namespace SimpleMusicStore.Repositories
             if (formats.Any())
                 filteredRecords = filteredRecords.Where(r => formats.Contains(r.Format));
             return filteredRecords;
+        }
+
+        private IEnumerable<Record> FilterByKeywords(string[] keywords)
+        {
+            //TODO check if it searches properly and find a way to order them by relevance
+            return _set.Where(r =>
+                keywords.Any(kw => r.Title.ToLower().Contains(kw)) ||
+                keywords.Any(kw => r.Artist.Name.ToLower().Contains(kw)) ||
+                keywords.Any(kw => r.Label.Name.ToLower().Contains(kw)));
         }
     }
 }

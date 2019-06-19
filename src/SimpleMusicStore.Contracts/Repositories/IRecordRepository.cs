@@ -15,6 +15,7 @@ namespace SimpleMusicStore.Contracts.Repositories
 		Task<int> Availability(int id);
         IEnumerable<RecordDetails> FindAll();
         IEnumerable<RecordDetails> FindAll(FilterCriterias criterias);
+        IEnumerable<RecordDetails> FindAll(string[] keywords);
         IEnumerable<string> AvailableFormats();
         IEnumerable<string> AvailableGenres();
     }

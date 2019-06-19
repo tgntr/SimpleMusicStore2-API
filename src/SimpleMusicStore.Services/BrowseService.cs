@@ -7,6 +7,7 @@ using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SimpleMusicStore.Services
 {
@@ -14,11 +15,13 @@ namespace SimpleMusicStore.Services
     {
         private readonly IRecordRepository _records;
         private readonly Sorter _sorter;
+        private readonly IServiceValidations _validator;
 
-        public BrowseService(IRecordRepository records, Sorter sorter)
+        public BrowseService(IRecordRepository records, Sorter sorter, IServiceValidations validator)
         {
             _records = records;
             _sorter = sorter;
+            _validator = validator;
         }
 
         public Browse GenerateBrowseView()
@@ -35,6 +38,17 @@ namespace SimpleMusicStore.Services
         public IEnumerable<RecordDetails> Filter(FilterCriterias criterias)
         {
             return _sorter.Sort(criterias.Sort.AsSortType(), _records.FindAll(criterias));
+        }
+
+        public IEnumerable<RecordDetails> Search(string searchTerm)
+        {
+            _validator.SearchTermIsNotEmpty(searchTerm);
+            return _records.FindAll(SplitToKeywords(searchTerm));
+        }
+
+        private string[] SplitToKeywords(string searchTerm)
+        {
+            return searchTerm.ToLower().Split();
         }
 
         private IEnumerable<string> ExtractAllSortTypes()
