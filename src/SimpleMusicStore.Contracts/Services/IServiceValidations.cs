@@ -11,7 +11,6 @@ namespace SimpleMusicStore.Contracts.Services
     {
         Task ItemIsInStock(int itemId, IDictionary<int, int> items);
         void ItemIsInCart(int itemId, IDictionary<int, int> items);
-        Task ItemExists(int itemId);
         Task RecordIsNotInStore(int id);
         Task LabelIsFollowed(int labelId);
         Task ArtistIsFollowed(int artistId);

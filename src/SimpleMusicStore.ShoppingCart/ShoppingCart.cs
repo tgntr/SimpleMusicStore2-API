@@ -34,7 +34,7 @@ namespace SimpleMusicStore.ShoppingCart
 
         public virtual async Task AddToCart(int itemId)
 		{
-			await _validator.ItemExists(itemId);
+			await _validator.RecordExists(itemId);
 			await _validator.ItemIsInStock(itemId, Items);
 			await AddItemToShoppingCart(itemId);
 		}
