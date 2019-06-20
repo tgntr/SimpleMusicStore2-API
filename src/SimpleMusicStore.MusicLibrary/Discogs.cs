@@ -27,7 +27,7 @@ namespace SimpleMusicStore.MusicLibrary
         public async Task<RecordInfo> Record(Uri uri)
         {
             var discogsId = await FindId(uri);
-            return  await DownloadContent<RecordInfo>(DiscogsConstants.RELEASE, discogsId);
+            return await DownloadContent<RecordInfo>(DiscogsConstants.RELEASE, discogsId);
         }
 
         public async Task<LabelInfo> Label(int id)
@@ -57,9 +57,15 @@ namespace SimpleMusicStore.MusicLibrary
 
         private async Task<T> DownloadContent<T>(string contentType, int discogsId)
         {
-            var content = await Web().DownloadStringTaskAsync(GenerateUrl(contentType, discogsId));
-            //TODO validate
-            return JsonConvert.DeserializeObject<T>(content);
+            try
+            {
+                var content = await Web().DownloadStringTaskAsync(GenerateUrl(contentType, discogsId));
+                return JsonConvert.DeserializeObject<T>(content);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException(ErrorMessages.INVALID_DISCOGS_URL);
+            }
         }
 
         private WebClient Web()

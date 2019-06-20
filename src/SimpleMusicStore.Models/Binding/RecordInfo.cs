@@ -21,22 +21,21 @@ namespace SimpleMusicStore.Models.Binding
         public string Title { get; set; }
         [Required]
         public int Year { get; set; }
-        [Range(1, 100.00)]
+        [Range(1, 100.00), Required]
         public decimal Price { get; set; }
-        [Range(1,int.MaxValue)]
+        [Range(1,int.MaxValue), Required]
         public int Quantity { get; set; }
         public ICollection<RecordVideoInfo> Videos { get; set; }
-        [MinLength(1)]
+        [MinLength(1), Required]
         public ICollection<RecordLabelInfo> Labels { get; set; }
-        [MinLength(1)]
+        [MinLength(1), Required]
         public ICollection<RecordArtistInfo> Artists { get; set; }
-        [MinLength(1)]
         public ICollection<ImageInfo> Images { get; set; }
-        [MinLength(1)]
+        [MinLength(1), Required]
         public ICollection<string> Genres { get; set; }
-        [MinLength(1)]
+        [MinLength(1), Required]
         public ICollection<RecordTrackInfo> Tracklist { get; set; }
-        [MinLength(1)]
+        [MinLength(1), Required]
         public ICollection<RecordFormatInfo> Formats { get; set; }
 
         public string Format() => Formats.First().Name;

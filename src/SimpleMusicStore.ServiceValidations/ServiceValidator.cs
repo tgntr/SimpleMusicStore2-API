@@ -3,14 +3,15 @@ using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SimpleMusicStore.Validations
+namespace SimpleMusicStore.ServiceValidations
 {
-    public class ServiceValidations : IServiceValidations
+    public class ServiceValidator : IServiceValidator
     {
         private readonly IAddressRepository _addresses;
         private readonly IWishRepository _wishes;
@@ -23,7 +24,7 @@ namespace SimpleMusicStore.Validations
         private readonly UserManager<User> _users;
         private readonly IClaimAccessor _currentUser;
 
-        public ServiceValidations(
+        public ServiceValidator(
             IAddressRepository addresses,
             IClaimAccessor currentUser,
             IWishRepository wishes,
@@ -150,13 +151,6 @@ namespace SimpleMusicStore.Validations
         {
             if (string.IsNullOrEmpty(searchTerm))
                 throw new ArgumentException(ErrorMessages.INVALID_SEARCH_TERM);
-        }
-
-        public void FileIsMP3(string contentType)
-        {
-            //TODO find a place for that magic string
-            if (contentType != "audio/mpeg")
-                throw new ArgumentException(ErrorMessages.INVALID_FILE);
         }
     }
 }

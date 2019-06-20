@@ -13,7 +13,8 @@ using SimpleMusicStore.Services;
 using SimpleMusicStore.ShoppingCart;
 using SimpleMusicStore.Sorting;
 using SimpleMusicStore.Storage;
-using SimpleMusicStore.Validations;
+using SimpleMusicStore.ServiceValidations;
+using SimpleMusicStore.Contracts.Validators;
 
 namespace SimpleMusicStore.Api.Extensions
 {
@@ -36,7 +37,7 @@ namespace SimpleMusicStore.Api.Extensions
             services.AddScoped<IClaimAccessor, ClaimAccessor>();
             services.AddScoped<IRecordService, RecordService>();
             services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IServiceValidations, ServiceValidations>();
+            services.AddScoped<IServiceValidator, ServiceValidator>();
             services.AddScoped<IShoppingCart, ShoppingCartCacheProxy>();
             services.AddScoped<ILabelService, LabelService>();
             services.AddScoped<IArtistService, ArtistService>();

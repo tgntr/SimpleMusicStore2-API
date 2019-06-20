@@ -8,6 +8,6 @@ namespace SimpleMusicStore.Contracts
 {
 	public interface FileStorage
 	{
-		Task<string> Upload(IFormFile file, string fileName);
+		Task Upload(IFormFile file, string fileName);
 	}
 }

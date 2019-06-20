@@ -5,20 +5,20 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using SimpleMusicStore.Auth.Extensions;
 using System.Threading.Tasks;
-using SimpleMusicStore.Contracts.Services;
 using Microsoft.AspNetCore.Identity;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Contracts.Validators;
 
 namespace SimpleMusicStore.Auth
 {
     public class Jwt : AuthenticationHandler
     {
-        private readonly IServiceValidations _validator;
+        private readonly IServiceValidator _validator;
         private readonly UserManager<User> _users;
         private readonly JwtConfiguration _config;
         private readonly IClaimHandler _claimCreator;
 
-        public Jwt(IOptions<JwtConfiguration> config, IServiceValidations validator, UserManager<User> users, IClaimHandler claimCreator)
+        public Jwt(IOptions<JwtConfiguration> config, IServiceValidator validator, UserManager<User> users, IClaimHandler claimCreator)
         {
             _validator = validator;
             _users = users;

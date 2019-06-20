@@ -2,6 +2,7 @@
 using SimpleMusicStore.Contracts;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.View;
 using System;
@@ -15,13 +16,13 @@ namespace SimpleMusicStore.Services
         private readonly ILabelRepository _labels;
         private readonly IMapper _mapper;
         private readonly MusicSource _discogs;
-        private readonly IServiceValidations _validator;
+        private readonly IServiceValidator _validator;
         private readonly ICurrentUserActivities _currentUser;
 
         public LabelService(ILabelRepository labels,
             IMapper mapper,
             MusicSource discogs,
-            IServiceValidations validator,
+            IServiceValidator validator,
             ICurrentUserActivities currentUser)
         {
             _labels = labels;

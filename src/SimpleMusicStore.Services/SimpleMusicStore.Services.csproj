@@ -9,8 +9,8 @@
     <ProjectReference Include="..\SimpleMusicStore.Contracts\SimpleMusicStore.Contracts.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.Extensions\SimpleMusicStore.Extensions.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.MusicLibrary\SimpleMusicStore.MusicLibrary.csproj" />
+    <ProjectReference Include="..\SimpleMusicStore.ServiceValidations\SimpleMusicStore.ServiceValidations.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.Storage\SimpleMusicStore.Storage.csproj" />
-    <ProjectReference Include="..\SimpleMusicStore.Validations\SimpleMusicStore.Validations.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,7 @@
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Models.View;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace SimpleMusicStore.ShoppingCart
         private readonly IRecordRepository _records;
         protected readonly IClaimAccessor _currentUser;
         protected readonly IMapper _mapper;
-        protected readonly IServiceValidations _validator;
+        protected readonly IServiceValidator _validator;
         protected IDictionary<int, int> _items;
 
         public Dictionary<int, int> Items => new Dictionary<int, int>(_items);
@@ -24,7 +25,7 @@ namespace SimpleMusicStore.ShoppingCart
             IClaimAccessor currentUser,
             IRecordRepository records, 
             IMapper mapper,
-            IServiceValidations validator)
+            IServiceValidator validator)
         {
             _records = records;
             _currentUser = currentUser;

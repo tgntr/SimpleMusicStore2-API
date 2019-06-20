@@ -1,13 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using SimpleMusicStore.Auth;
-using SimpleMusicStore.Contracts.Auth;
+﻿using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Entities;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
@@ -18,12 +13,12 @@ namespace SimpleMusicStore.Services
         private readonly IArtistFollowRepository _artistFollows;
         private readonly ILabelFollowRepository _labelFollows;
         private readonly IClaimAccessor _currentUser;
-        private readonly IServiceValidations _validator;
+        private readonly IServiceValidator _validator;
 
         public FollowService(IWishRepository wishes,
             IArtistFollowRepository artistFollows,
             ILabelFollowRepository labelFollows,
-            IServiceValidations validator,
+            IServiceValidator validator,
             IClaimAccessor currentUser)
         {
             _wishes = wishes;

@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SimpleMusicStore.Contracts.Services
+namespace SimpleMusicStore.Contracts.Validators
 {
-    public interface IServiceValidations
+    public interface IServiceValidator
     {
         Task ItemIsInStock(int itemId, IDictionary<int, int> items);
         void ItemIsInCart(int itemId, IDictionary<int, int> items);
@@ -26,6 +26,5 @@ namespace SimpleMusicStore.Contracts.Services
         Task CredentialsAreValid(User user, string pasword);
         Task OrderIsValid(int orderId);
         void SearchTermIsNotEmpty(string searchTerm);
-        void FileIsMP3(string contentType);
     }
 }

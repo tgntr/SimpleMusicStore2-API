@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using SimpleMusicStore.ModelValidations;
+using System.ComponentModel.DataAnnotations;
 
 namespace SimpleMusicStore.Models.MusicLibraries
 {
@@ -7,7 +9,7 @@ namespace SimpleMusicStore.Models.MusicLibraries
         public string Duration { get; set; }
         [Required]
         public string Title { get; set; }
-        [Url]
-        public string Preview { get; set; }
+        [Required, NonEmptyMp3File]
+        public IFormFile Preview { get; set; }
     }
 }

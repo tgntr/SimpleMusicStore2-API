@@ -2,6 +2,7 @@
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.View;
 using System;
@@ -14,11 +15,11 @@ namespace SimpleMusicStore.Services
     public class AddressService : IAddressService
     {
         private readonly IAddressRepository _addresses;
-        private readonly IServiceValidations _validator;
+        private readonly IServiceValidator _validator;
         private readonly IMapper _mapper;
         private readonly IClaimAccessor _currentUser;
 
-        public AddressService(IAddressRepository addresses, IServiceValidations validator, IMapper mapper, IClaimAccessor currentUser)
+        public AddressService(IAddressRepository addresses, IServiceValidator validator, IMapper mapper, IClaimAccessor currentUser)
         {
             _addresses = addresses;
             _validator = validator;

@@ -2,12 +2,10 @@
 using SimpleMusicStore.Contracts;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.View;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
@@ -17,13 +15,13 @@ namespace SimpleMusicStore.Services
         private readonly IArtistRepository _artists;
         private readonly IMapper _mapper;
         private readonly MusicSource _discogs;
-        private readonly IServiceValidations _validator;
+        private readonly IServiceValidator _validator;
         private readonly ICurrentUserActivities _currentUser;
 
         public ArtistService(IArtistRepository artists,
             IMapper mapper,
             MusicSource discogs,
-            IServiceValidations validator,
+            IServiceValidator validator,
             ICurrentUserActivities currentUser)
         {
             _artists = artists;

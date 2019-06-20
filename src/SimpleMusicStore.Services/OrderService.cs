@@ -2,6 +2,7 @@
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.View;
 using SimpleMusicStore.ShoppingCart;
@@ -21,7 +22,7 @@ namespace SimpleMusicStore.Services
             IMapper mapper,
             IOrderRepository orders,
             IRecordRepository records,
-            IServiceValidations validator,
+            IServiceValidator validator,
             IClaimAccessor currentUser,
             IDatabase cacheProvider)
             : base(currentUser, records, mapper, cacheProvider, validator)

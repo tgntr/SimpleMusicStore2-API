@@ -20,6 +20,7 @@ namespace SimpleMusicStore.Api.Controllers
         {
             _discogs = discogs;
         }
+
         public async Task<RecordInfo> Find(string url)
         {
             return await _discogs.Record(url.AsUri());

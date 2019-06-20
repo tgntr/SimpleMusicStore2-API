@@ -4,12 +4,14 @@ using SimpleMusicStore.Contracts;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Sorting;
+using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.MusicLibraries;
 using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
@@ -21,41 +23,49 @@ namespace SimpleMusicStore.Services
         private readonly IMapper _mapper;
         private readonly ILabelService _labels;
         private readonly IArtistService _artists;
-        private readonly IServiceValidations _validator;
+        private readonly IServiceValidator _validator;
         private readonly Sorter _sorter;
         private readonly ICurrentUserActivities _currentUser;
+        private readonly FileStorage _googleCloud;
 
-        public RecordService(//MusicSource source,
-            IRecordRepository records,
+        public RecordService(IRecordRepository records,
             IMapper mapper,
             ILabelService labels,
             IArtistService artists,
-            IServiceValidations validator,
+            IServiceValidator validator,
             Sorter sorter,
-            ICurrentUserActivities currentUser)
+            ICurrentUserActivities currentUser,
+            FileStorage googleCloud)
         {
-            //_discogs = source;
             _records = records;
             _mapper = mapper;
             _artists = artists;
             _validator = validator;
             _sorter = sorter;
             _currentUser = currentUser;
+            _googleCloud = googleCloud;
             _labels = labels;
         }
-        //TODO remove after test new way
-        //public async Task Add(NewRecord record)
-        //{
-        //    var recordInfo = await ExtractRecordInfo(record.DiscogsUrl);
-        //    await _validator.RecordIsNotInStore(recordInfo.Id);
-        //    CreateArtistAndLabelProfiles(recordInfo);
-        //    await AddRecordToStore(recordInfo);
-        //}
         public async Task Add(RecordInfo record)
         {
             await _validator.RecordIsNotInStore(record.Id);
             CreateArtistAndLabelProfiles(record);
             await AddRecordToStore(record);
+
+            new Thread(async () =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                UploadTrackPreviews(record);
+            }).Start();
+        }
+
+        private void UploadTrackPreviews(RecordInfo record)
+        {
+            foreach (var track in record.Tracklist)
+            {
+                var a = 2;
+                //await _googleCloud.Upload(track.Preview, $"{record.Id}-{track.Title}");
+            }
         }
 
         public async Task<RecordView> Find(int id)
@@ -77,7 +87,7 @@ namespace SimpleMusicStore.Services
         private async Task AddRecordToStore(RecordInfo recordInfo)
         {
             var record = _mapper.Map<Record>(recordInfo);
-            record.Stocks.Add(new Stock { Quantity = recordInfo.Quantity });
+            record.Stocks = new List<Stock> { new Stock { Quantity = recordInfo.Quantity } };
             await _records.Add(record);
             await _records.SaveChanges();
         }
@@ -88,12 +98,6 @@ namespace SimpleMusicStore.Services
                 _artists.Add(recordInfo.ArtistId()),
                 _labels.Add(recordInfo.LabelId()));
         }
-
-        //TODO REMOVE AFTER TESTING THE NEW APPROACH
-        //private async Task<RecordInfo> ExtractRecordInfo(string url)
-        //{
-        //    return await _discogs.Record(new Uri(url));
-        //}
 
         private async Task<RecordView> GenerateRecordView(int id)
         {

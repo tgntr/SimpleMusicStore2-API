@@ -22,7 +22,7 @@ namespace SimpleMusicStore.Api.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task Add([FromBody]RecordInfo record)
+        public async Task Add([FromBody] RecordInfo record)
         {
             await _records.Add(record);
         }
@@ -33,7 +33,7 @@ namespace SimpleMusicStore.Api.Controllers
         }
 
         [HttpPost]
-        public IEnumerable<RecordDetails> Filter([FromBody] FilterCriterias criterias)
+        public IEnumerable<RecordDetails> Filter(FilterCriterias criterias)
         {
             return _browser.Filter(criterias);
         }
