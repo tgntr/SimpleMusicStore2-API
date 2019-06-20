@@ -14,6 +14,7 @@ namespace SimpleMusicStore.Entities
             Tracklist = new List<Track>();
             WishedBy = new List<Wish>();
             Orders = new List<Item>();
+            Stocks = new List<Stock>();
             DateAdded = DateTime.UtcNow;
             IsActive = true;
         }

@@ -18,5 +18,6 @@ namespace SimpleMusicStore.Contracts.Repositories
         IEnumerable<RecordDetails> FindAll(string[] keywords);
         IEnumerable<string> AvailableFormats();
         IEnumerable<string> AvailableGenres();
+        Task AddStock(int recordId, int quantity);
     }
 }

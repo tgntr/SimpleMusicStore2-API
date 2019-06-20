@@ -21,7 +21,7 @@ namespace SimpleMusicStore.Models.Binding
         public string Title { get; set; }
         [Required]
         public int Year { get; set; }
-        [Range(1, 100.00), Required]
+        [Range(1, 100.00, ErrorMessage = ErrorMessages.PRICE_LIMIT), Required]
         public decimal Price { get; set; }
         [Range(1,int.MaxValue), Required]
         public int Quantity { get; set; }

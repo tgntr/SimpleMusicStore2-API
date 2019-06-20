@@ -21,7 +21,6 @@ namespace SimpleMusicStore.Repositories
         {
             var artistFollow = await Find(artistId, userId);
             _set.Remove(artistFollow);
-            await SaveChanges();
         }
 
         public Task<bool> Exists(int artistId, string userId)

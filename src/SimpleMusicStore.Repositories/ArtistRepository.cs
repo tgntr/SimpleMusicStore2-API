@@ -26,7 +26,7 @@ namespace SimpleMusicStore.Repositories
 
         public async Task<ArtistView> Find(int id)
         {
-            return _mapper.Map<ArtistView>(await _set.FirstAsync(a => a.Id == id));
+            return _mapper.Map<ArtistView>(await _set.FindAsync(id));
         }
     }
 }

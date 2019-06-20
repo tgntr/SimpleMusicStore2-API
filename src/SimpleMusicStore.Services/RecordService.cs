@@ -11,6 +11,7 @@ using SimpleMusicStore.Models.MusicLibraries;
 using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +19,6 @@ namespace SimpleMusicStore.Services
 {
     public class RecordService : IRecordService
     {
-        //private readonly MusicSource _discogs;
         private readonly IRecordRepository _records;
         private readonly IMapper _mapper;
         private readonly ILabelService _labels;
@@ -75,10 +75,17 @@ namespace SimpleMusicStore.Services
             };
         }
 
+        public async Task AddStock(int recordId, int quantity)
+        {
+            await _validator.RecordExists(recordId);
+            await _records.AddStock(recordId, quantity);
+            await _records.SaveChanges();
+        }
+
         private async Task AddRecordToStore(RecordInfo recordInfo)
         {
             var record = _mapper.Map<Record>(recordInfo);
-            record.Stocks = new List<Stock> { new Stock { Quantity = recordInfo.Quantity } };
+            record.Stocks.Add(new Stock(recordInfo.Quantity));
             await _records.Add(record);
             await _records.SaveChanges();
         }

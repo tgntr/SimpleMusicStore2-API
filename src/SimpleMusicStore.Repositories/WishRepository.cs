@@ -21,7 +21,6 @@ namespace SimpleMusicStore.Repositories
 		{
 			var wish = await _set.FirstAsync(w => w.RecordId == recordId && w.UserId == userId);
 			_set.Remove(wish);
-			await SaveChanges();
 		}
     }
 }

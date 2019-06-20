@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
 {
+    //TODO don't inherit shopping cart, cuz it will be hard to test
     public class OrderService : ShoppingCartCacheProxy, IOrderService
     {
         private readonly IAddressRepository _addresses;

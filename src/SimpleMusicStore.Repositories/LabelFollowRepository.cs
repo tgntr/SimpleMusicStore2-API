@@ -21,7 +21,6 @@ namespace SimpleMusicStore.Repositories
         {
             var labelFollow = await Find(labelId, userId);
             _set.Remove(labelFollow);
-            await SaveChanges();
         }
 
         private async Task<LabelFollow> Find(int labelId, string userId)

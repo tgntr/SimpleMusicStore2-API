@@ -1,6 +1,7 @@
 ﻿using SimpleMusicStore.Constants;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace SimpleMusicStore.Models.Binding
@@ -11,9 +12,12 @@ namespace SimpleMusicStore.Models.Binding
         {
             Genres = new List<string>();
             Formats = new List<string>();
+            Sort = SortTypes.Popularity;
         }
         public IEnumerable<string> Genres { get; set; }
         public IEnumerable<string> Formats { get; set; }
-        public string Sort { get; set; }
+        //TODO doesn't return the specified error message, but the default one O_O
+        [EnumDataType(typeof(SortTypes), ErrorMessage = ErrorMessages.UNSUPPORTED_SORT)]
+        public SortTypes Sort { get; set; }
     }
 }

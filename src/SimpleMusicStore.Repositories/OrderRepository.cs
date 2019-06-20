@@ -21,8 +21,7 @@ namespace SimpleMusicStore.Repositories
 
         public async Task<OrderView> Find(int id)
         {
-            var order = await _set.FirstAsync(o => o.Id == id);
-            return _mapper.Map<OrderView>(order);
+            return _mapper.Map<OrderView>(await _set.FindAsync(id));
         }
 
         public Task<bool> Exists(int orderId, string userId)

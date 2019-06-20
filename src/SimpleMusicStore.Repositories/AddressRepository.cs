@@ -46,7 +46,7 @@ namespace SimpleMusicStore.Repositories
 
         private Task<Address> Find(int id)
         {
-            return _set.FirstAsync(a => a.Id == id);
+            return _set.FindAsync(id);
         }
     }
 }

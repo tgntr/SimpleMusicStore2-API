@@ -53,18 +53,21 @@ namespace SimpleMusicStore.Services
         {
             await _validator.RecordIsInWishlist(recordId);
             await _wishes.Delete(recordId, _currentUser.Id);
+            await _wishes.SaveChanges();
         }
 
         public async Task UnfollowArtist(int artistId)
         {
             await _validator.ArtistIsFollowed(artistId);
             await _artistFollows.Delete(artistId, _currentUser.Id);
+            await _artistFollows.SaveChanges();
         }
 
         public async Task UnfollowLabel(int labelId)
         {
             await _validator.LabelIsFollowed(labelId);
             await _labelFollows.Delete(labelId, _currentUser.Id);
+            await _labelFollows.SaveChanges();
         }
 
         private async Task AddRecordToWishlist(int recordId)

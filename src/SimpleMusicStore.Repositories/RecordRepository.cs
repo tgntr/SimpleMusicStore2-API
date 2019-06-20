@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Sorting;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
 using System;
@@ -18,7 +19,6 @@ namespace SimpleMusicStore.Repositories
         public RecordRepository(SimpleMusicStoreDbContext db, IMapper mapper)
             : base(db, mapper)
         {
-
         }
 
         public IEnumerable<RecordDetails> FindAll()
@@ -28,32 +28,32 @@ namespace SimpleMusicStore.Repositories
 
         public async Task<int> Availability(int id)
 		{
-			return (await _set.FirstOrDefaultAsync(r => r.Id == id)).Availability();
+			return (await _set.FindAsync(id)).Availability();
 		}
 
 		public Task<bool> Exists(int id)
         {
-            //TODO faster way
             return _set.AnyAsync(r => r.Id == id);
         }
 
         public async Task<RecordView> Find(int id)
         {
-            return _mapper.Map<RecordView>(await _set.FirstAsync(r => r.Id == id));
+            return _mapper.Map<RecordView>(await _set.FindAsync(id));
         }
 
         public IEnumerable<RecordDetails> FindAll(FilterCriterias criterias)
         {
-            IEnumerable<Record> filteredRecords = _set;
-            filteredRecords = FilterByFormat(criterias.Formats, filteredRecords);
-            filteredRecords = FilterByGenre(criterias.Genres, filteredRecords);
-
-            return filteredRecords.Select(_mapper.Map<RecordDetails>);
+            return ((IEnumerable<Record>)_set)
+                .FilterByGenre(criterias.Genres)
+                .FilterByFormat(criterias.Formats)
+                .Select(_mapper.Map<RecordDetails>);
         }
 
         public IEnumerable<RecordDetails> FindAll(string[] keywords)
         {
-            return FilterByKeywords(keywords).Select(_mapper.Map<RecordDetails>);
+            return ((IEnumerable<Record>)_set)
+                .FilterByKeywords(keywords)
+                .Select(_mapper.Map<RecordDetails>);
         }
 
         public IEnumerable<string> AvailableFormats()
@@ -68,27 +68,10 @@ namespace SimpleMusicStore.Repositories
             return _set.Select(r => r.Genre).Distinct();
         }
 
-        private IEnumerable<Record> FilterByGenre(IEnumerable<string> genres, IEnumerable<Record> filteredRecords)
+        public async Task AddStock(int recordId, int quantity)
         {
-            if (genres.Any())
-                filteredRecords = filteredRecords.Where(r => genres.Contains(r.Genre));
-            return filteredRecords;
-        }
-
-        private IEnumerable<Record> FilterByFormat(IEnumerable<string> formats, IEnumerable<Record> filteredRecords)
-        {
-            if (formats.Any())
-                filteredRecords = filteredRecords.Where(r => formats.Contains(r.Format));
-            return filteredRecords;
-        }
-
-        private IEnumerable<Record> FilterByKeywords(string[] keywords)
-        {
-            //TODO check if it searches properly and find a way to order them by relevance
-            return _set.Where(r =>
-                keywords.Any(kw => r.Title.ToLower().Contains(kw)) ||
-                keywords.Any(kw => r.Artist.Name.ToLower().Contains(kw)) ||
-                keywords.Any(kw => r.Label.Name.ToLower().Contains(kw)));
+            var record = await _set.FindAsync(recordId);
+            record.Stocks.Add(new Stock(quantity));
         }
     }
 }

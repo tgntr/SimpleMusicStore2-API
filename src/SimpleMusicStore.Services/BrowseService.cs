@@ -38,7 +38,7 @@ namespace SimpleMusicStore.Services
 
         public IEnumerable<RecordDetails> Filter(FilterCriterias criterias)
         {
-            return _sorter.Sort(criterias.Sort.AsSortType(), _records.FindAll(criterias));
+            return _sorter.Sort(criterias.Sort, _records.FindAll(criterias));
         }
 
         public IEnumerable<RecordDetails> Search(string searchTerm)
