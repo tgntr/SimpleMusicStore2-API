@@ -6,7 +6,9 @@ namespace SimpleMusicStore.Constants
 {
     public static class CommonConstants
     {
-        public const string BUCKET_NAME = "simplemusicstore";
-        public const string MP3 = "audio/mpeg";
+        public const string
+            BUCKET_NAME = "simplemusicstore",
+            MP3 = "audio/mpeg",
+            STORAGE_URL = @"https://storage.googleapis.com/simplemusicstore/";
     }
 }

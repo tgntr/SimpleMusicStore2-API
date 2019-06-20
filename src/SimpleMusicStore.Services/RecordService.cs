@@ -55,17 +55,8 @@ namespace SimpleMusicStore.Services
             new Thread(async () =>
             {
                 Thread.CurrentThread.IsBackground = true;
-                UploadTrackPreviews(record);
+                await UploadTrackPreviews(record);
             }).Start();
-        }
-
-        private void UploadTrackPreviews(RecordInfo record)
-        {
-            foreach (var track in record.Tracklist)
-            {
-                var a = 2;
-                //await _googleCloud.Upload(track.Preview, $"{record.Id}-{track.Title}");
-            }
         }
 
         public async Task<RecordView> Find(int id)
@@ -104,6 +95,14 @@ namespace SimpleMusicStore.Services
             var record = await _records.Find(id);
             record.IsInWishlist = _currentUser.IsRecordInWishlist(id);
             return record;
+        }
+
+        private async Task UploadTrackPreviews(RecordInfo record)
+        {
+            foreach (var track in record.Tracklist)
+            {
+                await _googleCloud.Upload(track.Preview, record.Id + track.Title);
+            }
         }
     }
 }
