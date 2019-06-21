@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
+using System;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories
@@ -18,9 +20,16 @@ namespace SimpleMusicStore.Repositories
         }
 
 		public async Task Delete(int recordId, string userId)
-		{
-			var wish = await _set.FirstAsync(w => w.RecordId == recordId && w.UserId == userId);
-			_set.Remove(wish);
-		}
+        {
+            var wish = await _set.FindAsync(recordId, userId);
+            ValidateThatWishExists(wish);
+            _set.Remove(wish);
+        }
+
+        private static void ValidateThatWishExists(Wish wish)
+        {
+            if (wish == null)
+                throw new ArgumentException(ErrorMessages.RECORD_NOT_IN_WISHLIST);
+        }
     }
 }

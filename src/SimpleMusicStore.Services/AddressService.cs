@@ -29,21 +29,18 @@ namespace SimpleMusicStore.Services
 
         public async Task Add(AddressDetails newAddress)
         {
-            var addressEntity = CreateAddress(newAddress);
-            await _addresses.Add(addressEntity);
+            await _addresses.Add(CreateAddress(newAddress));
             await _addresses.SaveChanges();
         }
 
         public async Task Remove(int id)
         {
-            await _validator.AddressIsValid(id);
             await _addresses.Remove(id);
             await _addresses.SaveChanges();
         }
 
         public async Task Edit(AddressDetails newAddress)
         {
-            await _validator.AddressIsValid(newAddress.Id);
             await _addresses.Edit(newAddress);
             await _addresses.SaveChanges();
         }

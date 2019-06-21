@@ -51,40 +51,37 @@ namespace SimpleMusicStore.Services
 
         public async Task RemoveFromWishlist(int recordId)
         {
-            await _validator.RecordIsInWishlist(recordId);
             await _wishes.Delete(recordId, _currentUser.Id);
             await _wishes.SaveChanges();
         }
 
         public async Task UnfollowArtist(int artistId)
         {
-            await _validator.ArtistIsFollowed(artistId);
             await _artistFollows.Delete(artistId, _currentUser.Id);
             await _artistFollows.SaveChanges();
         }
 
         public async Task UnfollowLabel(int labelId)
         {
-            await _validator.LabelIsFollowed(labelId);
             await _labelFollows.Delete(labelId, _currentUser.Id);
             await _labelFollows.SaveChanges();
         }
 
         private async Task AddRecordToWishlist(int recordId)
         {
-            await _wishes.Add(new Wish { RecordId = recordId, UserId = _currentUser.Id });
+            await _wishes.Add(new Wish(recordId, _currentUser.Id));
             await _wishes.SaveChanges();
         }
 
         private async Task AddArtistFollow(int artistId)
         {
-            await _artistFollows.Add(new ArtistFollow() { ArtistId = artistId, UserId = _currentUser.Id });
+            await _artistFollows.Add(new ArtistFollow(artistId, _currentUser.Id));
             await _artistFollows.SaveChanges();
         }
 
         private async Task AddLabelFollow(int labelId)
         {
-            await _labelFollows.Add(new LabelFollow() { LabelId = labelId, UserId = _currentUser.Id });
+            await _labelFollows.Add(new LabelFollow(labelId, _currentUser.Id));
             await _labelFollows.SaveChanges();
         }
     }

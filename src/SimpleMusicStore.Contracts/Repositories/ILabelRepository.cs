@@ -11,5 +11,6 @@ namespace SimpleMusicStore.Contracts.Repositories
     {
         Task<bool> Exists(int id);
         Task<LabelView> Find(int id);
+        IEnumerable<LabelDetails> FindAll(string searchTerm);
     }
 }

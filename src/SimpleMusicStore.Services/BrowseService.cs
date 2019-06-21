@@ -16,7 +16,6 @@ namespace SimpleMusicStore.Services
     {
         private readonly IRecordRepository _records;
         private readonly Sorter _sorter;
-        private readonly IServiceValidator _validator;
         private readonly IArtistRepository _artists;
         private readonly ILabelRepository _labels;
 
@@ -24,7 +23,6 @@ namespace SimpleMusicStore.Services
         {
             _records = records;
             _sorter = sorter;
-            _validator = validator;
             _artists = artists;
             _labels = labels;
         }
@@ -49,16 +47,13 @@ namespace SimpleMusicStore.Services
         {
             return new SearchResult
             {
-                Records = _records.FindAll(SplitToKeywords(searchTerm)),
-                Artists = _artists.FindAll(SplitToKeywords(searchTerm)),
-                Labels = _labels.FindAll(SplitToKeywords(searchTerm))
+                Records = _records.FindAll(searchTerm),
+                Artists = _artists.FindAll(searchTerm),
+                Labels = _labels.FindAll(searchTerm)
             };
         }
 
-        private string[] SplitToKeywords(string searchTerm)
-        {
-            return searchTerm.ToLower().Split();
-        }
+        
 
         private IEnumerable<string> ExtractAllSortTypes()
         {

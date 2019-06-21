@@ -39,11 +39,6 @@ namespace SimpleMusicStore.Api.Controllers
             return _browser.Filter(criterias);
         }
 
-        public IEnumerable<RecordDetails> Search(string searchTerm)
-        {
-            return _browser.Search(searchTerm);
-        }
-
         public async Task<RecordView> Details(int id)
         {
             return await _records.Find(id);

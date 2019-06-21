@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SimpleMusicStore.Constants;
 
 namespace SimpleMusicStore.Repositories
 {
@@ -38,8 +39,12 @@ namespace SimpleMusicStore.Repositories
 
         public async Task<RecordView> Find(int id)
         {
-            return _mapper.Map<RecordView>(await _set.FindAsync(id));
+            var record = await _set.FindAsync(id);
+            ValidateThatRecordExists(record);
+            return _mapper.Map<RecordView>(record);
         }
+
+        
 
         public IEnumerable<RecordDetails> FindAll(FilterCriterias criterias)
         {
@@ -71,7 +76,14 @@ namespace SimpleMusicStore.Repositories
         public async Task AddStock(int recordId, int quantity)
         {
             var record = await _set.FindAsync(recordId);
+            ValidateThatRecordExists(record);
             record.Stocks.Add(new Stock(quantity));
+        }
+
+        private static void ValidateThatRecordExists(Record record)
+        {
+            if (record == null)
+                throw new ArgumentException(ErrorMessages.INVALID_RECORD);
         }
     }
 }

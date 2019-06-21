@@ -40,7 +40,6 @@ namespace SimpleMusicStore.Services
 
         public async Task<LabelView> Find(int id)
         {
-            await _validator.LabelExists(id);
             return await GenerateLabelView(id);
         }
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
@@ -21,12 +22,15 @@ namespace SimpleMusicStore.Repositories
 
         public async Task<OrderView> Find(int id)
         {
-            return _mapper.Map<OrderView>(await _set.FindAsync(id));
+            var order = await _set.FindAsync(id);
+            ValidateThatOrderExists(order);
+            return _mapper.Map<OrderView>(order);
         }
 
-        public Task<bool> Exists(int orderId, string userId)
+        private static void ValidateThatOrderExists(Order order)
         {
-            return _set.AnyAsync(o => o.Id == orderId && o.UserId == userId);
+            if (order == null)
+                throw new ArgumentException(ErrorMessages.INVALID_ORDER);
         }
     }
 }

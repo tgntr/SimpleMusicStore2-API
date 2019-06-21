@@ -14,6 +14,13 @@ namespace SimpleMusicStore.Entities
         {
         }
 
+        public LabelFollow(int labelId, string userId)
+            :base()
+        {
+            LabelId = labelId;
+            UserId = userId;
+        }
+
         [Required]
         public int LabelId { get; set; }
         public virtual Label Label { get; set; }

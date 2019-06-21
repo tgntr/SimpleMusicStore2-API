@@ -15,6 +15,7 @@ using SimpleMusicStore.Sorting;
 using SimpleMusicStore.Storage;
 using SimpleMusicStore.ServiceValidations;
 using SimpleMusicStore.Contracts.Validators;
+using System;
 
 namespace SimpleMusicStore.Api.Extensions
 {
@@ -46,7 +47,7 @@ namespace SimpleMusicStore.Api.Extensions
             services.AddScoped<ICurrentUserActivities, CurrentUserActivities>();
             services.AddScoped<Sorter, RecordSorter>();
             services.AddScoped<IBrowseService, BrowseService>();
-            services.AddAutoMapper();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
     }
 }

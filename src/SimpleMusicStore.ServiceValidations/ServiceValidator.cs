@@ -7,6 +7,7 @@ using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.ServiceValidations
@@ -20,7 +21,6 @@ namespace SimpleMusicStore.ServiceValidations
         private readonly IArtistRepository _artists;
         private readonly ILabelRepository _labels;
         private readonly ILabelFollowRepository _labelFollows;
-        private readonly IOrderRepository _orders;
         private readonly UserManager<User> _users;
         private readonly IClaimAccessor _currentUser;
 
@@ -33,7 +33,6 @@ namespace SimpleMusicStore.ServiceValidations
             IArtistRepository artists,
             ILabelRepository labels,
             ILabelFollowRepository labelFollows,
-            IOrderRepository orders,
             UserManager<User> users)
         {
             _addresses = addresses;
@@ -43,26 +42,20 @@ namespace SimpleMusicStore.ServiceValidations
             _artists = artists;
             _labels = labels;
             _labelFollows = labelFollows;
-            _orders = orders;
             _users = users;
             _currentUser = currentUser;
-        }
-        public async Task AddressIsValid(int id)
-        {
-            if (!await _addresses.Exists(id, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.INVALID_ADDRESS);
         }
 
         public void CartIsNotEmpty(IDictionary<int, int> items)
         {
-            if (items.Count == 0)
+            if (!items.Any())
                 throw new OperationCanceledException(ErrorMessages.EMPTY_CART);
         }
 
         public async Task RecordIsNotInWishlist(int recordId)
         {
             if (await _wishes.Exists(recordId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.RECORD_IS_IN_WISHLIST);
+                throw new ArgumentException(ErrorMessages.RECORD_ALREADY_IN_WISHLIST);
         }
 
         public async Task RecordExists(int recordId)
@@ -74,7 +67,7 @@ namespace SimpleMusicStore.ServiceValidations
         public async Task ArtistIsNotFollowed(int artistId)
         {
             if (await _artistFollows.Exists(artistId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.ARTIST_IS_FOLLOWED);
+                throw new ArgumentException(ErrorMessages.ARTIST_ALREADY_FOLLOWED);
         }
 
         public async Task ArtistExists(int artistId)
@@ -86,31 +79,13 @@ namespace SimpleMusicStore.ServiceValidations
         public async Task LabelIsNotFollowed(int labelId)
         {
             if (await _labelFollows.Exists(labelId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.LABEL_IS_FOLLOWED);
+                throw new ArgumentException(ErrorMessages.LABEL_ALREADY_FOLLOWED);
         }
 
         public async Task LabelExists(int labelId)
         {
             if (!await _labels.Exists(labelId))
                 throw new ArgumentException(ErrorMessages.INVALID_LABEL);
-        }
-
-        public async Task RecordIsInWishlist(int recordId)
-        {
-            if (!await _wishes.Exists(recordId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.RECORD_NOT_IN_WISHLIST);
-        }
-
-        public async Task ArtistIsFollowed(int artistId)
-        {
-            if (!await _artistFollows.Exists(artistId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.ARTIST_NOT_FOLLOWED);
-        }
-
-        public async Task LabelIsFollowed(int labelId)
-        {
-            if (!await _labelFollows.Exists(labelId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.LABEL_NOT_FOLLOWED);
         }
 
         public async Task RecordIsNotInStore(int id)
@@ -141,10 +116,10 @@ namespace SimpleMusicStore.ServiceValidations
                 throw new ArgumentException(ErrorMessages.INVALID_CREDENTIALS);
         }
 
-        public async Task OrderIsValid(int orderId)
+        public async Task AddressIsValid(int id)
         {
-            if (!await _orders.Exists(orderId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.INVALID_ORDER);
+            if (!await _addresses.Exists(id, _currentUser.Id))
+                throw new ArgumentException(ErrorMessages.INVALID_ADDRESS);
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.View;
+using SimpleMusicStore.Sorting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +28,22 @@ namespace SimpleMusicStore.Repositories
 
         public async Task<LabelView> Find(int id)
         {
-            return _mapper.Map<LabelView>(await _set.FindAsync(id));
+            var label = await _set.FindAsync(id);
+            ValidateThatLabelExists(label);
+            return _mapper.Map<LabelView>(label);
+        }
+
+        public IEnumerable<LabelDetails> FindAll(string searchTerm)
+        {
+            return ((IEnumerable<Label>)_set)
+                .Search(searchTerm)
+                .Select(_mapper.Map<LabelDetails>);
+        }
+
+        private static void ValidateThatLabelExists(Label label)
+        {
+            if (label == null)
+                throw new ArgumentException(ErrorMessages.INVALID_LABEL);
         }
     }
 }

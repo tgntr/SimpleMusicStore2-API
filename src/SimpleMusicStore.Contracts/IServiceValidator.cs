@@ -12,9 +12,6 @@ namespace SimpleMusicStore.Contracts.Validators
         Task ItemIsInStock(int itemId, IDictionary<int, int> items);
         void ItemIsInCart(int itemId, IDictionary<int, int> items);
         Task RecordIsNotInStore(int id);
-        Task LabelIsFollowed(int labelId);
-        Task ArtistIsFollowed(int artistId);
-        Task RecordIsInWishlist(int recordId);
         Task LabelExists(int labelId);
         Task LabelIsNotFollowed(int labelId);
         Task ArtistIsNotFollowed(int artistId);
@@ -22,8 +19,7 @@ namespace SimpleMusicStore.Contracts.Validators
         Task RecordExists(int recordId);
         Task RecordIsNotInWishlist(int recordId);
         void CartIsNotEmpty(IDictionary<int, int> items);
-        Task AddressIsValid(int id);
         Task CredentialsAreValid(User user, string pasword);
-        Task OrderIsValid(int orderId);
+        Task AddressIsValid(int id);
     }
 }

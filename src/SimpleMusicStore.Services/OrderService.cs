@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
 {
-    //TODO don't inherit shopping cart, cuz it will be hard to test
     public class OrderService : ShoppingCartCacheProxy, IOrderService
     {
         private readonly IAddressRepository _addresses;
@@ -48,7 +47,6 @@ namespace SimpleMusicStore.Services
 
         public async Task<OrderView> Find(int orderId)
         {
-            await _validator.OrderIsValid(orderId);
             return await _orders.Find(orderId);
         }
 

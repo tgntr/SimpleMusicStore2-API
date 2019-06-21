@@ -10,6 +10,5 @@ namespace SimpleMusicStore.Contracts.Repositories
     public interface IOrderRepository : IRepository<Order>
     {
         Task<OrderView> Find(int id);
-        Task<bool> Exists(int orderId, string userId);
     }
 }

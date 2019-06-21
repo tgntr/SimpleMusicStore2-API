@@ -10,6 +10,6 @@ namespace SimpleMusicStore.Contracts.Services
     {
         Browse GenerateBrowseView();
         IEnumerable<RecordDetails> Filter(FilterCriterias criterias);
-        IEnumerable<RecordDetails> Search(string searchTerm);
+        SearchResult Search(string searchTerm);
     }
 }

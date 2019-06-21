@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Models.View;
 
 namespace SimpleMusicStore.Api.Controllers
 {
@@ -17,9 +19,9 @@ namespace SimpleMusicStore.Api.Controllers
         }
         
         [Route("search")]
-        public IActionResult Index()
+        public SearchResult Index([MinLength(1)]string searchTerm)
         {
-            return View();
+            return _browser.Search(searchTerm);
         }
     }
 }

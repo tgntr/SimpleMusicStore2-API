@@ -61,7 +61,6 @@ namespace SimpleMusicStore.Services
 
         public async Task<RecordView> Find(int id)
         {
-            await _validator.RecordExists(id);
             return await GenerateRecordView(id);
         }
 
@@ -77,7 +76,6 @@ namespace SimpleMusicStore.Services
 
         public async Task AddStock(int recordId, int quantity)
         {
-            await _validator.RecordExists(recordId);
             await _records.AddStock(recordId, quantity);
             await _records.SaveChanges();
         }
