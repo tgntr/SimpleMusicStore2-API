@@ -24,12 +24,22 @@ namespace SimpleMusicStore.Sorting
                 return records;
         }
 
-        public static IEnumerable<Record> FilterByKeywords(this IEnumerable<Record> records, string[] keywords)
+        public static IEnumerable<Record> Search(this IEnumerable<Record> records, string searchTerm)
         {
-            return records.Where(r =>
-                keywords.Any(kw => r.Title.ToLower().Contains(kw)) ||
-                keywords.Any(kw => r.Artist.Name.ToLower().Contains(kw)) ||
-                keywords.Any(kw => r.Label.Name.ToLower().Contains(kw)));
+            return records
+                .Where(r => 
+                    r.Title.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase) ||
+                    r.Tracklist.Any(t=>t.Title.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase)));
+        }
+
+        public static IEnumerable<Artist> Search(this IEnumerable<Artist> artists, string searchTerm)
+        {
+            return artists.Where(a => a.Name.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        public static IEnumerable<Label> Search(this IEnumerable<Label> labels, string searchTerm)
+        {
+            return labels.Where(l => l.Name.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

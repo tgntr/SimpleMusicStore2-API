@@ -25,6 +25,5 @@ namespace SimpleMusicStore.Contracts.Validators
         Task AddressIsValid(int id);
         Task CredentialsAreValid(User user, string pasword);
         Task OrderIsValid(int orderId);
-        void SearchTermIsNotEmpty(string searchTerm);
     }
 }

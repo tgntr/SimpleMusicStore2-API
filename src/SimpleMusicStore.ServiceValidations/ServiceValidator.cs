@@ -146,11 +146,5 @@ namespace SimpleMusicStore.ServiceValidations
             if (!await _orders.Exists(orderId, _currentUser.Id))
                 throw new ArgumentException(ErrorMessages.INVALID_ORDER);
         }
-
-        public void SearchTermIsNotEmpty(string searchTerm)
-        {
-            if (string.IsNullOrEmpty(searchTerm))
-                throw new ArgumentException(ErrorMessages.INVALID_SEARCH_TERM);
-        }
     }
 }

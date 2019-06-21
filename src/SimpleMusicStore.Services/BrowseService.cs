@@ -17,12 +17,16 @@ namespace SimpleMusicStore.Services
         private readonly IRecordRepository _records;
         private readonly Sorter _sorter;
         private readonly IServiceValidator _validator;
+        private readonly IArtistRepository _artists;
+        private readonly ILabelRepository _labels;
 
-        public BrowseService(IRecordRepository records, Sorter sorter, IServiceValidator validator)
+        public BrowseService(IRecordRepository records, Sorter sorter, IServiceValidator validator, IArtistRepository artists, ILabelRepository labels)
         {
             _records = records;
             _sorter = sorter;
             _validator = validator;
+            _artists = artists;
+            _labels = labels;
         }
 
         public Browse GenerateBrowseView()
@@ -41,10 +45,14 @@ namespace SimpleMusicStore.Services
             return _sorter.Sort(criterias.Sort, _records.FindAll(criterias));
         }
 
-        public IEnumerable<RecordDetails> Search(string searchTerm)
+        public SearchResult Search(string searchTerm)
         {
-            _validator.SearchTermIsNotEmpty(searchTerm);
-            return _records.FindAll(SplitToKeywords(searchTerm));
+            return new SearchResult
+            {
+                Records = _records.FindAll(SplitToKeywords(searchTerm)),
+                Artists = _artists.FindAll(SplitToKeywords(searchTerm)),
+                Labels = _labels.FindAll(SplitToKeywords(searchTerm))
+            };
         }
 
         private string[] SplitToKeywords(string searchTerm)

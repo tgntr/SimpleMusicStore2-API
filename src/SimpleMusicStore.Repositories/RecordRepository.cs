@@ -49,10 +49,10 @@ namespace SimpleMusicStore.Repositories
                 .Select(_mapper.Map<RecordDetails>);
         }
 
-        public IEnumerable<RecordDetails> FindAll(string[] keywords)
+        public IEnumerable<RecordDetails> FindAll(string searchTerm)
         {
             return ((IEnumerable<Record>)_set)
-                .FilterByKeywords(keywords)
+                .Search(searchTerm)
                 .Select(_mapper.Map<RecordDetails>);
         }
 
