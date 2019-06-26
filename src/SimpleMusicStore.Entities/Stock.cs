@@ -11,8 +11,9 @@ namespace SimpleMusicStore.Entities
             DateAdded = DateTime.UtcNow;
         }
 
-        public Stock(int quantity)
+        public Stock(int recordId, int quantity)
         {
+            RecordId = recordId;
             Quantity = quantity;
         }
 

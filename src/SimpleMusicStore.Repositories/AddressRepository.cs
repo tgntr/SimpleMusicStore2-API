@@ -4,6 +4,7 @@ using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,12 @@ namespace SimpleMusicStore.Repositories
         {
         }
 
-        public async Task Edit(AddressDetails addressDetails)
+        public Task Add(NewAddress address)
+        {
+            return _set.AddAsync(_mapper.Map<Address>(address));
+        }
+
+        public async Task Edit(AddressEdit addressDetails)
         {
             var address = await _set.FindAsync(addressDetails.Id);
             ValidateThatAddressExists(address);

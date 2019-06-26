@@ -22,6 +22,10 @@ namespace SimpleMusicStore.Repositories
         {
         }
 
+        public Task Add(NewRecord record)
+        {
+            return _set.AddAsync(_mapper.Map<Record>(record));
+        }
         public IEnumerable<RecordDetails> FindAll()
         {
             return _set.Select(_mapper.Map<RecordDetails>);
@@ -73,12 +77,12 @@ namespace SimpleMusicStore.Repositories
             return _set.Select(r => r.Genre).Distinct();
         }
 
-        public async Task AddStock(int recordId, int quantity)
-        {
-            var record = await _set.FindAsync(recordId);
-            ValidateThatRecordExists(record);
-            record.Stocks.Add(new Stock(quantity));
-        }
+        //public async Task AddStock(int recordId, int quantity)
+        //{
+        //    var record = await _set.FindAsync(recordId);
+        //    ValidateThatRecordExists(record);
+        //    record.Stocks.Add(new Stock(quantity));
+        //}
 
         private static void ValidateThatRecordExists(Record record)
         {

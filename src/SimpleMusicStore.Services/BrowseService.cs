@@ -14,46 +14,40 @@ namespace SimpleMusicStore.Services
 {
     public class BrowseService : IBrowseService
     {
-        private readonly IRecordRepository _records;
+        private readonly IUnitOfWork _db;
         private readonly Sorter _sorter;
-        private readonly IArtistRepository _artists;
-        private readonly ILabelRepository _labels;
 
-        public BrowseService(IRecordRepository records, Sorter sorter, IServiceValidator validator, IArtistRepository artists, ILabelRepository labels)
+        public BrowseService(IUnitOfWork db, Sorter sorter)
         {
-            _records = records;
+            _db = db;
             _sorter = sorter;
-            _artists = artists;
-            _labels = labels;
         }
 
         public Browse GenerateBrowseView()
         {
             return new Browse
             {
-                AvailableFormats = _records.AvailableFormats(),
-                AvailableGenres = _records.AvailableGenres(),
-                Records = _records.FindAll(),
+                AvailableFormats = _db.Records.AvailableFormats(),
+                AvailableGenres = _db.Records.AvailableGenres(),
+                Records = _db.Records.FindAll(),
                 AvailableSortTypes = ExtractAllSortTypes()
             };
         }
 
         public IEnumerable<RecordDetails> Filter(FilterCriterias criterias)
         {
-            return _sorter.Sort(criterias.Sort, _records.FindAll(criterias));
+            return _sorter.Sort(criterias.Sort, _db.Records.FindAll(criterias));
         }
 
         public SearchResult Search(string searchTerm)
         {
             return new SearchResult
             {
-                Records = _records.FindAll(searchTerm),
-                Artists = _artists.FindAll(searchTerm),
-                Labels = _labels.FindAll(searchTerm)
+                Records = _db.Records.FindAll(searchTerm),
+                Artists = _db.Artists.FindAll(searchTerm),
+                Labels = _db.Labels.FindAll(searchTerm)
             };
         }
-
-        
 
         private IEnumerable<string> ExtractAllSortTypes()
         {

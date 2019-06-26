@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Repositories
 {
-    public interface ILabelFollowRepository : IRepository<LabelFollow>
+    public interface ILabelFollowRepository
     {
+        Task Add(int labelId, string userId);
         Task<bool> Exists(int labelId, string userId);
 		Task Delete(int labelId, string userId);
     }

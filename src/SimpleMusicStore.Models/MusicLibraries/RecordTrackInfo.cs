@@ -9,7 +9,7 @@ namespace SimpleMusicStore.Models.MusicLibraries
         public string Duration { get; set; }
         [Required]
         public string Title { get; set; }
-        [Required, NonEmptyMp3File]
+        //[Required, NonEmptyMp3File]
         public IFormFile Preview { get; set; }
     }
 }

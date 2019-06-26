@@ -1,12 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace SimpleMusicStore.Models.MusicLibraries
 {
     public class RecordArtistInfo
     {
-        [Required]
         public int Id { get; set; }
-        [Required]
-        public string Name { get; set; }
     }
 }

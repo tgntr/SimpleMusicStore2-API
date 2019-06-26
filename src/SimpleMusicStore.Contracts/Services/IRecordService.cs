@@ -7,7 +7,7 @@ namespace SimpleMusicStore.Contracts.Services
 {
     public interface IRecordService
     {
-        Task Add(RecordInfo record);
+        Task Add(NewRecord record);
         NewsFeed NewsFeed();
         Task<RecordView> Find(int id);
         Task AddStock(int recordId, int quantity);

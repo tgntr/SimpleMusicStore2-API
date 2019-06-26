@@ -21,7 +21,6 @@ namespace SimpleMusicStore.ServiceValidations
         private readonly IArtistRepository _artists;
         private readonly ILabelRepository _labels;
         private readonly ILabelFollowRepository _labelFollows;
-        private readonly UserManager<User> _users;
         private readonly IClaimAccessor _currentUser;
 
         public ServiceValidator(
@@ -32,8 +31,7 @@ namespace SimpleMusicStore.ServiceValidations
             IArtistFollowRepository artistFollows,
             IArtistRepository artists,
             ILabelRepository labels,
-            ILabelFollowRepository labelFollows,
-            UserManager<User> users)
+            ILabelFollowRepository labelFollows)
         {
             _addresses = addresses;
             _wishes = wishes;
@@ -42,7 +40,6 @@ namespace SimpleMusicStore.ServiceValidations
             _artists = artists;
             _labels = labels;
             _labelFollows = labelFollows;
-            _users = users;
             _currentUser = currentUser;
         }
 
@@ -108,12 +105,6 @@ namespace SimpleMusicStore.ServiceValidations
 
             if (await _records.Availability(itemId) <= quantity)
                 throw new ArgumentException(ErrorMessages.UNAVAILABLE_QUANTITY);
-        }
-
-        public async Task CredentialsAreValid(User user, string password)
-        {
-            if (!await _users.CheckPasswordAsync(user, password))
-                throw new ArgumentException(ErrorMessages.INVALID_CREDENTIALS);
         }
 
         public async Task AddressIsValid(int id)

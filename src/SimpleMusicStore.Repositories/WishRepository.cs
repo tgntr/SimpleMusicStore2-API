@@ -14,6 +14,12 @@ namespace SimpleMusicStore.Repositories
             :base(db)
         {
         }
+
+        public Task Add(int recordId, string userId)
+        {
+            return _set.AddAsync(new Wish(recordId, userId));
+        }
+
         public Task<bool> Exists(int recordId, string userId)
         {
             return _set.AnyAsync(w => w.RecordId == recordId && w.UserId == userId);

@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Repositories
 {
-    public interface IRecordRepository : IRepository<Record>
+    public interface IRecordRepository
     {
+        Task Add(NewRecord record);
         Task<bool> Exists(int id);
         Task<RecordView> Find(int id);
 		Task<int> Availability(int id);
@@ -18,6 +19,6 @@ namespace SimpleMusicStore.Contracts.Repositories
         IEnumerable<RecordDetails> FindAll(string searchTerm);
         IEnumerable<string> AvailableFormats();
         IEnumerable<string> AvailableGenres();
-        Task AddStock(int recordId, int quantity);
+        //Task AddStock(int recordId, int quantity);
     }
 }

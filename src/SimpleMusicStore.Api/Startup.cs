@@ -10,6 +10,8 @@ using System;
 using StackExchange.Redis;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.ModelValidations;
+using SimpleMusicStore.BackgroundServiceProvider;
+using SimpleMusicStore.Contracts.BackgroundServiceProvider;
 
 namespace SimpleMusicStore.Api
 {
@@ -34,6 +36,10 @@ namespace SimpleMusicStore.Api
             services.AddCustomServices(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton(ConnectionMultiplexer.Connect(Configuration["Redis:Connection"]).GetDatabase());
+            //todo move them to backgroundservicesetup
+            services.AddHostedService<QueuedHostedService>();
+            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

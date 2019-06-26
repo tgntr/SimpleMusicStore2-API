@@ -47,6 +47,9 @@ namespace SimpleMusicStore.Api.Extensions
             services.AddScoped<ICurrentUserActivities, CurrentUserActivities>();
             services.AddScoped<Sorter, RecordSorter>();
             services.AddScoped<IBrowseService, BrowseService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IStockRepository, StockRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Models.View;
 
@@ -21,22 +22,22 @@ namespace SimpleMusicStore.Api.Controllers
         }
         public IEnumerable<RecordDetails> Wishlist()
         {
-            return _currentUser.WishlistOrdered;
+            return _currentUser.WishlistOrdered();
         }
 
         public IEnumerable<ArtistDetails> FollowedArtists()
         {
-            return _currentUser.FollowedArtistsOrdered;
+            return _currentUser.FollowedArtistsOrdered();
         }
 
         public IEnumerable<LabelDetails> FollowedLabels()
         {
-            return _currentUser.FollowedLabelsOrdered;
+            return _currentUser.FollowedLabelsOrdered();
         }
 
         public IEnumerable<OrderDetails> Orders()
         {
-            return _currentUser.OrdersOrdered;
+            return _currentUser.OrdersOrdered();
         }
     }
 }

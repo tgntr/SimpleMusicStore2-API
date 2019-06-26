@@ -8,7 +8,7 @@ namespace SimpleMusicStore.Contracts.Services
 {
     public interface ILabelService
     {
-        Task Add(int discogsId);
+        //Task Add(int discogsId);
         Task<LabelView> Find(int id);
     }
 }

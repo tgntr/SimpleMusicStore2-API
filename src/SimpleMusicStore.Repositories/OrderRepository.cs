@@ -4,6 +4,7 @@ using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,11 @@ namespace SimpleMusicStore.Repositories
         public OrderRepository(SimpleMusicStoreDbContext db, IMapper mapper)
             :base(db, mapper)
         {
+        }
+
+        public Task Add(NewOrder order)
+        {
+            return _set.AddAsync(_mapper.Map<Order>(order));
         }
 
         public async Task<OrderView> Find(int id)

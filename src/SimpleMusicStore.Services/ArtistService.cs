@@ -12,50 +12,23 @@ namespace SimpleMusicStore.Services
 {
     public class ArtistService : IArtistService
     {
-        private readonly IArtistRepository _artists;
-        private readonly IMapper _mapper;
-        private readonly MusicSource _discogs;
-        private readonly IServiceValidator _validator;
-        private readonly ICurrentUserActivities _currentUser;
+        private readonly IUnitOfWork _db;
 
-        public ArtistService(IArtistRepository artists,
-            IMapper mapper,
-            MusicSource discogs,
-            IServiceValidator validator,
-            ICurrentUserActivities currentUser)
+        public ArtistService(IUnitOfWork db)
         {
-            _artists = artists;
-            _mapper = mapper;
-            _discogs = discogs;
-            _validator = validator;
-            _currentUser = currentUser;
-        }
-
-        public async Task Add(int discogsId)
-        {
-            if (!await _artists.Exists(discogsId))
-                await AddArtist(discogsId);
+            _db = db;
         }
 
         public async Task<ArtistView> Find(int id)
         {
-            await _validator.ArtistExists(id);
             return await GenerateArtistView(id);
         }
 
         private async Task<ArtistView> GenerateArtistView(int id)
         {
-            var artist = await _artists.Find(id);
-            artist.IsFollowed = _currentUser.IsArtistFollowed(id);
-            artist.Records = artist.Records.OrderByDescending(r => r.DateAdded);
+            var artist = await _db.Artists.Find(id);
+            artist.IsFollowed = _db.CurrentUser.IsArtistFollowed(id);
             return artist;
-        }
-
-        private async Task AddArtist(int discogsId)
-        {
-            var artistInfo = await _discogs.Artist(discogsId);
-            var artist = _mapper.Map<Artist>(artistInfo);
-            await _artists.Add(artist);
         }
     }
 }

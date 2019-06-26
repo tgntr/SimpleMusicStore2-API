@@ -18,6 +18,11 @@ namespace SimpleMusicStore.Repositories
         {
         }
 
+        public Task Add(int artistId, string userId)
+        {
+            return _set.AddAsync(new ArtistFollow(artistId, userId));
+        }
+
         public async Task Delete(int artistId, string userId)
         {
             var artistFollow = await _set.FindAsync(artistId, userId);

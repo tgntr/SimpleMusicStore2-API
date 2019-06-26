@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts;
+using SimpleMusicStore.Contracts.BackgroundServiceProvider;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Sorting;
@@ -19,44 +20,30 @@ namespace SimpleMusicStore.Services
 {
     public class RecordService : IRecordService
     {
-        private readonly IRecordRepository _records;
-        private readonly IMapper _mapper;
-        private readonly ILabelService _labels;
-        private readonly IArtistService _artists;
-        private readonly IServiceValidator _validator;
+        private readonly IUnitOfWork _db;
+        private readonly FileStorage _storage;
+        private readonly IBackgroundTaskQueue _backgroundThread;
         private readonly Sorter _sorter;
-        private readonly ICurrentUserActivities _currentUser;
-        private readonly FileStorage _googleCloud;
 
-        public RecordService(IRecordRepository records,
-            IMapper mapper,
-            ILabelService labels,
-            IArtistService artists,
-            IServiceValidator validator,
+        public RecordService(IUnitOfWork db,
             Sorter sorter,
-            ICurrentUserActivities currentUser,
-            FileStorage googleCloud)
+            FileStorage storage,
+            IBackgroundTaskQueue backgroundThread)
         {
-            _records = records;
-            _mapper = mapper;
-            _artists = artists;
-            _validator = validator;
+            _db = db;
             _sorter = sorter;
-            _currentUser = currentUser;
-            _googleCloud = googleCloud;
-            _labels = labels;
+            _storage = storage;
+            _backgroundThread = backgroundThread;
         }
-        public async Task Add(RecordInfo record)
+        public async Task Add(NewRecord record)
         {
-            await _validator.RecordIsNotInStore(record.Id);
+            await _db.Validator.RecordIsNotInStore(record.Id);
             CreateArtistAndLabelProfiles(record);
             await AddRecordToStore(record);
+            //TODO test 
+            UploadTrackPreviewsInBackgroundThread(record);
 
-            new Thread(async () =>
-            {
-                Thread.CurrentThread.IsBackground = true;
-                await UploadTrackPreviews(record);
-            }).Start();
+            
         }
 
         public async Task<RecordView> Find(int id)
@@ -68,45 +55,48 @@ namespace SimpleMusicStore.Services
         {
             return new NewsFeed
             {
-                Recommended = _sorter.Sort(SortTypes.Recommendation, _records.FindAll()),
-                MostPopular = _sorter.Sort(SortTypes.Popularity, _records.FindAll()),
-                Newest = _sorter.Sort(SortTypes.DateAdded, _records.FindAll())
+                Recommended = _sorter.Sort(SortTypes.Recommendation, _db.Records.FindAll()),
+                MostPopular = _sorter.Sort(SortTypes.Popularity, _db.Records.FindAll()),
+                Newest = _sorter.Sort(SortTypes.DateAdded, _db.Records.FindAll())
             };
         }
 
         public async Task AddStock(int recordId, int quantity)
         {
-            await _records.AddStock(recordId, quantity);
-            await _records.SaveChanges();
+            await _db.Validator.RecordExists(recordId);
+            await _db.Stocks.Add(recordId, quantity);
+            await _db.SaveChanges();
         }
 
-        private async Task AddRecordToStore(RecordInfo recordInfo)
+        private async Task AddRecordToStore(NewRecord record)
         {
-            var record = _mapper.Map<Record>(recordInfo);
-            record.Stocks.Add(new Stock(recordInfo.Quantity));
-            await _records.Add(record);
-            await _records.SaveChanges();
+            await _db.Records.Add(record);
+            await _db.Stocks.Add(record.Id, record.Quantity);
+            await _db.SaveChanges();
         }
 
-        private void CreateArtistAndLabelProfiles(RecordInfo recordInfo)
+        private void CreateArtistAndLabelProfiles(NewRecord recordInfo)
         {
             Task.WaitAll(
-                _artists.Add(recordInfo.ArtistId()),
-                _labels.Add(recordInfo.LabelId()));
+                _db.Artists.Add(recordInfo.Artist),
+                _db.Labels.Add(recordInfo.Label));
         }
 
         private async Task<RecordView> GenerateRecordView(int id)
         {
-            var record = await _records.Find(id);
-            record.IsInWishlist = _currentUser.IsRecordInWishlist(id);
+            var record = await _db.Records.Find(id);
+            record.IsInWishlist = _db.CurrentUser.IsRecordInWishlist(id);
             return record;
         }
 
-        private async Task UploadTrackPreviews(RecordInfo record)
+        private void UploadTrackPreviewsInBackgroundThread(NewRecord record)
         {
             foreach (var track in record.Tracklist)
             {
-                await _googleCloud.Upload(track.Preview, record.Id + track.Title);
+                _backgroundThread.QueueBackgroundWorkItem(async token =>
+                {
+                    await _storage.Upload(track.Preview, record.Id + track.Title);
+                });
             }
         }
     }

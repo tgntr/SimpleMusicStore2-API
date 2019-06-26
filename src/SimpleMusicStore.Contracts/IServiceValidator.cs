@@ -19,7 +19,6 @@ namespace SimpleMusicStore.Contracts.Validators
         Task RecordExists(int recordId);
         Task RecordIsNotInWishlist(int recordId);
         void CartIsNotEmpty(IDictionary<int, int> items);
-        Task CredentialsAreValid(User user, string pasword);
         Task AddressIsValid(int id);
     }
 }

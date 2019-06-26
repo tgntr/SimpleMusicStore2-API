@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Data
 {
-    public class DbRepository<TEntity> : IRepository<TEntity>, IDisposable
+    public class DbRepository<TEntity>
         where TEntity : class
     {
         private readonly SimpleMusicStoreDbContext _context;
@@ -29,24 +29,24 @@ namespace SimpleMusicStore.Data
             _set = _context.Set<TEntity>();
         }
 
-        public Task Add(TEntity entity)
-        {
-            return _set.AddAsync(entity);
-        }
-
-        public void Delete(TEntity entity)
-        {
-            _set.Remove(entity);
-        }
-
-        public Task SaveChanges()
-        {
-            return _context.SaveChangesAsync();
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
-        }
+        //public Task Add(TEntity entity)
+        //{
+        //    return _set.AddAsync(entity);
+        //}
+        //
+        //public void Delete(TEntity entity)
+        //{
+        //    _set.Remove(entity);
+        //}
+        //
+        //public Task SaveChanges()
+        //{
+        //    return _context.SaveChangesAsync();
+        //}
+        //
+        //public void Dispose()
+        //{
+        //    _context.Dispose();
+        //}
     }
 }

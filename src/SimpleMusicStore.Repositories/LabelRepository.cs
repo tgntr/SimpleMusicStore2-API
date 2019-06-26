@@ -4,6 +4,7 @@ using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.MusicLibraries;
 using SimpleMusicStore.Models.View;
 using SimpleMusicStore.Sorting;
 using System;
@@ -21,6 +22,14 @@ namespace SimpleMusicStore.Repositories
         {
         }
 
+        public async Task Add(LabelInfo label)
+        {
+            if (!await Exists(label.Id))
+            {
+                await _set.AddAsync(_mapper.Map<Label>(label));
+            }
+        }
+
         public Task<bool> Exists(int id)
         {
             return _set.AnyAsync(l => l.Id == id);
@@ -30,7 +39,14 @@ namespace SimpleMusicStore.Repositories
         {
             var label = await _set.FindAsync(id);
             ValidateThatLabelExists(label);
-            return _mapper.Map<LabelView>(label);
+            return LabelAsDto(label);
+        }
+
+        private LabelView LabelAsDto(Label label)
+        {
+            var labelDto = _mapper.Map<LabelView>(label);
+            labelDto.Records = labelDto.Records.OrderByDescending(r => r.DateAdded);
+            return labelDto;
         }
 
         public IEnumerable<LabelDetails> FindAll(string searchTerm)

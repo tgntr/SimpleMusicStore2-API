@@ -4,9 +4,15 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Services
 {
-    public interface IOrderService : IShoppingCart
+    public interface IOrderService
     {
-        Task<OrderCheckout> Checkout();
+        Task<ICollection<CartItem>> CurrentCartState();
+        Task AddToCart(int itemId);
+        Task RemoveFromCart(int itemId);
+        Task IncreaseQuantity(int itemId);
+        Task DecreaseQuantity(int itemId);
+        Task EmptyCart();
+        //Task<OrderCheckout> Checkout();
         Task Complete(int addressId);
         Task<OrderView> Find(int orderId);
     }

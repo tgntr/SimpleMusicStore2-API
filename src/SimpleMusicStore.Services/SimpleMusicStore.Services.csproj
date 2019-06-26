@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SimpleMusicStore.Auth\SimpleMusicStore.Auth.csproj" />
+    <ProjectReference Include="..\SimpleMusicStore.BackgroundServiceProvider\SimpleMusicStore.BackgroundServiceProvider.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.Contracts\SimpleMusicStore.Contracts.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.Extensions\SimpleMusicStore.Extensions.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.MusicLibrary\SimpleMusicStore.MusicLibrary.csproj" />

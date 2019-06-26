@@ -1,4 +1,5 @@
 ﻿using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.Auth;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -9,6 +10,6 @@ namespace SimpleMusicStore.Contracts.Auth
 {
     public interface IClaimHandler
     {
-        Claim[] GenerateClaims(User user, bool isAdmin);
+        Claim[] Generate(UserDetails user);
     }
 }

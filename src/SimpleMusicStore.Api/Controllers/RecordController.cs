@@ -23,7 +23,7 @@ namespace SimpleMusicStore.Api.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task Add([FromBody] RecordInfo record)
+        public async Task Add([FromBody] NewRecord record)
         {
             await _records.Add(record);
         }
