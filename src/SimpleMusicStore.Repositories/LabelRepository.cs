@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.MusicLibraries;
 using SimpleMusicStore.Models.View;
+using SimpleMusicStore.Sorting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +22,14 @@ namespace SimpleMusicStore.Repositories
         {
         }
 
+        public async Task Add(LabelInfo label)
+        {
+            if (!await Exists(label.Id))
+            {
+                await _set.AddAsync(_mapper.Map<Label>(label));
+            }
+        }
+
         public Task<bool> Exists(int id)
         {
             return _set.AnyAsync(l => l.Id == id);
@@ -26,7 +37,29 @@ namespace SimpleMusicStore.Repositories
 
         public async Task<LabelView> Find(int id)
         {
-            return _mapper.Map<LabelView>(await _set.FirstAsync(l => l.Id == id));
+            var label = await _set.FindAsync(id);
+            ValidateThatLabelExists(label);
+            return LabelAsDto(label);
+        }
+
+        private LabelView LabelAsDto(Label label)
+        {
+            var labelDto = _mapper.Map<LabelView>(label);
+            labelDto.Records = labelDto.Records.OrderByDescending(r => r.DateAdded);
+            return labelDto;
+        }
+
+        public IEnumerable<LabelDetails> FindAll(string searchTerm)
+        {
+            return ((IEnumerable<Label>)_set)
+                .Search(searchTerm)
+                .Select(_mapper.Map<LabelDetails>);
+        }
+
+        private static void ValidateThatLabelExists(Label label)
+        {
+            if (label == null)
+                throw new ArgumentException(ErrorMessages.INVALID_LABEL);
         }
     }
 }

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using SimpleMusicStore.MusicLibrary.Extensions;
 using Microsoft.Extensions.Configuration;
 using SimpleMusicStore.Constants;
+using SimpleMusicStore.Models.Binding;
 
-//TODO rename namespaces
 namespace SimpleMusicStore.MusicLibrary
 {
     public class Discogs : MusicSource
@@ -24,26 +24,29 @@ namespace SimpleMusicStore.MusicLibrary
             _key = credentials["Key"];
             _secret = credentials["Secret"];
         }
-        public async Task<RecordInfo> Record(Uri uri)
+        public async Task<NewRecord> ExtractInformation(Uri uri)
         {
             var discogsId = await FindId(uri);
-            return  await DownloadContent<RecordInfo>(DiscogsConstants.RELEASE, discogsId);
+            var record = await DownloadContent<NewRecord>(DiscogsConstants.RELEASE, discogsId);
+            record.Label = await DownloadContent<LabelInfo>(DiscogsConstants.LABEL, record.LabelId());
+            record.Artist = await ExtractArtistInformation(record.ArtistId());
+
+            return record;
         }
 
-        public async Task<LabelInfo> Label(int id)
-        {
-            return await DownloadContent<LabelInfo>(DiscogsConstants.LABEL, id);
-        }
-
-        public async Task<ArtistInfo> Artist(int id)
+        private Task<ArtistInfo> ExtractArtistInformation(int id)
         {
             if (id == DiscogsConstants.VARIOUS_ARTISTS_ID)
             {
-                return new ArtistInfo { Id = DiscogsConstants.VARIOUS_ARTISTS_ID, Name = DiscogsConstants.VARIOUS_ARTISTS };
+                return Task.Run(()=>new ArtistInfo
+                {
+                    Id = DiscogsConstants.VARIOUS_ARTISTS_ID,
+                    Name = DiscogsConstants.VARIOUS_ARTISTS
+                });
             }
             else
             {
-                return await DownloadContent<ArtistInfo>(DiscogsConstants.ARTIST, id);
+                return DownloadContent<ArtistInfo>(DiscogsConstants.ARTIST, id);
             }
         }
 
@@ -57,9 +60,15 @@ namespace SimpleMusicStore.MusicLibrary
 
         private async Task<T> DownloadContent<T>(string contentType, int discogsId)
         {
-            var content = await Web().DownloadStringTaskAsync(GenerateUrl(contentType, discogsId));
-            //TODO validate
-            return JsonConvert.DeserializeObject<T>(content);
+            try
+            {
+                var content = await Web().DownloadStringTaskAsync(GenerateUrl(contentType, discogsId));
+                return JsonConvert.DeserializeObject<T>(content);
+            }
+            catch (Exception)
+            {
+                throw new ArgumentException(ErrorMessages.INVALID_DISCOGS_URL);
+            }
         }
 
         private WebClient Web()

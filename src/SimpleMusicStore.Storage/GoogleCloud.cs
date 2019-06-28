@@ -3,29 +3,29 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Google.Apis.Auth.OAuth2;
 using SimpleMusicStore.Contracts;
+using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Constants;
+using SimpleMusicStore.Contracts.Validators;
 
 namespace SimpleMusicStore.Storage
 {
     public class GoogleCloud : FileStorage
     {
-        private const string BUCKET_NAME = "simplemusicstore";
-
-
         private readonly StorageClient _storage;
+        private readonly IServiceValidator _validator;
 
-        public GoogleCloud()
+        public GoogleCloud(IServiceValidator validator)
         {
             //TODO move credentials file
-            //var credentials = GoogleCredential.GetApplicationDefault();
             _storage = StorageClient.Create();
+            _validator = validator;
         }
 
-        public async Task Upload(IFormFile file)
+        public async Task Upload(IFormFile file, string fileName)
         {
-            //TODO generate unique names because a file with the same name overrides the previous one
             await _storage.UploadObjectAsync(
-                bucket: BUCKET_NAME,
-                objectName: file.FileName,
+                bucket: CommonConstants.BUCKET_NAME,
+                objectName: fileName,
                 contentType: file.ContentType,
                 source: file.OpenReadStream(),
                 options: PublicReadAccess()
@@ -36,19 +36,5 @@ namespace SimpleMusicStore.Storage
         {
             return new UploadObjectOptions { PredefinedAcl = PredefinedObjectAcl.PublicRead };
         }
-
-		//public async Task Delete(string fileName)
-		//{
-		//    try
-		//    {
-		//        await _storage.DeleteObjectAsync(BUCKET_NAME, fileName);
-		//    }
-		//    catch (Google.GoogleApiException exception)
-		//    {
-		//        // A 404 error is ok.  The image is not stored in cloud storage.
-		//        if (exception.Error.Code != 404)
-		//            throw;
-		//    }
-		//}
 	}
 }

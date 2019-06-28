@@ -13,6 +13,13 @@ namespace SimpleMusicStore.Entities
         {
         }
 
+        public Wish(int recordId, string userId)
+            :base()
+        {
+            RecordId = recordId;
+            UserId = userId;
+        }
+
         [Required]
         public int RecordId { get; set; }
         public virtual Record Record { get; set; }

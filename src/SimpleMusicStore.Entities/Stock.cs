@@ -11,6 +11,12 @@ namespace SimpleMusicStore.Entities
             DateAdded = DateTime.UtcNow;
         }
 
+        public Stock(int recordId, int quantity)
+        {
+            RecordId = recordId;
+            Quantity = quantity;
+        }
+
         [Required]
         public int RecordId { get; set; }
         public virtual Record Record { get; set; }

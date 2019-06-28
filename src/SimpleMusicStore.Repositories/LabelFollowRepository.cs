@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
@@ -17,16 +18,22 @@ namespace SimpleMusicStore.Repositories
         {
         }
 
-		public async Task Delete(int labelId, string userId)
+        public Task Add(int labelId, string userId)
         {
-            var labelFollow = await Find(labelId, userId);
-            _set.Remove(labelFollow);
-            await SaveChanges();
+            return _set.AddAsync(new LabelFollow(labelId, userId));
         }
 
-        private async Task<LabelFollow> Find(int labelId, string userId)
+		public async Task Delete(int labelId, string userId)
         {
-            return await _set.FirstAsync(lf => lf.LabelId == labelId && lf.UserId == userId);
+            var labelFollow = await _set.FindAsync(labelId, userId);
+            ValidateThatLabelFollowExists(labelFollow);
+            _set.Remove(labelFollow);
+        }
+
+        private static void ValidateThatLabelFollowExists(LabelFollow labelFollow)
+        {
+            if (labelFollow == null)
+                throw new ArgumentException(ErrorMessages.LABEL_NOT_FOLLOWED);
         }
 
         public Task<bool> Exists(int labelId, string userId)

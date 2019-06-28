@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.MusicLibraries;
 using SimpleMusicStore.Models.View;
 using System;
@@ -18,7 +19,9 @@ namespace SimpleMusicStore.Api
             CreateMap<ArtistInfo, Artist>();
             CreateMap<RecordVideoInfo, Video>();
             CreateMap<RecordTrackInfo, Track>();
-            CreateMap<RecordInfo, Record>();
+            CreateMap<NewRecord, Record>()
+                .ForMember(r=>r.Artist, opt=>opt.Ignore())
+                .ForMember(r=>r.Label, opt=>opt.Ignore());
             CreateMap<Record, CartItem>();
             CreateMap<KeyValuePair<int, int>, Item>()
                 .ForMember(i => i.RecordId, src => src.MapFrom(kvp => kvp.Key))
@@ -57,6 +60,9 @@ namespace SimpleMusicStore.Api
             CreateMap<Track, TrackDetails>();
             CreateMap<Artist, ArtistView>();
             CreateMap<Label, LabelView>();
+            CreateMap<NewOrder, Order>();
+            CreateMap<NewAddress, Address>();
+            CreateMap<AddressEdit, Address>();
         }
     }
 }

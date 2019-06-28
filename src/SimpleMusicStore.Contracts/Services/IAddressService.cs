@@ -1,4 +1,5 @@
-﻿using SimpleMusicStore.Models.View;
+﻿using SimpleMusicStore.Models.Binding;
+using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,8 +9,9 @@ namespace SimpleMusicStore.Contracts.Services
 {
     public interface IAddressService
     {
-        Task Add(AddressDetails newAddress);
-        Task Edit(AddressDetails newAddress);
+        Task Add(NewAddress address);
+        Task Edit(AddressEdit address);
         Task Remove(int id);
+        IEnumerable<AddressDetails> FindAll(string userId);
     }
 }

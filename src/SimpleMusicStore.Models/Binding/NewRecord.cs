@@ -1,20 +1,55 @@
-﻿using Newtonsoft.Json;
-using SimpleMusicStore.Constants;
+﻿using SimpleMusicStore.Constants;
+using SimpleMusicStore.Models.MusicLibraries;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Models.Binding
 {
     public class NewRecord
     {
-        //TODO [DiscogsUrl] move DiscogsUrlAttribute to another project, so there is not a circular dependency
+        public NewRecord()
+        {
+            Videos = new List<RecordVideoInfo>();
+            Images = new List<ImageInfo>();
+        }
         [Required]
-        [RegularExpression(DiscogsConstants.DISCOGS_URL_PATTERN)]
-        [JsonProperty("discogsUrl")]
-        public string DiscogsUrl { get; set; }
-
+        public int Id { get; set; }
         [Required]
-        [JsonProperty("price")]
-        [Range(1, 100.00, ErrorMessage = ErrorMessages.PRICE_LIMIT)]
+        public string Title { get; set; }
+        [Required]
+        public int Year { get; set; }
+        [Range(1, 100.00, ErrorMessage = ErrorMessages.PRICE_LIMIT), Required]
         public decimal Price { get; set; }
+        [Range(1,int.MaxValue), Required]
+        public int Quantity { get; set; }
+        public ICollection<RecordVideoInfo> Videos { get; set; }
+        [MinLength(1), Required]
+        public ICollection<RecordLabelInfo> Labels { get; set; }
+        [MinLength(1), Required]
+        public ICollection<RecordArtistInfo> Artists { get; set; }
+        public LabelInfo Label { get; set; }
+        public ArtistInfo Artist { get; set; }
+        public ICollection<ImageInfo> Images { get; set; }
+        [MinLength(1), Required]
+        public ICollection<string> Genres { get; set; }
+        [MinLength(1), Required]
+        public ICollection<RecordTrackInfo> Tracklist { get; set; }
+        [MinLength(1), Required]
+        public ICollection<RecordFormatInfo> Formats { get; set; }
+
+        public string Format() => Formats.First().Name;
+        public string Image()
+        {
+            if (Images is null || !Images.Any())
+                return DiscogsConstants.DEFAULT_IMAGE;
+            else
+                return Images.First().Uri;
+        }
+        public int ArtistId() => Artists.First().Id;
+        public int LabelId() => Labels.First().Id;
+        public string Genre() => Genres.First();
     }
 }

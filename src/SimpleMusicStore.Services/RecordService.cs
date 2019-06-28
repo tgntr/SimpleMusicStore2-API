@@ -1,60 +1,53 @@
 ﻿using AutoMapper;
 using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts;
+using SimpleMusicStore.Contracts.BackgroundServiceProvider;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Sorting;
+using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.MusicLibraries;
 using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
 {
     public class RecordService : IRecordService
     {
-        private readonly MusicSource _discogs;
-        private readonly IRecordRepository _records;
-        private readonly IMapper _mapper;
-        private readonly ILabelService _labels;
-        private readonly IArtistService _artists;
-        private readonly IServiceValidations _validator;
+        private readonly IUnitOfWork _db;
+        private readonly FileStorage _storage;
+        private readonly IBackgroundTaskQueue _backgroundThread;
         private readonly Sorter _sorter;
-        private readonly ICurrentUserActivities _currentUser;
 
-        public RecordService(MusicSource source,
-            IRecordRepository records,
-            IMapper mapper,
-            ILabelService labels,
-            IArtistService artists,
-            IServiceValidations validator,
+        public RecordService(IUnitOfWork db,
             Sorter sorter,
-            ICurrentUserActivities currentUser)
+            FileStorage storage,
+            IBackgroundTaskQueue backgroundThread)
         {
-            _discogs = source;
-            _records = records;
-            _mapper = mapper;
-            _artists = artists;
-            _validator = validator;
+            _db = db;
             _sorter = sorter;
-            _currentUser = currentUser;
-            _labels = labels;
+            _storage = storage;
+            _backgroundThread = backgroundThread;
         }
-
         public async Task Add(NewRecord record)
         {
-            var recordInfo = await ExtractRecordInfo(record.DiscogsUrl);
-            await _validator.RecordIsNotInStore(recordInfo.Id);
-            CreateArtistAndLabelProfiles(recordInfo);
-            await AddRecordToStore(recordInfo, record.Price);
+            await _db.Validator.RecordIsNotInStore(record.Id);
+            CreateArtistAndLabelProfiles(record);
+            await AddRecordToStore(record);
+            //TODO test 
+            UploadTrackPreviewsInBackgroundThread(record);
+
+            
         }
 
         public async Task<RecordView> Find(int id)
         {
-            await _validator.RecordExists(id);
             return await GenerateRecordView(id);
         }
 
@@ -62,37 +55,49 @@ namespace SimpleMusicStore.Services
         {
             return new NewsFeed
             {
-                Recommended = _sorter.Sort(SortTypes.Recommendation, _records.FindAll()),
-                MostPopular = _sorter.Sort(SortTypes.Popularity, _records.FindAll()),
-                Newest = _sorter.Sort(SortTypes.DateAdded, _records.FindAll())
+                Recommended = _sorter.Sort(SortTypes.Recommendation, _db.Records.FindAll()),
+                MostPopular = _sorter.Sort(SortTypes.Popularity, _db.Records.FindAll()),
+                Newest = _sorter.Sort(SortTypes.DateAdded, _db.Records.FindAll())
             };
         }
 
-        private async Task AddRecordToStore(RecordInfo recordInfo, decimal price)
+        public async Task AddStock(int recordId, int quantity)
         {
-            var record = _mapper.Map<Record>(recordInfo);
-            record.Price = price;
-            await _records.Add(record);
-            await _records.SaveChanges();
+            await _db.Validator.RecordExists(recordId);
+            await _db.Stocks.Add(recordId, quantity);
+            await _db.SaveChanges();
         }
 
-        private void CreateArtistAndLabelProfiles(RecordInfo recordInfo)
+        private async Task AddRecordToStore(NewRecord record)
+        {
+            await _db.Records.Add(record);
+            await _db.Stocks.Add(record.Id, record.Quantity);
+            await _db.SaveChanges();
+        }
+
+        private void CreateArtistAndLabelProfiles(NewRecord recordInfo)
         {
             Task.WaitAll(
-                _artists.Add(recordInfo.ArtistId),
-                _labels.Add(recordInfo.LabelId));
-        }
-
-        private async Task<RecordInfo> ExtractRecordInfo(string url)
-        {
-            return await _discogs.Record(new Uri(url));
+                _db.Artists.Add(recordInfo.Artist),
+                _db.Labels.Add(recordInfo.Label));
         }
 
         private async Task<RecordView> GenerateRecordView(int id)
         {
-            var record = await _records.Find(id);
-            record.IsInWishlist = _currentUser.IsRecordInWishlist(id);
+            var record = await _db.Records.Find(id);
+            record.IsInWishlist = _db.CurrentUser.IsRecordInWishlist(id);
             return record;
+        }
+
+        private void UploadTrackPreviewsInBackgroundThread(NewRecord record)
+        {
+            foreach (var track in record.Tracklist)
+            {
+                _backgroundThread.QueueBackgroundWorkItem(async token =>
+                {
+                    await _storage.Upload(track.Preview, record.Id + track.Title);
+                });
+            }
         }
     }
 }

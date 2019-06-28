@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SimpleMusicStore.Auth
+namespace SimpleMusicStore.Constants
 {
     public static class AuthConstants
     {

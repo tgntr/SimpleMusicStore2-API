@@ -2,6 +2,7 @@
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Sorting;
+using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Extensions;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
@@ -13,42 +14,39 @@ namespace SimpleMusicStore.Services
 {
     public class BrowseService : IBrowseService
     {
-        private readonly IRecordRepository _records;
+        private readonly IUnitOfWork _db;
         private readonly Sorter _sorter;
-        private readonly IServiceValidations _validator;
 
-        public BrowseService(IRecordRepository records, Sorter sorter, IServiceValidations validator)
+        public BrowseService(IUnitOfWork db, Sorter sorter)
         {
-            _records = records;
+            _db = db;
             _sorter = sorter;
-            _validator = validator;
         }
 
         public Browse GenerateBrowseView()
         {
             return new Browse
             {
-                AvailableFormats = _records.AvailableFormats(),
-                AvailableGenres = _records.AvailableGenres(),
-                Records = _records.FindAll(),
+                AvailableFormats = _db.Records.AvailableFormats(),
+                AvailableGenres = _db.Records.AvailableGenres(),
+                Records = _db.Records.FindAll(),
                 AvailableSortTypes = ExtractAllSortTypes()
             };
         }
 
         public IEnumerable<RecordDetails> Filter(FilterCriterias criterias)
         {
-            return _sorter.Sort(criterias.Sort.AsSortType(), _records.FindAll(criterias));
+            return _sorter.Sort(criterias.Sort, _db.Records.FindAll(criterias));
         }
 
-        public IEnumerable<RecordDetails> Search(string searchTerm)
+        public SearchResult Search(string searchTerm)
         {
-            _validator.SearchTermIsNotEmpty(searchTerm);
-            return _records.FindAll(SplitToKeywords(searchTerm));
-        }
-
-        private string[] SplitToKeywords(string searchTerm)
-        {
-            return searchTerm.ToLower().Split();
+            return new SearchResult
+            {
+                Records = _db.Records.FindAll(searchTerm),
+                Artists = _db.Artists.FindAll(searchTerm),
+                Labels = _db.Labels.FindAll(searchTerm)
+            };
         }
 
         private IEnumerable<string> ExtractAllSortTypes()

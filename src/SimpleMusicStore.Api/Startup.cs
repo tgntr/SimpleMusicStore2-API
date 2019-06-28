@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Http;
 using System;
 using StackExchange.Redis;
 using SimpleMusicStore.Data;
+using SimpleMusicStore.ModelValidations;
+using SimpleMusicStore.BackgroundServiceProvider;
+using SimpleMusicStore.Contracts.BackgroundServiceProvider;
 
 namespace SimpleMusicStore.Api
 {
@@ -25,12 +28,18 @@ namespace SimpleMusicStore.Api
         public void ConfigureServices(IServiceCollection services)
         {
             //TODO Environment class to access appsettings values
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+                .AddMvc(options => options.Filters.Add(typeof(ValidateModelStateGloballyAttribute)))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDatabase(Configuration["Database:Connection"]);
             services.AddJwtAuthentication(JwtPayloadSection());
             services.AddCustomServices(Configuration);
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton(ConnectionMultiplexer.Connect(Configuration["Redis:Connection"]).GetDatabase());
+            //todo move them to backgroundservicesetup
+            services.AddHostedService<QueuedHostedService>();
+            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +55,7 @@ namespace SimpleMusicStore.Api
                 app.UseHsts();
             }
 
+            app.ConfigureExceptionHandler();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();
             app.UseHttpsRedirection();

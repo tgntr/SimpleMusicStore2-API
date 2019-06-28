@@ -2,74 +2,82 @@
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
 using SimpleMusicStore.ShoppingCart;
 using StackExchange.Redis;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
 {
-    public class OrderService : ShoppingCartCacheProxy, IOrderService
+    public class OrderService : IOrderService
     {
-        private readonly IAddressRepository _addresses;
-        private readonly IOrderRepository _orders;
+        private readonly IUnitOfWork _db;
+        private readonly IShoppingCart _cart;
 
-        public OrderService(
-            IAddressRepository addresses,
-            IMapper mapper,
-            IOrderRepository orders,
-            IRecordRepository records,
-            IServiceValidations validator,
-            IClaimAccessor currentUser,
-            IDatabase cacheProvider)
-            : base(currentUser, records, mapper, cacheProvider, validator)
+        public OrderService(IUnitOfWork db, IShoppingCart cart)
         {
-            _addresses = addresses;
-            _orders = orders;
+            _db = db;
+            _cart = cart;
         }
 
-        public async Task<OrderCheckout> Checkout()
+        public Task AddToCart(int itemId)
         {
-            _validator.CartIsNotEmpty(Items);
-            return await GenerateOrderCheckoutDetailsView();
+            return _cart.Add(itemId);
         }
 
-        public async Task Complete(int addressId)
+        public Task<ICollection<CartItem>> CurrentCartState()
         {
-            _validator.CartIsNotEmpty(Items);
-            await _validator.AddressIsValid(addressId);
-            await AddNewOrder(addressId);
-            await EmptyCart();
+            return _cart.CurrentState();
+        }
+
+        public Task DecreaseQuantity(int itemId)
+        {
+            return _cart.DecreaseQuantity(itemId);
+        }
+
+        public Task EmptyCart()
+        {
+            return _cart.EmptyCart();
         }
 
         public async Task<OrderView> Find(int orderId)
         {
-            await _validator.OrderIsValid(orderId);
-            return await _orders.Find(orderId);
+            return await _db.Orders.Find(orderId);
         }
 
-        private async Task<OrderCheckout> GenerateOrderCheckoutDetailsView()
+        public Task IncreaseQuantity(int itemId)
         {
-            return new OrderCheckout
-            {
-                Addresses =  _addresses.FindAll(_currentUser.Id),
-                Items = await Cart()
-            };
+            return _cart.IncreaseQuantity(itemId);
+        }
+        public Task RemoveFromCart(int itemId)
+        {
+            return _cart.Remove(itemId);
+        }
+
+        public async Task Complete(int addressId)
+        {
+            _db.Validator.CartIsNotEmpty(_cart.Items);
+            await _db.Validator.AddressIsValid(addressId);
+            await AddNewOrder(addressId);
+            await _cart.EmptyCart();
         }
 
         private async Task AddNewOrder(int addressId)
         {
-            var order = new Entities.Order
+            var order = new NewOrder
             {
                 DeliveryAddressId = addressId,
-                UserId = _currentUser.Id,
-                Items = Items.Select(i => _mapper.Map<Item>(i)).ToList()
+                UserId = _db.CurrentUser.Id,
+                Items = _cart.Items
             };
 
-            await _orders.Add(order);
-            await _orders.SaveChanges();
+            await _db.Orders.Add(order);
+            await _db.SaveChanges();
         }
     }
 }

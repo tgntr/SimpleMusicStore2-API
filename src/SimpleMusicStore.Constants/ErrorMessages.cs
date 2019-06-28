@@ -11,11 +11,11 @@ namespace SimpleMusicStore.Constants
             PRICE_LIMIT = "Price must be between 1$ and 100$!",
             INVALID_ADDRESS = "Invalid address!",
             EMPTY_CART = "Cart is empty!",
-            RECORD_IS_IN_WISHLIST = "Record is already in wishlist!",
+            RECORD_ALREADY_IN_WISHLIST = "Record is already in wishlist!",
             INVALID_RECORD = "Record does not exist!",
-            ARTIST_IS_FOLLOWED = "Artist is already followed!",
+            ARTIST_ALREADY_FOLLOWED = "Artist is already followed!",
             INVALID_ARTIST = "Artist does not exist!",
-            LABEL_IS_FOLLOWED = "Label is already followed!",
+            LABEL_ALREADY_FOLLOWED = "Label is already followed!",
             INVALID_LABEL = "Label does not exist!",
             RECORD_NOT_IN_WISHLIST = "Record is not in wishlist!",
             ARTIST_NOT_FOLLOWED = "Artist is not followed!",
@@ -25,7 +25,9 @@ namespace SimpleMusicStore.Constants
             UNAVAILABLE_QUANTITY = "Required quantity is not available!",
             INVALID_CREDENTIALS = "Invalid credentials!",
             INVALID_ORDER = "Invalid order!",
-            INVALID_SEARCH_TERM = "Search term must not be empty!";
+            INVALID_SEARCH_TERM = "Search term must not be empty!",
+            INVALID_FILE = "Track preview must be non-empty MP3 file",
+            INVALID_DISCOGS_URL = "Invalid discogs URL!";
 
 
 

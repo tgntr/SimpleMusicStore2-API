@@ -1,9 +1,6 @@
-﻿using SimpleMusicStore.Entities;
-using SimpleMusicStore.Models.Binding;
+﻿using SimpleMusicStore.Models.Binding;
+using SimpleMusicStore.Models.MusicLibraries;
 using SimpleMusicStore.Models.View;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Services
@@ -12,7 +9,7 @@ namespace SimpleMusicStore.Contracts.Services
     {
         Task Add(NewRecord record);
         NewsFeed NewsFeed();
-
         Task<RecordView> Find(int id);
+        Task AddStock(int recordId, int quantity);
     }
 }

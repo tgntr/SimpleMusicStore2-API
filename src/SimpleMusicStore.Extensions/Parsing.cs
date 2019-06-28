@@ -5,12 +5,9 @@ namespace SimpleMusicStore.Extensions
 {
     public static class Parsing
     {
-        public static SortTypes AsSortType(this string sort)
+        public static Uri AsUri(this string url)
         {
-            if (Enum.TryParse(sort, true, out SortTypes result))
-                return result;
-            else
-                throw new ArgumentException(ErrorMessages.UNSUPPORTED_SORT);
+            return new Uri(url);
         }
     }
 }

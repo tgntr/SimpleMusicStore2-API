@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
@@ -19,12 +21,18 @@ namespace SimpleMusicStore.Repositories
         {
         }
 
-        public async Task Edit(AddressDetails address)
+        public Task Add(NewAddress address)
         {
-            var addressEntity = await Find(address.Id);
-            addressEntity.Street = address.Street;
-            addressEntity.City = address.City;
-            addressEntity.Country = address.Country;
+            return _set.AddAsync(_mapper.Map<Address>(address));
+        }
+
+        public async Task Edit(AddressEdit addressDetails)
+        {
+            var address = await _set.FindAsync(addressDetails.Id);
+            ValidateThatAddressExists(address);
+            address.Street = addressDetails.Street;
+            address.City = addressDetails.City;
+            address.Country = addressDetails.Country;
         }
 
         public Task<bool> Exists(int id, string userId)
@@ -34,19 +42,20 @@ namespace SimpleMusicStore.Repositories
 
         public IEnumerable<AddressDetails> FindAll(string userId)
         {
-            //TODO is it an okay way to map stuff? Is it good to map things here?
             return _set.Where(a => a.UserId == userId).Select(_mapper.Map<AddressDetails>);
         }
 
         public async Task Remove(int addressId)
         {
-            var address = await Find(addressId);
+            var address = await _set.FindAsync(addressId);
+            ValidateThatAddressExists(address);
             address.IsActive = false;
         }
 
-        private Task<Address> Find(int id)
+        private static void ValidateThatAddressExists(Address address)
         {
-            return _set.FirstAsync(a => a.Id == id);
+            if (address == null)
+                throw new ArgumentException(ErrorMessages.INVALID_ADDRESS);
         }
     }
 }

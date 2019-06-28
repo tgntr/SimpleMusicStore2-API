@@ -5,38 +5,31 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using SimpleMusicStore.Auth.Extensions;
 using System.Threading.Tasks;
-using SimpleMusicStore.Contracts.Services;
 using Microsoft.AspNetCore.Identity;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Contracts.Validators;
+using SimpleMusicStore.Constants;
+using SimpleMusicStore.Contracts.Repositories;
 
 namespace SimpleMusicStore.Auth
 {
     public class Jwt : AuthenticationHandler
     {
-        private readonly IServiceValidations _validator;
-        private readonly UserManager<User> _users;
         private readonly JwtConfiguration _config;
-        private readonly IClaimHandler _claimCreator;
+        private readonly IUnitOfWork _db;
+        private readonly IClaimHandler _claims;
 
-        public Jwt(IOptions<JwtConfiguration> config, IServiceValidations validator, UserManager<User> users, IClaimHandler claimCreator)
+        public Jwt(IOptions<JwtConfiguration> config, IUnitOfWork db, IClaimHandler claimCreator)
         {
-            _validator = validator;
-            _users = users;
             _config = config.Value;
-            _claimCreator = claimCreator;
+            _db = db;
+            _claims = claimCreator;
         }
 
-        public async Task<string> Authenticate(AuthenticationRequest request)
+        public async Task<string> Authenticate(AuthenticationRequest credentials)
         {
-            var user = await _users.FindByNameAsync(request.Username);
-            await _validator.CredentialsAreValid(user, request.Password);
-            var claims = await ExtractClaims(user);
-            return GenerateJwtToken(claims);
-        }
-
-        private async Task<Claim[]> ExtractClaims(User user)
-        {
-            return _claimCreator.GenerateClaims(user, await _users.IsInRoleAsync(user, AuthConstants.ADMIN_ROLE));
+            var user = await _db.Users.Find(credentials);
+            return GenerateJwtToken(_claims.Generate(user));
         }
 
         private string GenerateJwtToken(Claim[] claims)

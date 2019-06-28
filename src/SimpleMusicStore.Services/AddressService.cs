@@ -2,7 +2,9 @@
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
@@ -13,45 +15,36 @@ namespace SimpleMusicStore.Services
 {
     public class AddressService : IAddressService
     {
-        private readonly IAddressRepository _addresses;
-        private readonly IServiceValidations _validator;
-        private readonly IMapper _mapper;
-        private readonly IClaimAccessor _currentUser;
+        private readonly IUnitOfWork _db;
 
-        public AddressService(IAddressRepository addresses, IServiceValidations validator, IMapper mapper, IClaimAccessor currentUser)
+        public AddressService(IUnitOfWork db)
         {
-            _addresses = addresses;
-            _validator = validator;
-            _mapper = mapper;
-            _currentUser = currentUser;
+            _db = db;
         }
 
-        public async Task Add(AddressDetails newAddress)
+        public async Task Add(NewAddress address)
         {
-            var addressEntity = CreateAddress(newAddress);
-            await _addresses.Add(addressEntity);
-            await _addresses.SaveChanges();
+            address.UserId = _db.CurrentUser.Id;
+            await _db.Addresses.Add(address);
+            await _db.SaveChanges();
         }
 
         public async Task Remove(int id)
         {
-            await _validator.AddressIsValid(id);
-            await _addresses.Remove(id);
-            await _addresses.SaveChanges();
+            await _db.Addresses.Remove(id);
+            await _db.SaveChanges();
         }
 
-        public async Task Edit(AddressDetails newAddress)
+        public async Task Edit(AddressEdit address)
         {
-            await _validator.AddressIsValid(newAddress.Id);
-            await _addresses.Edit(newAddress);
-            await _addresses.SaveChanges();
-        }
-        private Address CreateAddress(AddressDetails address)
-        {
-            var addressEntity = _mapper.Map<Address>(address);
-            addressEntity.UserId = _currentUser.Id;
-            return addressEntity;
+            await _db.Addresses.Edit(address);
+            await _db.SaveChanges();
         }
 
+        public IEnumerable<AddressDetails> FindAll(string userId)
+        {
+            //todo validate that it's current user
+            return _db.Addresses.FindAll(userId);
+        }
     }
 }

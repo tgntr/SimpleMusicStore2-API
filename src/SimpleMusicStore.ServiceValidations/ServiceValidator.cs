@@ -3,14 +3,16 @@ using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
+using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace SimpleMusicStore.Validations
+namespace SimpleMusicStore.ServiceValidations
 {
-    public class ServiceValidations : IServiceValidations
+    public class ServiceValidator : IServiceValidator
     {
         private readonly IAddressRepository _addresses;
         private readonly IWishRepository _wishes;
@@ -19,11 +21,9 @@ namespace SimpleMusicStore.Validations
         private readonly IArtistRepository _artists;
         private readonly ILabelRepository _labels;
         private readonly ILabelFollowRepository _labelFollows;
-        private readonly IOrderRepository _orders;
-        private readonly UserManager<User> _users;
         private readonly IClaimAccessor _currentUser;
 
-        public ServiceValidations(
+        public ServiceValidator(
             IAddressRepository addresses,
             IClaimAccessor currentUser,
             IWishRepository wishes,
@@ -31,9 +31,7 @@ namespace SimpleMusicStore.Validations
             IArtistFollowRepository artistFollows,
             IArtistRepository artists,
             ILabelRepository labels,
-            ILabelFollowRepository labelFollows,
-            IOrderRepository orders,
-            UserManager<User> users)
+            ILabelFollowRepository labelFollows)
         {
             _addresses = addresses;
             _wishes = wishes;
@@ -42,26 +40,19 @@ namespace SimpleMusicStore.Validations
             _artists = artists;
             _labels = labels;
             _labelFollows = labelFollows;
-            _orders = orders;
-            _users = users;
             _currentUser = currentUser;
-        }
-        public async Task AddressIsValid(int id)
-        {
-            if (!await _addresses.Exists(id, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.INVALID_ADDRESS);
         }
 
         public void CartIsNotEmpty(IDictionary<int, int> items)
         {
-            if (items.Count == 0)
+            if (!items.Any())
                 throw new OperationCanceledException(ErrorMessages.EMPTY_CART);
         }
 
         public async Task RecordIsNotInWishlist(int recordId)
         {
             if (await _wishes.Exists(recordId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.RECORD_IS_IN_WISHLIST);
+                throw new ArgumentException(ErrorMessages.RECORD_ALREADY_IN_WISHLIST);
         }
 
         public async Task RecordExists(int recordId)
@@ -73,7 +64,7 @@ namespace SimpleMusicStore.Validations
         public async Task ArtistIsNotFollowed(int artistId)
         {
             if (await _artistFollows.Exists(artistId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.ARTIST_IS_FOLLOWED);
+                throw new ArgumentException(ErrorMessages.ARTIST_ALREADY_FOLLOWED);
         }
 
         public async Task ArtistExists(int artistId)
@@ -85,31 +76,13 @@ namespace SimpleMusicStore.Validations
         public async Task LabelIsNotFollowed(int labelId)
         {
             if (await _labelFollows.Exists(labelId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.LABEL_IS_FOLLOWED);
+                throw new ArgumentException(ErrorMessages.LABEL_ALREADY_FOLLOWED);
         }
 
         public async Task LabelExists(int labelId)
         {
             if (!await _labels.Exists(labelId))
                 throw new ArgumentException(ErrorMessages.INVALID_LABEL);
-        }
-
-        public async Task RecordIsInWishlist(int recordId)
-        {
-            if (!await _wishes.Exists(recordId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.RECORD_NOT_IN_WISHLIST);
-        }
-
-        public async Task ArtistIsFollowed(int artistId)
-        {
-            if (!await _artistFollows.Exists(artistId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.ARTIST_NOT_FOLLOWED);
-        }
-
-        public async Task LabelIsFollowed(int labelId)
-        {
-            if (!await _labelFollows.Exists(labelId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.LABEL_NOT_FOLLOWED);
         }
 
         public async Task RecordIsNotInStore(int id)
@@ -134,22 +107,10 @@ namespace SimpleMusicStore.Validations
                 throw new ArgumentException(ErrorMessages.UNAVAILABLE_QUANTITY);
         }
 
-        public async Task CredentialsAreValid(User user, string password)
+        public async Task AddressIsValid(int id)
         {
-            if (!await _users.CheckPasswordAsync(user, password))
-                throw new ArgumentException(ErrorMessages.INVALID_CREDENTIALS);
-        }
-
-        public async Task OrderIsValid(int orderId)
-        {
-            if (!await _orders.Exists(orderId, _currentUser.Id))
-                throw new ArgumentException(ErrorMessages.INVALID_ORDER);
-        }
-
-        public void SearchTermIsNotEmpty(string searchTerm)
-        {
-            if (string.IsNullOrEmpty(searchTerm))
-                throw new ArgumentException(ErrorMessages.INVALID_SEARCH_TERM);
+            if (!await _addresses.Exists(id, _currentUser.Id))
+                throw new ArgumentException(ErrorMessages.INVALID_ADDRESS);
         }
     }
 }

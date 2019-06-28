@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Contracts.Services;
-using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Api.Controllers
 {
@@ -27,9 +23,8 @@ namespace SimpleMusicStore.Api.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task Add([FromBody]NewRecord record)
+        public async Task Add([FromBody] NewRecord record)
         {
-            //TODO in the front end, when someone paste discogs url, provide an preview with some AJAX, so the user could see what he is going to add to the store????
             await _records.Add(record);
         }
 
@@ -44,16 +39,15 @@ namespace SimpleMusicStore.Api.Controllers
             return _browser.Filter(criterias);
         }
 
-        public IEnumerable<RecordDetails> Search(string searchTerm)
-        {
-            return _browser.Search(searchTerm);
-        }
-
         public async Task<RecordView> Details(int id)
         {
             return await _records.Find(id);
         }
 
-
+        [HttpPost]
+        public async Task AddStock(int recordId , [FromBody,Range(1, 100)] int quantity)
+        {
+            await _records.AddStock(recordId, quantity);
+        }
     }
 }

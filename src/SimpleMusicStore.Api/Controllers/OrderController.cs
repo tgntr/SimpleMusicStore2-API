@@ -42,14 +42,9 @@ namespace SimpleMusicStore.Api.Controllers
             await _orders.EmptyCart();
         }
 
-        public async Task<OrderCheckout> Checkout()
+        public async Task Complete(int addressId)
         {
-            return await _orders.Checkout();
-        }
-
-        public async Task Complete(int id)
-        {
-            await _orders.Complete(id);
+            await _orders.Complete(addressId);
         }
 
         public async Task<OrderView> Details(int id)
