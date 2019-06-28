@@ -22,21 +22,21 @@ namespace SimpleMusicStore.Api.Controllers
         }
 
         [HttpPost]
-        public async Task Add([FromBody]NewAddress address)
+        public Task Add([FromBody]NewAddress address)
         {
-            await _addresses.Add(address);
+            return _addresses.Add(address);
         }
 
         [HttpPost]
-        public async Task Edit([FromBody]AddressEdit address)
+        public Task Edit([FromBody]AddressEdit address)
         {
-            await _addresses.Edit(address);
+            return _addresses.Edit(address);
         }
 
         [HttpPost]
-        public async Task Remove(int id)
+        public Task Remove(int id)
         {
-            await _addresses.Remove(id);
+            return _addresses.Remove(id);
         }
 
         public IEnumerable<AddressDetails> FindAll(string userId)

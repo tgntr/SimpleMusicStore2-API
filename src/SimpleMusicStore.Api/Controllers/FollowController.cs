@@ -19,34 +19,34 @@ namespace SimpleMusicStore.Api.Controllers
             _follows = follows;
         }
 
-        public async Task AddToWishlist(int id)
+        public Task AddToWishlist(int id)
         {
-            await _follows.AddToWishlist(id);
+            return _follows.AddToWishlist(id);
         }
 
-        public async Task RemoveFromWishlist(int id)
+        public Task RemoveFromWishlist(int id)
         {
-            await _follows.RemoveFromWishlist(id);
+            return _follows.RemoveFromWishlist(id);
         }
 
-        public async Task FollowArtist(int id)
+        public Task FollowArtist(int id)
         {
-            await _follows.FollowArtist(id);
+            return _follows.FollowArtist(id);
         }
 
-        public async Task UnfollowArtist(int id)
+        public Task UnfollowArtist(int id)
         {
-            await _follows.UnfollowArtist(id);
+            return _follows.UnfollowArtist(id);
         }
 
-        public async Task FollowLabel(int id)
+        public Task FollowLabel(int id)
         {
-            await _follows.FollowLabel(id);
+            return _follows.FollowLabel(id);
         }
 
-        public async Task UnfollowLabel(int id)
+        public Task UnfollowLabel(int id)
         {
-            await _follows.UnfollowLabel(id);
+            return _follows.UnfollowLabel(id);
         }
     }
 }

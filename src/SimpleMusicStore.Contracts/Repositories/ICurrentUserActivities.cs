@@ -7,14 +7,14 @@ namespace SimpleMusicStore.Contracts.Repositories
 {
     public interface ICurrentUserActivities
     {
-        IEnumerable<RecordDetails> Wishlist { get; }
-        IEnumerable<ArtistDetails> FollowedArtists { get; }
-        IEnumerable<LabelDetails> FollowedLabels { get; }
+        IEnumerable<WishDetails> Wishlist { get; }
+        IEnumerable<ArtistFollowDetails> FollowedArtists { get; }
+        IEnumerable<LabelFollowDetails> FollowedLabels { get; }
         IEnumerable<OrderView> Orders { get; }
-        IEnumerable<OrderDetails> OrdersOrdered();
-        IEnumerable<RecordDetails> WishlistOrdered();
-        IEnumerable<ArtistDetails> FollowedArtistsOrdered();
-        IEnumerable<LabelDetails> FollowedLabelsOrdered();
+        IEnumerable<OrderView> OrdersOrdered();
+        IEnumerable<WishDetails> WishlistOrdered();
+        IEnumerable<ArtistFollowDetails> FollowedArtistsOrdered();
+        IEnumerable<LabelFollowDetails> FollowedLabelsOrdered();
         bool IsRecordInWishlist(int recordId);
         bool IsArtistFollowed(int artistId);
         bool IsLabelFollowed(int labelId);

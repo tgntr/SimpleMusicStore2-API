@@ -112,5 +112,12 @@ namespace SimpleMusicStore.ServiceValidations
             if (!await _addresses.Exists(id, _currentUser.Id))
                 throw new ArgumentException(ErrorMessages.INVALID_ADDRESS);
         }
+
+        public void AccessibleByCurrentUser(string userId)
+        {
+            //TODO make them accessible by admins when u implement roles
+            if (userId != _currentUser.Id)
+                throw new ArgumentException(ErrorMessages.INACCESSIBLE);
+        }
     }
 }

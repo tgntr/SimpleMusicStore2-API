@@ -45,11 +45,6 @@ namespace SimpleMusicStore.Services
             return _cart.EmptyCart();
         }
 
-        public async Task<OrderView> Find(int orderId)
-        {
-            return await _db.Orders.Find(orderId);
-        }
-
         public Task IncreaseQuantity(int itemId)
         {
             return _cart.IncreaseQuantity(itemId);

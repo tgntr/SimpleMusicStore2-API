@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SimpleMusicStore.Entities
 {
-    public class User : IdentityUser
+    public class User : EntityWithCustomId<string>
     {
         public User()
         {
@@ -16,6 +16,9 @@ namespace SimpleMusicStore.Entities
             Orders = new List<Order>();
         }
 
+        public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<ArtistFollow> FollowedArtists { get; set; }
         public virtual ICollection<LabelFollow> FollowedLabels { get; set; }

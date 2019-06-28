@@ -18,7 +18,6 @@ namespace SimpleMusicStore.Api.Controllers
             _browser = browser;
         }
         
-        [Route("search")]
         public SearchResult Index([MinLength(1)]string searchTerm)
         {
             return _browser.Search(searchTerm);

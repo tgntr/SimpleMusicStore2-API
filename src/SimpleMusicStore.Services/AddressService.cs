@@ -43,7 +43,7 @@ namespace SimpleMusicStore.Services
 
         public IEnumerable<AddressDetails> FindAll(string userId)
         {
-            //todo validate that it's current user
+            _db.Validator.AccessibleByCurrentUser(userId);
             return _db.Addresses.FindAll(userId);
         }
     }

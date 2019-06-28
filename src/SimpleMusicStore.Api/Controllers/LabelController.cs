@@ -17,9 +17,9 @@ namespace SimpleMusicStore.Api.Controllers
         {
             _labels = labels;
         }
-        public async Task<LabelView> Details(int id)
+        public Task<LabelView> Details(int id)
         {
-            return await _labels.Find(id);
+            return _labels.Find(id);
         }
     }
 }

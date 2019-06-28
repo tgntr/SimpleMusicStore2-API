@@ -23,9 +23,9 @@ namespace SimpleMusicStore.Api.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task Add([FromBody] NewRecord record)
+        public Task Add([FromBody] NewRecord record)
         {
-            await _records.Add(record);
+            return _records.Add(record);
         }
 
         public Browse Browse()
@@ -39,15 +39,15 @@ namespace SimpleMusicStore.Api.Controllers
             return _browser.Filter(criterias);
         }
 
-        public async Task<RecordView> Details(int id)
+        public Task<RecordView> Details(int id)
         {
-            return await _records.Find(id);
+            return _records.Find(id);
         }
 
         [HttpPost]
-        public async Task AddStock(int recordId , [FromBody,Range(1, 100)] int quantity)
+        public Task AddStock(int recordId , [FromBody,Range(1, 100)] int quantity)
         {
-            await _records.AddStock(recordId, quantity);
+            return _records.AddStock(recordId, quantity);
         }
     }
 }

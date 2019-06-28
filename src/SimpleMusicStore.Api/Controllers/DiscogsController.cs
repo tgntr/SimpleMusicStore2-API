@@ -17,11 +17,11 @@ namespace SimpleMusicStore.Api.Controllers
         private readonly MusicSource _discogs;
 
         public DiscogsController(MusicSource discogs)
+            :base()
         {
             _discogs = discogs;
         }
 
-        [HttpPost]
         public async Task<NewRecord> Find(string url)
         {
             return await _discogs.ExtractInformation(url.AsUri());

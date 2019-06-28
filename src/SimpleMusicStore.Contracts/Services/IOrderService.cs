@@ -12,8 +12,6 @@ namespace SimpleMusicStore.Contracts.Services
         Task IncreaseQuantity(int itemId);
         Task DecreaseQuantity(int itemId);
         Task EmptyCart();
-        //Task<OrderCheckout> Checkout();
         Task Complete(int addressId);
-        Task<OrderView> Find(int orderId);
     }
 }
