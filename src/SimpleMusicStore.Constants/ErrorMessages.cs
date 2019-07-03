@@ -27,7 +27,9 @@ namespace SimpleMusicStore.Constants
             INVALID_ORDER = "Invalid order!",
             INVALID_SEARCH_TERM = "Search term must not be empty!",
             INVALID_FILE = "Track preview must be non-empty MP3 file",
-            INVALID_DISCOGS_URL = "Invalid discogs URL!";
+            INVALID_DISCOGS_URL = "Invalid discogs URL!",
+            INVALID_USER = "User does not exist!",
+            INACCESSIBLE = "Requested information is inaccessible!";
 
 
 

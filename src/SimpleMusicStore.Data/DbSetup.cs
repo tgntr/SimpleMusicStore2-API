@@ -15,19 +15,6 @@ namespace SimpleMusicStore.Data
             services.AddDbContext<SimpleMusicStoreDbContext>(options =>
                 options.UseLazyLoadingProxies()
                     .UseSqlServer(connectionString));
-
-            services.AddIdentity<User, IdentityRole>(options =>
-            {
-                options.SignIn.RequireConfirmedEmail = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireDigit = false;
-                options.Password.RequiredUniqueChars = 0;
-                options.Password.RequiredLength = 3;
-            })
-                .AddEntityFrameworkStores<SimpleMusicStoreDbContext>()
-                .AddDefaultTokenProviders();
         }
     }
 }

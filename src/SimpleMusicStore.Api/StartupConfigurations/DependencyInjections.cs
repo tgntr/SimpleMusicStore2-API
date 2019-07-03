@@ -17,24 +17,14 @@ using SimpleMusicStore.ServiceValidations;
 using SimpleMusicStore.Contracts.Validators;
 using System;
 
-namespace SimpleMusicStore.Api.Extensions
+namespace SimpleMusicStore.Api.StartupConfigurations
 {
     public static class DependencyInjections
     {
         public static void AddCustomServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<AuthenticationHandler, Jwt>();
             services.AddScoped<MusicSource, Discogs>(provider => new Discogs(configuration.GetSection("Discogs")));
             services.AddScoped<FileStorage, GoogleCloud>();
-            services.AddScoped<IRecordRepository, RecordRepository>();
-            services.AddScoped<ILabelRepository, LabelRepository>();
-            services.AddScoped<IArtistRepository, ArtistRepository>();
-            services.AddScoped<IAddressRepository, AddressRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<ILabelFollowRepository, LabelFollowRepository>();
-            services.AddScoped<IArtistFollowRepository, ArtistFollowRepository>();
-            services.AddScoped<IWishRepository, WishRepository>();
-            services.AddScoped<IClaimHandler, ClaimHandler>();
             services.AddScoped<IClaimAccessor, ClaimAccessor>();
             services.AddScoped<IRecordService, RecordService>();
             services.AddScoped<IOrderService, OrderService>();
@@ -44,9 +34,23 @@ namespace SimpleMusicStore.Api.Extensions
             services.AddScoped<IArtistService, ArtistService>();
             services.AddScoped<IFollowService, FollowService>();
             services.AddScoped<IAddressService, AddressService>();
-            services.AddScoped<ICurrentUserActivities, CurrentUserActivities>();
             services.AddScoped<Sorter, RecordSorter>();
             services.AddScoped<IBrowseService, BrowseService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        }
+
+        public static void AddRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<IRecordRepository, RecordRepository>();
+            services.AddScoped<ILabelRepository, LabelRepository>();
+            services.AddScoped<IArtistRepository, ArtistRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<ILabelFollowRepository, LabelFollowRepository>();
+            services.AddScoped<IArtistFollowRepository, ArtistFollowRepository>();
+            services.AddScoped<IWishRepository, WishRepository>();
+            services.AddScoped<ICurrentUserActivities, CurrentUserActivities>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IStockRepository, StockRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts;
 using SimpleMusicStore.Extensions;
 using SimpleMusicStore.Models.Binding;
@@ -17,12 +19,12 @@ namespace SimpleMusicStore.Api.Controllers
         private readonly MusicSource _discogs;
 
         public DiscogsController(MusicSource discogs)
+            :base()
         {
             _discogs = discogs;
         }
 
-        [HttpPost]
-        public async Task<NewRecord> Find(string url)
+        public async Task<NewRecord> Find([RegularExpression(DiscogsConstants.DISCOGS_URL_PATTERN)]string url)
         {
             return await _discogs.ExtractInformation(url.AsUri());
         }

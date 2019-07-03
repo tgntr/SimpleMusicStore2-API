@@ -1,8 +1,4 @@
-﻿using SimpleMusicStore.Entities;
-using SimpleMusicStore.Models.Auth;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Validators
@@ -11,7 +7,7 @@ namespace SimpleMusicStore.Contracts.Validators
     {
         Task ItemIsInStock(int itemId, IDictionary<int, int> items);
         void ItemIsInCart(int itemId, IDictionary<int, int> items);
-        Task RecordIsNotInStore(int id);
+        Task RecordIsNotInStore(int recordId);
         Task LabelExists(int labelId);
         Task LabelIsNotFollowed(int labelId);
         Task ArtistIsNotFollowed(int artistId);
@@ -20,5 +16,6 @@ namespace SimpleMusicStore.Contracts.Validators
         Task RecordIsNotInWishlist(int recordId);
         void CartIsNotEmpty(IDictionary<int, int> items);
         Task AddressIsValid(int id);
+        void AccessibleByCurrentUser(string userId);
     }
 }

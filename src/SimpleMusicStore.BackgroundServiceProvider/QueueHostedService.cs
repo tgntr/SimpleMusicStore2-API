@@ -23,14 +23,7 @@ namespace SimpleMusicStore.BackgroundServiceProvider
             while (!cancellationToken.IsCancellationRequested)
             {
                 var workItem = await TaskQueue.DequeueAsync(cancellationToken);
-
-                try
-                {
-                    await workItem(cancellationToken);
-                }
-                catch (Exception ex)
-                {
-                }
+                await workItem(cancellationToken);
             }
         }
     }

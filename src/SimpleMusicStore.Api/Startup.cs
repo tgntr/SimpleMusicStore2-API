@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SimpleMusicStore.Auth.Extensions;
-using SimpleMusicStore.Api.Extensions;
 using Microsoft.AspNetCore.Http;
 using System;
 using StackExchange.Redis;
@@ -12,6 +10,13 @@ using SimpleMusicStore.Data;
 using SimpleMusicStore.ModelValidations;
 using SimpleMusicStore.BackgroundServiceProvider;
 using SimpleMusicStore.Contracts.BackgroundServiceProvider;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using SimpleMusicStore.Auth;
+using SimpleMusicStore.EmailSender;
+using SimpleMusicStore.Api.StartupConfigurations;
+using Hangfire;
+using SimpleMusicStore.Newsletter;
+using SimpleMusicStore.Contracts.Newsletter;
 
 namespace SimpleMusicStore.Api
 {
@@ -27,19 +32,21 @@ namespace SimpleMusicStore.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //TODO Environment class to access appsettings values
             services
                 .AddMvc(options => options.Filters.Add(typeof(ValidateModelStateGloballyAttribute)))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddDatabase(Configuration["Database:Connection"]);
-            services.AddJwtAuthentication(JwtPayloadSection());
-            services.AddCustomServices(Configuration);
+            services.AddDatabase(DbConnectionString());
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton(ConnectionMultiplexer.Connect(Configuration["Redis:Connection"]).GetDatabase());
-            //todo move them to backgroundservicesetup
-            services.AddHostedService<QueuedHostedService>();
-            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
+            services.AddCustomServices(Configuration);
+            services.AddRepositories();
+            services.AddSingleton(RedisDatabase());
+            services.AddBackgroundServiceProvider();
+            services.AddGoogleAuthentication(GoogleAuthCredentials());
+            services.AddNewsletter(EmailSenderCredentials());
+            services.AddHangfire(HangfireConnectionString());
 
+            
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,8 +62,11 @@ namespace SimpleMusicStore.Api
                 app.UseHsts();
             }
 
+            app.UseHangfireDashboard();
             app.ConfigureExceptionHandler();
+
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc(routes =>
@@ -65,9 +75,15 @@ namespace SimpleMusicStore.Api
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            
 
         }
-        private IConfigurationSection JwtPayloadSection()
-            => Configuration.GetSection("JwtPayload");
+        private IConfigurationSection GoogleAuthCredentials() => Configuration.GetSection("GoogleAuth");
+        private IConfigurationSection EmailSenderCredentials() => Configuration.GetSection("EmailSender");
+
+        private string DbConnectionString() => Configuration["Database:Connection"];
+        private string HangfireConnectionString() => Configuration["Hangfire:Connection"];
+
+        private IDatabase RedisDatabase() => ConnectionMultiplexer.Connect(Configuration["Redis:Connection"]).GetDatabase();
     }
 }

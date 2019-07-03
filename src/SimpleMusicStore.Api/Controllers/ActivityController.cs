@@ -20,17 +20,17 @@ namespace SimpleMusicStore.Api.Controllers
         {
             _currentUser = currentUser;
         }
-        public IEnumerable<RecordDetails> Wishlist()
+        public IEnumerable<WishDetails> Wishlist()
         {
             return _currentUser.WishlistOrdered();
         }
 
-        public IEnumerable<ArtistDetails> FollowedArtists()
+        public IEnumerable<ArtistFollowDetails> FollowedArtists()
         {
             return _currentUser.FollowedArtistsOrdered();
         }
 
-        public IEnumerable<LabelDetails> FollowedLabels()
+        public IEnumerable<LabelFollowDetails> FollowedLabels()
         {
             return _currentUser.FollowedLabelsOrdered();
         }

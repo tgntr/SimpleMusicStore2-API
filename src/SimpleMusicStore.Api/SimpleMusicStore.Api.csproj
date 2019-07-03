@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SimpleMusicStore.Data\SimpleMusicStore.Data.csproj" />
+    <ProjectReference Include="..\SimpleMusicStore.Newsletter\SimpleMusicStore.Newsletter.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.Repositories\SimpleMusicStore.Repositories.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.Services\SimpleMusicStore.Services.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.Sorting\SimpleMusicStore.Sorting.csproj" />

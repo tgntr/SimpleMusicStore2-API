@@ -9,13 +9,14 @@ using SimpleMusicStore.Entities;
 
 namespace SimpleMusicStore.Data
 {
-    public class SimpleMusicStoreDbContext : IdentityDbContext<User>
+    public class SimpleMusicStoreDbContext : DbContext
     {
         public SimpleMusicStoreDbContext(DbContextOptions<SimpleMusicStoreDbContext> options)
             : base(options)
         {
         }
 
+        public DbSet<User> Users { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Record> Records { get; set; }
         public DbSet<Artist> Artists { get; set; }

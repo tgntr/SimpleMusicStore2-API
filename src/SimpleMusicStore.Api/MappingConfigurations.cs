@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.MusicLibraries;
 using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Api
@@ -42,19 +44,18 @@ namespace SimpleMusicStore.Api
                 .ForMember(id => id.Price, src => src.MapFrom(i => i.Record.Price))
                 .ForMember(id => id.Quantity, src => src.MapFrom(i => i.Quantity));
             CreateMap<Order, OrderView>();
-            CreateMap<ArtistFollow, ArtistDetails>()
+            CreateMap<ArtistFollow, ArtistFollowDetails>()
                 .ForMember(ad => ad.Name, src => src.MapFrom(af => af.Artist.Name))
                 .ForMember(ad => ad.Id, src => src.MapFrom(af => af.Artist.Id));
-            CreateMap<LabelFollow, LabelDetails>()
+            CreateMap<LabelFollow, LabelFollowDetails>()
                 .ForMember(ld => ld.Name, src => src.MapFrom(lf => lf.Label.Name))
                 .ForMember(ld => ld.Id, src => src.MapFrom(lf => lf.Label.Id));
-            CreateMap<Wish, RecordDetails>()
+            CreateMap<Wish, WishDetails>()
                 .ForMember(rd => rd.Id, src => src.MapFrom(w => w.Record.Id))
                 .ForMember(rd => rd.Title, src => src.MapFrom(w => w.Record.Title))
                 .ForMember(rd => rd.Image, src => src.MapFrom(w => w.Record.Image))
                 .ForMember(rd => rd.Label, src => src.MapFrom(w => w.Record.Label))
-                .ForMember(rd => rd.Artist, src => src.MapFrom(w => w.Record.Artist))
-                .ForMember(rd => rd.Price, src => src.MapFrom(w => w.Record.Price));
+                .ForMember(rd => rd.Artist, src => src.MapFrom(w => w.Record.Artist));
             CreateMap<RecordView, ItemDetails>();
             CreateMap<Video, VideoDetails>();
             CreateMap<Track, TrackDetails>();
@@ -63,6 +64,15 @@ namespace SimpleMusicStore.Api
             CreateMap<NewOrder, Order>();
             CreateMap<NewAddress, Address>();
             CreateMap<AddressEdit, Address>();
+            CreateMap<ClaimsPrincipal, User>()
+                .ForMember(u => u.Id, src => src.MapFrom(c => c.FindFirstValue(ClaimTypes.NameIdentifier)))
+                .ForMember(u => u.FirstName, src => src.MapFrom(c => c.FindFirstValue(ClaimTypes.GivenName)))
+                .ForMember(u => u.LastName, src => src.MapFrom(c => c.FindFirstValue(ClaimTypes.Surname)))
+                .ForMember(u => u.Email, src => src.MapFrom(c => c.FindFirstValue(ClaimTypes.Email)));
+            CreateMap<User, UserDetails>();
+            CreateMap<User, SubscriberDetails>()
+                .ForMember(s => s.FollowedArtists, src => src.MapFrom(u => u.FollowedArtists.Select(fa => fa.ArtistId)))
+                .ForMember(s => s.FollowedLabels, src => src.MapFrom(u => u.FollowedLabels.Select(fa => fa.LabelId)));
         }
     }
 }

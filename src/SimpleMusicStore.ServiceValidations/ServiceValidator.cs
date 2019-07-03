@@ -14,6 +14,7 @@ namespace SimpleMusicStore.ServiceValidations
 {
     public class ServiceValidator : IServiceValidator
     {
+        //todo unit of work
         private readonly IAddressRepository _addresses;
         private readonly IWishRepository _wishes;
         private readonly IRecordRepository _records;
@@ -111,6 +112,13 @@ namespace SimpleMusicStore.ServiceValidations
         {
             if (!await _addresses.Exists(id, _currentUser.Id))
                 throw new ArgumentException(ErrorMessages.INVALID_ADDRESS);
+        }
+
+        public void AccessibleByCurrentUser(string userId)
+        {
+            //TODO make them accessible by admins when u implement roles
+            if (userId != _currentUser.Id)
+                throw new ArgumentException(ErrorMessages.INACCESSIBLE);
         }
     }
 }

@@ -1,41 +1,52 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SimpleMusicStore.Constants;
-using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
+using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
-using SimpleMusicStore.Models.Auth;
+using SimpleMusicStore.Models;
+using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : DbRepository<User>, IUserRepository
     {
-        private readonly UserManager<User> _users;
-
-        public UserRepository(UserManager<User> users)
+        public UserRepository(SimpleMusicStoreDbContext db, IMapper mapper)
+            :base(db, mapper)
         {
-            _users = users;
         }
-        //TODO make User Role when implementing register
-        public async Task<UserDetails> Find(AuthenticationRequest credentials)
+        
+        public async Task<UserDetails> Find(string id)
         {
-            var user = await _users.FindByNameAsync(credentials.Username);
-            await ValidateThatPasswordIsCorrect(credentials, user);
-            return new UserDetails
-            {
-                Id = user.Id,
-                UserName = user.UserName,
-                IsAdmin = await _users.IsInRoleAsync(user, AuthConstants.ADMIN_ROLE)
-            };
+            var user = await _set.FindAsync(id);
+            ValidateThatUserExists(user);
+            return _mapper.Map<UserDetails>(user);
         }
 
-        private async Task ValidateThatPasswordIsCorrect(AuthenticationRequest credentials, User user)
+        private void ValidateThatUserExists(User user)
         {
-            if (!await _users.CheckPasswordAsync(user, credentials.Password))
-                throw new ArgumentException(ErrorMessages.INVALID_CREDENTIALS);
+            if (user == null)
+                throw new ArgumentException(ErrorMessages.INVALID_USER);
+        }
+
+        public Task Add(ClaimsPrincipal user)
+        {
+            return _set.AddAsync(_mapper.Map<User>(user));
+        }
+
+        public Task<bool> Exists(string id)
+        {
+            return _set.AnyAsync(u => u.Id == id);
+        }
+
+        public IEnumerable<SubscriberDetails> Subscribers()
+        {
+            return _set.Where(u => u.IsSubscribed).Select(_mapper.Map<SubscriberDetails>);
         }
     }
 }

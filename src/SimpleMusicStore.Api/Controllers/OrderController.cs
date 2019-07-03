@@ -17,39 +17,39 @@ namespace SimpleMusicStore.Api.Controllers
             _orders = orders;
         }
 
-        public async Task AddToCart(int id)
+        public Task AddToCart(int id)
         {
-            await _orders.AddToCart(id);
+            return _orders.AddToCart(id);
         }
 
-        public async Task RemoveFromCart(int id)
+        public Task RemoveFromCart(int id)
         {
-            await _orders.RemoveFromCart(id);
+            return _orders.RemoveFromCart(id);
         }
 
-        public async Task IncreaseQuantity(int id)
+        public Task IncreaseQuantity(int id)
         {
-            await _orders.IncreaseQuantity(id);
+            return _orders.IncreaseQuantity(id);
         }
 
-        public async Task DecreaseQuantity(int id)
+        public Task DecreaseQuantity(int id)
         {
-            await _orders.DecreaseQuantity(id);
+            return _orders.DecreaseQuantity(id);
         }
 
-        public async Task EmptyCart()
+        public Task EmptyCart()
         {
-            await _orders.EmptyCart();
+            return _orders.EmptyCart();
         }
 
-        public async Task Complete(int addressId)
+        public Task Complete(int addressId)
         {
-            await _orders.Complete(addressId);
+            return _orders.Complete(addressId);
         }
 
-        public async Task<OrderView> Details(int id)
+        public Task Cart()
         {
-            return await _orders.Find(id);
+            return _orders.CurrentCartState();
         }
     }
 }

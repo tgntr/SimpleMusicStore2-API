@@ -7,8 +7,8 @@ namespace SimpleMusicStore.Contracts.Auth
     public interface IClaimAccessor
     {
         string Id { get; }
-        string Username { get; }
-        bool IsAdmin { get; }
+        string Email { get; }
+        string FullName { get; }
         bool IsAuthenticated { get; }
     }
 }

@@ -23,21 +23,27 @@ namespace SimpleMusicStore.Services
         private readonly IUnitOfWork _db;
         private readonly FileStorage _storage;
         private readonly IBackgroundTaskQueue _backgroundThread;
+        private readonly IServiceValidator _validator;
+        private readonly ICurrentUserActivities _currentUser;
         private readonly Sorter _sorter;
 
         public RecordService(IUnitOfWork db,
             Sorter sorter,
             FileStorage storage,
-            IBackgroundTaskQueue backgroundThread)
+            IBackgroundTaskQueue backgroundThread,
+            IServiceValidator validator,
+            ICurrentUserActivities currentUser)
         {
             _db = db;
             _sorter = sorter;
             _storage = storage;
             _backgroundThread = backgroundThread;
+            _validator = validator;
+            _currentUser = currentUser;
         }
         public async Task Add(NewRecord record)
         {
-            await _db.Validator.RecordIsNotInStore(record.Id);
+            await _validator.RecordIsNotInStore(record.Id);
             CreateArtistAndLabelProfiles(record);
             await AddRecordToStore(record);
             //TODO test 
@@ -63,7 +69,7 @@ namespace SimpleMusicStore.Services
 
         public async Task AddStock(int recordId, int quantity)
         {
-            await _db.Validator.RecordExists(recordId);
+            await _validator.RecordExists(recordId);
             await _db.Stocks.Add(recordId, quantity);
             await _db.SaveChanges();
         }
@@ -85,7 +91,7 @@ namespace SimpleMusicStore.Services
         private async Task<RecordView> GenerateRecordView(int id)
         {
             var record = await _db.Records.Find(id);
-            record.IsInWishlist = _db.CurrentUser.IsRecordInWishlist(id);
+            record.IsInWishlist = _currentUser.IsRecordInWishlist(id);
             return record;
         }
 
