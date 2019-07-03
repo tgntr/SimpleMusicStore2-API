@@ -12,6 +12,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SimpleMusicStore.Constants;
+using SimpleMusicStore.Models;
+using System.Linq.Expressions;
 
 namespace SimpleMusicStore.Repositories
 {
@@ -48,8 +50,6 @@ namespace SimpleMusicStore.Repositories
             return _mapper.Map<RecordView>(record);
         }
 
-        
-
         public IEnumerable<RecordDetails> FindAll(FilterCriterias criterias)
         {
             return ((IEnumerable<Record>)_set)
@@ -77,17 +77,27 @@ namespace SimpleMusicStore.Repositories
             return _set.Select(r => r.Genre).Distinct();
         }
 
-        //public async Task AddStock(int recordId, int quantity)
-        //{
-        //    var record = await _set.FindAsync(recordId);
-        //    ValidateThatRecordExists(record);
-        //    record.Stocks.Add(new Stock(quantity));
-        //}
+        public IEnumerable<RecordDetails> LatestByFavorites(SubscriberDetails subscriber)
+        {
+            return _set
+                .Where(r=> IsFromLastSevenDays(r) && IsFromFollowedArtistOrLabel(r, subscriber))
+                .Select(_mapper.Map<RecordDetails>);
+        }
 
         private static void ValidateThatRecordExists(Record record)
         {
             if (record == null)
                 throw new ArgumentException(ErrorMessages.INVALID_RECORD);
+        }
+
+        private bool IsFromFollowedArtistOrLabel(Record record, SubscriberDetails subscriber)
+        {
+            return subscriber.FollowedArtists.Contains(record.ArtistId) || subscriber.FollowedLabels.Contains(record.LabelId);
+        }
+
+        private bool IsFromLastSevenDays(Record record)
+        {
+            return EF.Functions.DateDiffHour(record.DateAdded, DateTime.UtcNow) <= 168;
         }
     }
 }

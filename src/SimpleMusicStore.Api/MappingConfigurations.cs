@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.MusicLibraries;
 using SimpleMusicStore.Models.View;
@@ -69,6 +70,9 @@ namespace SimpleMusicStore.Api
                 .ForMember(u => u.LastName, src => src.MapFrom(c => c.FindFirstValue(ClaimTypes.Surname)))
                 .ForMember(u => u.Email, src => src.MapFrom(c => c.FindFirstValue(ClaimTypes.Email)));
             CreateMap<User, UserDetails>();
+            CreateMap<User, SubscriberDetails>()
+                .ForMember(s => s.FollowedArtists, src => src.MapFrom(u => u.FollowedArtists.Select(fa => fa.ArtistId)))
+                .ForMember(s => s.FollowedLabels, src => src.MapFrom(u => u.FollowedLabels.Select(fa => fa.LabelId)));
         }
     }
 }

@@ -11,7 +11,7 @@ namespace SimpleMusicStore.Contracts.Repositories
         IEnumerable<ArtistFollowDetails> FollowedArtists { get; }
         IEnumerable<LabelFollowDetails> FollowedLabels { get; }
         IEnumerable<OrderView> Orders { get; }
-        IEnumerable<OrderView> OrdersOrdered();
+        IEnumerable<OrderDetails> OrdersOrdered();
         IEnumerable<WishDetails> WishlistOrdered();
         IEnumerable<ArtistFollowDetails> FollowedArtistsOrdered();
         IEnumerable<LabelFollowDetails> FollowedLabelsOrdered();

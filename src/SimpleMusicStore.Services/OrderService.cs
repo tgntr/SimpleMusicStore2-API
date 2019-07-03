@@ -18,11 +18,15 @@ namespace SimpleMusicStore.Services
     {
         private readonly IUnitOfWork _db;
         private readonly IShoppingCart _cart;
+        private readonly IServiceValidator _validator;
+        private readonly IClaimAccessor _currentUser;
 
-        public OrderService(IUnitOfWork db, IShoppingCart cart)
+        public OrderService(IUnitOfWork db, IShoppingCart cart, IServiceValidator validator, IClaimAccessor currentUser)
         {
             _db = db;
             _cart = cart;
+            _validator = validator;
+            _currentUser = currentUser;
         }
 
         public Task AddToCart(int itemId)
@@ -56,8 +60,8 @@ namespace SimpleMusicStore.Services
 
         public async Task Complete(int addressId)
         {
-            _db.Validator.CartIsNotEmpty(_cart.Items);
-            await _db.Validator.AddressIsValid(addressId);
+            _validator.CartIsNotEmpty(_cart.Items);
+            await _validator.AddressIsValid(addressId);
             await AddNewOrder(addressId);
             await _cart.EmptyCart();
         }
@@ -67,7 +71,7 @@ namespace SimpleMusicStore.Services
             var order = new NewOrder
             {
                 DeliveryAddressId = addressId,
-                UserId = _db.CurrentUser.Id,
+                UserId = _currentUser.Id,
                 Items = _cart.Items
             };
 

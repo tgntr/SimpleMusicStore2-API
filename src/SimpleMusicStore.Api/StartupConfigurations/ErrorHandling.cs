@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace SimpleMusicStore.Api.Extensions
+namespace SimpleMusicStore.Api.StartupConfigurations
 {
     public static class ErrorHandling
     {

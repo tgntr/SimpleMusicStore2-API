@@ -14,11 +14,13 @@ namespace SimpleMusicStore.Entities
             FollowedLabels = new List<LabelFollow>();
             Wishlist = new List<Wish>();
             Orders = new List<Order>();
+            IsSubscribed = true;
         }
 
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public bool IsSubscribed { get; set; }
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<ArtistFollow> FollowedArtists { get; set; }
         public virtual ICollection<LabelFollow> FollowedLabels { get; set; }

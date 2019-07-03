@@ -35,7 +35,7 @@ namespace SimpleMusicStore.Api.Controllers
             return _currentUser.FollowedLabelsOrdered();
         }
 
-        public IEnumerable<OrderView> Orders()
+        public IEnumerable<OrderDetails> Orders()
         {
             return _currentUser.OrdersOrdered();
         }

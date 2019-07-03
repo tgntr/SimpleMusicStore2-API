@@ -50,8 +50,8 @@ namespace SimpleMusicStore.Repositories
         public IEnumerable<LabelFollowDetails> FollowedLabelsOrdered() => 
             FollowedLabels.OrderByDescending(fl => fl.Date);
 
-        public IEnumerable<OrderView> OrdersOrdered() => 
-            Orders.OrderByDescending(o => o.Date);
+        public IEnumerable<OrderDetails> OrdersOrdered() => 
+            Orders.OrderByDescending(o => o.Date).Select(_mapper.Map<OrderDetails>);
 
         public bool IsRecordInWishlist(int recordId)
         {

@@ -4,8 +4,11 @@ using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models;
 using SimpleMusicStore.Models.View;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -39,6 +42,11 @@ namespace SimpleMusicStore.Repositories
         public Task<bool> Exists(string id)
         {
             return _set.AnyAsync(u => u.Id == id);
+        }
+
+        public IEnumerable<SubscriberDetails> Subscribers()
+        {
+            return _set.Where(u => u.IsSubscribed).Select(_mapper.Map<SubscriberDetails>);
         }
     }
 }

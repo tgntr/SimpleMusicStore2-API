@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleMusicStore.Data;
 
 namespace SimpleMusicStore.Data.Migrations
 {
     [DbContext(typeof(SimpleMusicStoreDbContext))]
-    partial class SimpleMusicStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190701143917_users_newsletter_subscribtion")]
+    partial class users_newsletter_subscribtion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -14,6 +14,7 @@ namespace SimpleMusicStore.ServiceValidations
 {
     public class ServiceValidator : IServiceValidator
     {
+        //todo unit of work
         private readonly IAddressRepository _addresses;
         private readonly IWishRepository _wishes;
         private readonly IRecordRepository _records;

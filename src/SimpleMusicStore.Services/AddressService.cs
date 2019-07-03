@@ -16,15 +16,19 @@ namespace SimpleMusicStore.Services
     public class AddressService : IAddressService
     {
         private readonly IUnitOfWork _db;
+        private readonly IServiceValidator _validator;
+        private readonly IClaimAccessor _currentUser;
 
-        public AddressService(IUnitOfWork db)
+        public AddressService(IUnitOfWork db, IServiceValidator validator, IClaimAccessor currentUser)
         {
             _db = db;
+            _validator = validator;
+            _currentUser = currentUser;
         }
 
         public async Task Add(NewAddress address)
         {
-            address.UserId = _db.CurrentUser.Id;
+            address.UserId = _currentUser.Id;
             await _db.Addresses.Add(address);
             await _db.SaveChanges();
         }
@@ -43,7 +47,7 @@ namespace SimpleMusicStore.Services
 
         public IEnumerable<AddressDetails> FindAll(string userId)
         {
-            _db.Validator.AccessibleByCurrentUser(userId);
+            _validator.AccessibleByCurrentUser(userId);
             return _db.Addresses.FindAll(userId);
         }
     }

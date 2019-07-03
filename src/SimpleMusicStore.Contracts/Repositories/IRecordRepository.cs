@@ -1,4 +1,5 @@
 ﻿using SimpleMusicStore.Entities;
+using SimpleMusicStore.Models;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
 using System;
@@ -19,6 +20,7 @@ namespace SimpleMusicStore.Contracts.Repositories
         IEnumerable<RecordDetails> FindAll(string searchTerm);
         IEnumerable<string> AvailableFormats();
         IEnumerable<string> AvailableGenres();
-        //Task AddStock(int recordId, int quantity);
+        IEnumerable<RecordDetails> LatestByFavorites(SubscriberDetails subscriber);
+
     }
 }

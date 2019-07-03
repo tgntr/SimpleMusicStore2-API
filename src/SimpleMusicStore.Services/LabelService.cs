@@ -14,10 +14,12 @@ namespace SimpleMusicStore.Services
     public class LabelService : ILabelService
     {
         private readonly IUnitOfWork _db;
+        private readonly ICurrentUserActivities _currentUser;
 
-        public LabelService(IUnitOfWork db)
+        public LabelService(IUnitOfWork db, ICurrentUserActivities currentUser)
         {
             _db = db;
+            _currentUser = currentUser;
         }
 
         public async Task<LabelView> Find(int id)
@@ -28,7 +30,7 @@ namespace SimpleMusicStore.Services
         private async Task<LabelView> GenerateLabelView(int id)
         {
             var label = await _db.Labels.Find(id);
-            label.IsFollowed = _db.CurrentUser.IsLabelFollowed(id);
+            label.IsFollowed = _currentUser.IsLabelFollowed(id);
             return label;
         }
     }
