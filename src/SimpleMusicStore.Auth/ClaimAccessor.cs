@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Auth;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace SimpleMusicStore.Auth
@@ -14,9 +15,8 @@ namespace SimpleMusicStore.Auth
             _claims = http.HttpContext.User;
         }
 
-        public string Id => FindClaim(ClaimTypes.NameIdentifier);
-        public string Email => FindClaim(ClaimTypes.Email);
-        public string FullName => FindClaim(ClaimTypes.Name);
+        public string Id => FindClaim(JwtRegisteredClaimNames.Sub);
+        //public string Email => FindClaim(JwtRegisteredClaimNames.Email);
         public bool IsAuthenticated => _claims.Identity.IsAuthenticated;
         private string FindClaim(string type) => _claims.FindFirstValue(type);
     }

@@ -8,7 +8,7 @@ namespace SimpleMusicStore.Models.MusicLibraries
 {
     public class ArtistInfo
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public ImageInfo[] Images { get; set; }
         public string Image

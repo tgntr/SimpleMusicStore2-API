@@ -9,7 +9,7 @@ namespace SimpleMusicStore.Contracts.Services
     public interface IShoppingCart
     {
         Dictionary<int, int> Items { get; }
-        Task<ICollection<CartItem>> CurrentState();
+        Task<IEnumerable<CartItem>> CurrentState();
         Task Add(int itemId);
         Task Remove(int itemId);
         Task IncreaseQuantity(int itemId);

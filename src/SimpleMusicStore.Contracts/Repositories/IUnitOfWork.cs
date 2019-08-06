@@ -18,8 +18,6 @@ namespace SimpleMusicStore.Contracts.Repositories
         IRecordRepository Records { get; }
         IWishRepository Wishes { get; }
         IUserRepository Users { get; }
-        //ICurrentUserActivities CurrentUser { get; }
-        //IServiceValidator Validator { get; }
         IStockRepository Stocks { get; }
         Task SaveChanges();
     }

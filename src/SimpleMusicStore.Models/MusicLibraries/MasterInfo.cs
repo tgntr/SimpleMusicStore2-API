@@ -2,6 +2,6 @@
 {
     public class MasterInfo
     {
-        public int Main_Release { get; set; }
+        public string Main_Release { get; set; }
     }
 }

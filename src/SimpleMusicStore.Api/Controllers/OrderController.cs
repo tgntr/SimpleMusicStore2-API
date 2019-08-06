@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Contracts.Services;
@@ -37,19 +38,24 @@ namespace SimpleMusicStore.Api.Controllers
             return _orders.DecreaseQuantity(id);
         }
 
-        public Task EmptyCart()
-        {
-            return _orders.EmptyCart();
-        }
-
         public Task Complete(int addressId)
         {
             return _orders.Complete(addressId);
         }
 
-        public Task Cart()
+        public Task<IEnumerable<CartItem>> Cart()
         {
             return _orders.CurrentCartState();
+        }
+
+        public Task<OrderView> Details(int id)
+        {
+            return _orders.Find(id);
+        }
+
+        public IEnumerable<OrderDetails> FindAll()
+        {
+            return _orders.FindAll();
         }
     }
 }

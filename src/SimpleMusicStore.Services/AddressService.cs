@@ -35,20 +35,22 @@ namespace SimpleMusicStore.Services
 
         public async Task Remove(int id)
         {
+            //todo check if it's user's address
             await _db.Addresses.Remove(id);
             await _db.SaveChanges();
         }
 
         public async Task Edit(AddressEdit address)
         {
+            //todo check if it's user's address
             await _db.Addresses.Edit(address);
             await _db.SaveChanges();
         }
 
-        public IEnumerable<AddressDetails> FindAll(string userId)
+        public IEnumerable<AddressDetails> FindAll()
         {
-            _validator.AccessibleByCurrentUser(userId);
-            return _db.Addresses.FindAll(userId);
+            //_validator.AccessibleByCurrentUser(userId);
+            return _db.Addresses.FindAll(_currentUser.Id);
         }
     }
 }

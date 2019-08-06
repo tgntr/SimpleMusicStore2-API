@@ -6,35 +6,37 @@ using SimpleMusicStore.Contracts;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Validators;
+using SimpleMusicStore.Contracts.BackgroundServiceProvider;
 
 namespace SimpleMusicStore.Storage
 {
     public class GoogleCloud : FileStorage
     {
         private readonly StorageClient _storage;
-        private readonly IServiceValidator _validator;
+        private readonly IBackgroundTaskQueue _background;
 
-        public GoogleCloud(IServiceValidator validator)
+        public GoogleCloud(IBackgroundTaskQueue background)
         {
             //TODO move credentials file
             _storage = StorageClient.Create();
-            _validator = validator;
+            _background = background;
         }
 
-        public async Task Upload(IFormFile file, string fileName)
+        public Task Upload(IFormFile file, string fileName)
         {
-            await _storage.UploadObjectAsync(
-                bucket: CommonConstants.BUCKET_NAME,
-                objectName: fileName,
-                contentType: file.ContentType,
-                source: file.OpenReadStream(),
-                options: PublicReadAccess()
-            );
+            return  _storage.UploadObjectAsync(
+                    bucket: CommonConstants.BUCKET_NAME,
+                    objectName: fileName,
+                    contentType: file.ContentType,
+                    source: file.OpenReadStream(),
+                    options: PublicReadAccess()
+                );
+
         }
 
         private UploadObjectOptions PublicReadAccess()
         {
             return new UploadObjectOptions { PredefinedAcl = PredefinedObjectAcl.PublicRead };
         }
-	}
+    }
 }

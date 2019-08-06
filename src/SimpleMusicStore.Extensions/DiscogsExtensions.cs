@@ -7,11 +7,11 @@ namespace SimpleMusicStore.MusicLibrary.Extensions
 {
     public static class DiscogsExtensions
     {
-        public static int FindDiscogsId(this Uri uri)
+        public static string FindDiscogsId(this Uri uri)
         {
             var id = uri.AbsolutePath.Split(DiscogsConstants.PARAMETER_SPLITTER).Last();
 
-            return int.Parse(id);
+            return id;
         }
 
         public static void AddHeaders(this WebClient client)

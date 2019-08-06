@@ -28,10 +28,7 @@ namespace SimpleMusicStore.Repositories
         {
             return _set.AddAsync(_mapper.Map<Record>(record));
         }
-        public IEnumerable<RecordDetails> FindAll()
-        {
-            return _set.Select(_mapper.Map<RecordDetails>);
-        }
+        
 
         public async Task<int> Availability(int id)
 		{
@@ -50,9 +47,14 @@ namespace SimpleMusicStore.Repositories
             return _mapper.Map<RecordView>(record);
         }
 
+        public IEnumerable<RecordDetails> FindAllInStock()
+        {
+            return _set.Where(r => r.Availability() > 0).Select(_mapper.Map<RecordDetails>);
+        }
+
         public IEnumerable<RecordDetails> FindAll(FilterCriterias criterias)
         {
-            return ((IEnumerable<Record>)_set)
+            return FindAll(criterias.MustBeInStock)
                 .FilterByGenre(criterias.Genres)
                 .FilterByFormat(criterias.Formats)
                 .Select(_mapper.Map<RecordDetails>);
@@ -98,6 +100,17 @@ namespace SimpleMusicStore.Repositories
         private bool IsFromLastSevenDays(Record record)
         {
             return EF.Functions.DateDiffHour(record.DateAdded, DateTime.UtcNow) <= 168;
+        }
+
+        private IEnumerable<Record> FindAll(bool mustBeInStock = false)
+        {
+            IEnumerable<Record> records;
+            if (mustBeInStock)
+                records = _set.Where(r => r.Availability() > 0);
+            else
+                records = _set;
+
+            return records;
         }
     }
 }

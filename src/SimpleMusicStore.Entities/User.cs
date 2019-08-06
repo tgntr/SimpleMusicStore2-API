@@ -16,7 +16,7 @@ namespace SimpleMusicStore.Entities
             Orders = new List<Order>();
             IsSubscribed = true;
         }
-
+        //todo add validations
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

@@ -2,6 +2,7 @@
 using SimpleMusicStore.Contracts.Services;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace SimpleMusicStore.Services
 
         public async Task Add(ClaimsPrincipal user)
         {
-            var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = user.FindFirstValue(JwtRegisteredClaimNames.Sub);
             if (!await _db.Users.Exists(userId))
             {
                 await _db.Users.Add(user);

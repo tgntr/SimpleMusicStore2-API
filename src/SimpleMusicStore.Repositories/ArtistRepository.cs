@@ -24,7 +24,7 @@ namespace SimpleMusicStore.Repositories
 
         public async Task Add(ArtistInfo artist)
         {
-            if (!await Exists(artist.Id))
+            if (!await Exists(int.Parse(artist.Id)))
             {
                 _set.Add(_mapper.Map<Artist>(artist));
             }

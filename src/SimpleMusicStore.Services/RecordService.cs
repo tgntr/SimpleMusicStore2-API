@@ -13,6 +13,7 @@ using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,7 +22,6 @@ namespace SimpleMusicStore.Services
     public class RecordService : IRecordService
     {
         private readonly IUnitOfWork _db;
-        private readonly FileStorage _storage;
         private readonly IBackgroundTaskQueue _backgroundThread;
         private readonly IServiceValidator _validator;
         private readonly ICurrentUserActivities _currentUser;
@@ -29,14 +29,12 @@ namespace SimpleMusicStore.Services
 
         public RecordService(IUnitOfWork db,
             Sorter sorter,
-            FileStorage storage,
             IBackgroundTaskQueue backgroundThread,
             IServiceValidator validator,
             ICurrentUserActivities currentUser)
         {
             _db = db;
             _sorter = sorter;
-            _storage = storage;
             _backgroundThread = backgroundThread;
             _validator = validator;
             _currentUser = currentUser;
@@ -46,24 +44,22 @@ namespace SimpleMusicStore.Services
             await _validator.RecordIsNotInStore(record.Id);
             CreateArtistAndLabelProfiles(record);
             await AddRecordToStore(record);
-            //TODO test 
-            UploadTrackPreviewsInBackgroundThread(record);
-
-            
         }
 
-        public async Task<RecordView> Find(int id)
+        public Task<RecordView> Find(int id)
         {
-            return await GenerateRecordView(id);
+            return GenerateRecordView(id);
         }
 
         public NewsFeed NewsFeed()
         {
+            var records = _db.Records.FindAllInStock();
+
             return new NewsFeed
             {
-                Recommended = _sorter.Sort(SortTypes.Recommendation, _db.Records.FindAll()),
-                MostPopular = _sorter.Sort(SortTypes.Popularity, _db.Records.FindAll()),
-                Newest = _sorter.Sort(SortTypes.DateAdded, _db.Records.FindAll())
+                MostPopular = _sorter.Sort(SortTypes.Popularity, records).Take(5),
+                Newest = _sorter.Sort(SortTypes.DateAdded, records).Take(5),
+                Recommended = _sorter.Sort(SortTypes.Recommendation, records).Take(5)
             };
         }
 
@@ -93,17 +89,6 @@ namespace SimpleMusicStore.Services
             var record = await _db.Records.Find(id);
             record.IsInWishlist = _currentUser.IsRecordInWishlist(id);
             return record;
-        }
-
-        private void UploadTrackPreviewsInBackgroundThread(NewRecord record)
-        {
-            foreach (var track in record.Tracklist)
-            {
-                _backgroundThread.QueueBackgroundWorkItem(async token =>
-                {
-                    await _storage.Upload(track.Preview, record.Id + track.Title);
-                });
-            }
         }
     }
 }

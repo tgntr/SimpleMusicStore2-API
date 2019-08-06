@@ -6,6 +6,7 @@ using SimpleMusicStore.Models.MusicLibraries;
 using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace SimpleMusicStore.Api
             CreateMap<NewRecord, Record>()
                 .ForMember(r=>r.Artist, opt=>opt.Ignore())
                 .ForMember(r=>r.Label, opt=>opt.Ignore());
-            CreateMap<Record, CartItem>();
+            CreateMap<RecordView, CartItem>();
             CreateMap<KeyValuePair<int, int>, Item>()
                 .ForMember(i => i.RecordId, src => src.MapFrom(kvp => kvp.Key))
                 .ForMember(i => i.Quantity, src => src.MapFrom(kvp => kvp.Value));
@@ -65,10 +66,10 @@ namespace SimpleMusicStore.Api
             CreateMap<NewAddress, Address>();
             CreateMap<AddressEdit, Address>();
             CreateMap<ClaimsPrincipal, User>()
-                .ForMember(u => u.Id, src => src.MapFrom(c => c.FindFirstValue(ClaimTypes.NameIdentifier)))
-                .ForMember(u => u.FirstName, src => src.MapFrom(c => c.FindFirstValue(ClaimTypes.GivenName)))
-                .ForMember(u => u.LastName, src => src.MapFrom(c => c.FindFirstValue(ClaimTypes.Surname)))
-                .ForMember(u => u.Email, src => src.MapFrom(c => c.FindFirstValue(ClaimTypes.Email)));
+                .ForMember(u => u.Id, src => src.MapFrom(c => c.FindFirstValue(JwtRegisteredClaimNames.Sub)))
+                .ForMember(u => u.FirstName, src => src.MapFrom(c => c.FindFirstValue(JwtRegisteredClaimNames.GivenName)))
+                .ForMember(u => u.LastName, src => src.MapFrom(c => c.FindFirstValue(JwtRegisteredClaimNames.FamilyName)))
+                .ForMember(u => u.Email, src => src.MapFrom(c => c.FindFirstValue(JwtRegisteredClaimNames.Email)));
             CreateMap<User, UserDetails>();
             CreateMap<User, SubscriberDetails>()
                 .ForMember(s => s.FollowedArtists, src => src.MapFrom(u => u.FollowedArtists.Select(fa => fa.ArtistId)))

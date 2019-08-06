@@ -12,6 +12,6 @@ namespace SimpleMusicStore.Contracts.Services
         Task Add(NewAddress address);
         Task Edit(AddressEdit address);
         Task Remove(int id);
-        IEnumerable<AddressDetails> FindAll(string userId);
+        IEnumerable<AddressDetails> FindAll();
     }
 }

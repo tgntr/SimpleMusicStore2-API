@@ -33,15 +33,14 @@ namespace SimpleMusicStore.Api.Controllers
             return _addresses.Edit(address);
         }
 
-        [HttpPost]
         public Task Remove(int id)
         {
             return _addresses.Remove(id);
         }
 
-        public IEnumerable<AddressDetails> FindAll(string userId)
+        public IEnumerable<AddressDetails> FindAll()
         {
-            return _addresses.FindAll(userId);
+            return _addresses.FindAll();
         }
     }
 }

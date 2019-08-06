@@ -41,7 +41,7 @@ namespace SimpleMusicStore.Api
             services.AddRepositories();
             services.AddSingleton(RedisDatabase());
             services.AddBackgroundServiceProvider();
-            services.AddGoogleAuthentication(GoogleAuthCredentials());
+            services.AddGoogleAuthentication(GoogleAuthClientId());
             services.AddNewsletter(EmailSenderCredentials());
             services.AddHangfire(HangfireConnectionString());
 
@@ -78,7 +78,7 @@ namespace SimpleMusicStore.Api
             
 
         }
-        private IConfigurationSection GoogleAuthCredentials() => Configuration.GetSection("GoogleAuth");
+        private string GoogleAuthClientId() => Configuration["GoogleAuth:ClientId"];
         private IConfigurationSection EmailSenderCredentials() => Configuration.GetSection("EmailSender");
 
         private string DbConnectionString() => Configuration["Database:Connection"];

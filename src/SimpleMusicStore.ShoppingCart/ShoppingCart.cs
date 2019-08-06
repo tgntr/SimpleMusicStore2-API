@@ -57,7 +57,7 @@ namespace SimpleMusicStore.ShoppingCart
             await Task.Run(() => _items = new Dictionary<int, int>());
         }
 
-        public virtual async Task<ICollection<CartItem>> CurrentState()
+        public virtual async Task<IEnumerable<CartItem>> CurrentState()
         {
             return await CurrentStateOfCart();
         }

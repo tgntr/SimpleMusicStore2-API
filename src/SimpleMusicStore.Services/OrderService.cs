@@ -34,7 +34,7 @@ namespace SimpleMusicStore.Services
             return _cart.Add(itemId);
         }
 
-        public Task<ICollection<CartItem>> CurrentCartState()
+        public Task<IEnumerable<CartItem>> CurrentCartState()
         {
             return _cart.CurrentState();
         }
@@ -58,12 +58,24 @@ namespace SimpleMusicStore.Services
             return _cart.Remove(itemId);
         }
 
+        public Task<OrderView> Find(int orderId)
+        {
+            return _db.Orders.Find(orderId);
+        }
+
         public async Task Complete(int addressId)
         {
             _validator.CartIsNotEmpty(_cart.Items);
+            await _validator.ItemsAreInStock(_cart.Items);
             await _validator.AddressIsValid(addressId);
             await AddNewOrder(addressId);
             await _cart.EmptyCart();
+        }
+
+        public IEnumerable<OrderDetails> FindAll()
+        {
+            //_validator.AccessibleByCurrentUser(userId);
+            return _db.Orders.FindAll(_currentUser.Id);
         }
 
         private async Task AddNewOrder(int addressId)

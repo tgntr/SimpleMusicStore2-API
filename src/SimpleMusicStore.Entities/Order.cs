@@ -18,7 +18,7 @@ namespace SimpleMusicStore.Entities
         public int Id { get; set; }
 
 		//TODO check if works
-		public decimal TotalPrice => Items.Sum(i => i.Record.Price);
+		public decimal TotalPrice => Items.Sum(i => i.Record.Price * i.Quantity);
 
         [Required]
         public int DeliveryAddressId { get; set; }

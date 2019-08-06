@@ -6,6 +6,6 @@ namespace SimpleMusicStore.Models.MusicLibraries
 {
     public class RecordLabelInfo
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
     }
 }

@@ -108,6 +108,15 @@ namespace SimpleMusicStore.ServiceValidations
                 throw new ArgumentException(ErrorMessages.UNAVAILABLE_QUANTITY);
         }
 
+        public async Task ItemsAreInStock(IDictionary<int, int> items)
+        {
+            foreach (var item in items)
+            {
+                if (await _records.Availability(item.Key) < item.Value)
+                    throw new ArgumentException(ErrorMessages.UNAVAILABLE_QUANTITY);
+            }
+        }
+
         public async Task AddressIsValid(int id)
         {
             if (!await _addresses.Exists(id, _currentUser.Id))

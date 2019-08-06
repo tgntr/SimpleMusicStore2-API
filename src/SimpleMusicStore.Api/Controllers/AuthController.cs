@@ -17,31 +17,10 @@ namespace SimpleMusicStore.Api.Controllers
             _users = users;
         }
 
-        public IActionResult Google()
-        {
-            return GoogleAuthenticationPage();
-        }
-
         [Authorize]
-		public Task Login(string returnUrl)
+		public Task Login()
 		{
-            //todo in the front end return to returnUrl
             return _users.Add(User);
 		}
-
-        public Task Logout(string returnUrl)
-        {
-            return HttpContext
-                .SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                new AuthenticationProperties() { RedirectUri = returnUrl });
-        }
-
-        private IActionResult GoogleAuthenticationPage()
-        {
-            string returnUrl = HttpContext.Request.Query["ReturnUrl"];
-            returnUrl = string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl;
-            var callbackUrl = Url.Action("Login", "Auth", new { returnUrl });
-            return Challenge(new AuthenticationProperties() { RedirectUri = callbackUrl }, "Google");
-        }
     }
 }

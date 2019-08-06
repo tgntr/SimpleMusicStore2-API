@@ -34,7 +34,7 @@ namespace SimpleMusicStore.MusicLibrary
             return record;
         }
 
-        private Task<ArtistInfo> ExtractArtistInformation(int id)
+        private Task<ArtistInfo> ExtractArtistInformation(string id)
         {
             if (id == DiscogsConstants.VARIOUS_ARTISTS_ID)
             {
@@ -50,7 +50,7 @@ namespace SimpleMusicStore.MusicLibrary
             }
         }
 
-        private async Task<int> FindId(Uri uri)
+        private async Task<string> FindId(Uri uri)
         {
             if (IsMasterUrl(uri))
                 return (await DownloadContent<MasterInfo>(DiscogsConstants.MASTER, uri.FindDiscogsId())).Main_Release;
@@ -58,7 +58,7 @@ namespace SimpleMusicStore.MusicLibrary
             return uri.FindDiscogsId();
         }
 
-        private async Task<T> DownloadContent<T>(string contentType, int discogsId)
+        private async Task<T> DownloadContent<T>(string contentType, string discogsId)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace SimpleMusicStore.MusicLibrary
             return uri.AbsolutePath.Split(DiscogsConstants.PARAMETER_SPLITTER).Contains(DiscogsConstants.MASTER);
         }
 
-        private string GenerateUrl(string contentType, int discogsId)
+        private string GenerateUrl(string contentType, string discogsId)
         {
             return string.Format(_urlFormat, contentType, discogsId, _key, _secret);
         }

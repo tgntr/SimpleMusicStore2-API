@@ -6,6 +6,7 @@ namespace SimpleMusicStore.Contracts.Validators
     public interface IServiceValidator
     {
         Task ItemIsInStock(int itemId, IDictionary<int, int> items);
+        Task ItemsAreInStock(IDictionary<int, int> items);
         void ItemIsInCart(int itemId, IDictionary<int, int> items);
         Task RecordIsNotInStore(int recordId);
         Task LabelExists(int labelId);

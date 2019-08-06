@@ -29,7 +29,6 @@ namespace SimpleMusicStore.Services
             {
                 AvailableFormats = _db.Records.AvailableFormats(),
                 AvailableGenres = _db.Records.AvailableGenres(),
-                Records = _db.Records.FindAll(),
                 AvailableSortTypes = ExtractAllSortTypes()
             };
         }

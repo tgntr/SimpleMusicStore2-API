@@ -48,8 +48,8 @@ namespace SimpleMusicStore.Models.Binding
             else
                 return Images.First().Uri;
         }
-        public int ArtistId() => Artists.First().Id;
-        public int LabelId() => Labels.First().Id;
+        public string ArtistId() => Artists.First().Id;
+        public string LabelId() => Labels.First().Id;
         public string Genre() => Genres.First();
     }
 }
