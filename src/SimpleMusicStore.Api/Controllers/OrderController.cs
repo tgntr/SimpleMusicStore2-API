@@ -52,10 +52,5 @@ namespace SimpleMusicStore.Api.Controllers
         {
             return _orders.Find(id);
         }
-
-        public IEnumerable<OrderDetails> FindAll()
-        {
-            return _orders.FindAll();
-        }
     }
 }

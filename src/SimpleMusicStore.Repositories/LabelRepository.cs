@@ -45,15 +45,15 @@ namespace SimpleMusicStore.Repositories
         private LabelView LabelAsDto(Label label)
         {
             var labelDto = _mapper.Map<LabelView>(label);
-            labelDto.Records = labelDto.Records.OrderByDescending(r => r.DateAdded);
+            labelDto.Records = labelDto.Records.OrderByDescending(r => r.Year);
             return labelDto;
         }
 
-        public IEnumerable<LabelDetails> FindAll(string searchTerm)
+        public IEnumerable<SearchResult> FindAll(string searchTerm)
         {
             return ((IEnumerable<Label>)_set)
                 .Search(searchTerm)
-                .Select(_mapper.Map<LabelDetails>);
+                .Select(_mapper.Map<SearchResult>);
         }
 
         private static void ValidateThatLabelExists(Label label)

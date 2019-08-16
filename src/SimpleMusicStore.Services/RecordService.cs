@@ -81,7 +81,7 @@ namespace SimpleMusicStore.Services
         {
             Task.WaitAll(
                 _db.Artists.Add(recordInfo.Artist),
-                _db.Labels.Add(recordInfo.Label));
+                _db.Labels.Add(recordInfo.Label)); 
         }
 
         private async Task<RecordView> GenerateRecordView(int id)

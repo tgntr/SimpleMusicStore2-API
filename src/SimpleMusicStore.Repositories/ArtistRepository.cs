@@ -42,11 +42,11 @@ namespace SimpleMusicStore.Repositories
             return ArtistAsDto(artist);
         }
 
-        public IEnumerable<ArtistDetails> FindAll(string searchTerm)
+        public IEnumerable<SearchResult> FindAll(string searchTerm)
         {
             return ((IEnumerable<Artist>)_set)
                 .Search(searchTerm)
-                .Select(_mapper.Map<ArtistDetails>);
+                .Select(_mapper.Map<SearchResult>);
         }
 
         private static void ValidateThatArtistExists(Artist artist)

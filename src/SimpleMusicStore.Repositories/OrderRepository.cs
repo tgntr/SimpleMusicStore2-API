@@ -33,11 +33,6 @@ namespace SimpleMusicStore.Repositories
             return _mapper.Map<OrderView>(order);
         }
 
-        public IEnumerable<OrderDetails> FindAll(string userId)
-        {
-            return _set.Where(a => a.UserId == userId).Select(_mapper.Map<OrderDetails>);
-        }
-
         private static void ValidateThatOrderExists(Order order)
         {
             if (order == null)

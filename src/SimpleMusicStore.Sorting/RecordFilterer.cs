@@ -29,7 +29,7 @@ namespace SimpleMusicStore.Sorting
             return records
                 .Where(r => 
                     r.Title.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                    r.Tracklist.Any(t=>t.Title.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase)));
+                    r.Tracklist.Any(t=>t.Title.Split().Any(tt=>tt.StartsWith(searchTerm, StringComparison.InvariantCultureIgnoreCase))));
         }
 
         public static IEnumerable<Artist> Search(this IEnumerable<Artist> artists, string searchTerm)

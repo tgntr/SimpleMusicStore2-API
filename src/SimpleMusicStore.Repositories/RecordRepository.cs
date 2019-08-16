@@ -62,11 +62,11 @@ namespace SimpleMusicStore.Repositories
                 .Select(_mapper.Map<RecordDetails>);
         }
 
-        public IEnumerable<RecordDetails> FindAll(string searchTerm)
+        public IEnumerable<SearchResult> FindAll(string searchTerm)
         {
-            return ((IEnumerable<Record>)_set)
-                .Search(searchTerm)
-                .Select(_mapper.Map<RecordDetails>);
+			return ((IEnumerable<Record>)_set)
+				.Search(searchTerm)
+				.Select(_mapper.Map<SearchResult>);
         }
 
         public IEnumerable<string> AvailableFormats()
