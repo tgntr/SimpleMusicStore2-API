@@ -9,7 +9,7 @@ namespace SimpleMusicStore.Contracts.Services
     public interface IBrowseService
     {
         Browse GenerateBrowseView();
-        IEnumerable<RecordDetails> Filter(FilterCriterias criterias);
+        IEnumerable<RecordDetails> Filter(FilterCriterias criterias, int page);
 		IEnumerable<SearchResult> Search(string searchTerm);
     }
 }

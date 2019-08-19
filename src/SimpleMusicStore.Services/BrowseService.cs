@@ -1,4 +1,5 @@
-﻿using SimpleMusicStore.Constants;
+﻿using PagedList;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Sorting;
@@ -34,9 +35,11 @@ namespace SimpleMusicStore.Services
             };
         }
 
-        public IEnumerable<RecordDetails> Filter(FilterCriterias criterias)
+        public IEnumerable<RecordDetails> Filter(FilterCriterias criterias, int page)
         {
-            return _sorter.Sort(criterias.Sort, _db.Records.FindAll(criterias));
+            return _sorter.Sort(criterias.Sort, _db.Records.FindAll(criterias))
+                .ToPagedList(page, CommonConstants.PAGE_SIZE);
+
         }
 
         public IEnumerable<SearchResult> Search(string searchTerm)

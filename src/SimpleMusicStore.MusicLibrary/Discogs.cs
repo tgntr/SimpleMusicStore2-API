@@ -80,7 +80,7 @@ namespace SimpleMusicStore.MusicLibrary
 
         private bool IsMasterUrl(Uri uri)
         {
-            return uri.AbsolutePath.Split(DiscogsConstants.PARAMETER_SPLITTER).Contains(DiscogsConstants.MASTER);
+            return uri.AbsolutePath.Split(DiscogsConstants.PARAMETER_SPLITTER).Contains("master");
         }
 
         private string GenerateUrl(string contentType, string discogsId)

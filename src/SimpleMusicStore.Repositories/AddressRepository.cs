@@ -42,7 +42,7 @@ namespace SimpleMusicStore.Repositories
 
         public IEnumerable<AddressDetails> FindAll(string userId)
         {
-            return _set.Where(a => a.UserId == userId).Select(_mapper.Map<AddressDetails>);
+            return _set.Where(a => a.UserId == userId && a.IsActive).Select(_mapper.Map<AddressDetails>);
         }
 
         public async Task Remove(int addressId)
