@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace SimpleMusicStore.Models.View
+{
+    public class Comment
+    {
+        public int Id { get; set; }
+        public string Text { get; set; }
+        public string ByUser { get; set; }
+        public DateTime DateCreated { get; set; }
+
+    }
+}
