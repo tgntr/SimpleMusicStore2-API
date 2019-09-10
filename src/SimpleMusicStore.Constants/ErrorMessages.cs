@@ -29,14 +29,9 @@ namespace SimpleMusicStore.Constants
             INVALID_FILE = "Track preview must be non-empty MP3 file",
             INVALID_DISCOGS_URL = "Invalid discogs URL!",
             INVALID_USER = "User does not exist!",
-            INACCESSIBLE = "Requested information is inaccessible!";
-
-
-
-
-
-
-
-
+            INACCESSIBLE = "Requested information is inaccessible!",
+            INVALID_COMMENT = "The comment does not exist!",
+            FORBIDDEN_COMMENT_DELETION = "You cannot delete this comment!",
+            FORBIDDEN_COMMENT_EDIT = "You cannot edit this comment.";  
     }
 }

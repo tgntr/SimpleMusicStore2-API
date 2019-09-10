@@ -17,6 +17,7 @@ namespace SimpleMusicStore.Entities
         
         public string Text { get; set; }
 
-        public virtual IList<RecordComment> RecordComments { get; set; }
+        public int RecordId { get; set; }
+        public virtual Record Record { get; set; }
     }
 }

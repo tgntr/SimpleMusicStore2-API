@@ -9,7 +9,7 @@ namespace SimpleMusicStore.Models.View
         public int Id { get; set; }
         public string Text { get; set; }
         public string ByUser { get; set; }
-        public DateTime DateCreated { get; set; }
+        public DateTime Date { get; set; }
 
     }
 }
