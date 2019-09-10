@@ -40,9 +40,9 @@ namespace SimpleMusicStore.Api.Controllers
 
         //[Authorize]
         [HttpDelete]
-        public Task Delete(int commentId)
+        public Task Delete(int Id)
         {
-            return _comments.Delete(commentId);
+            return _comments.Delete(Id);
         }
     }
 }

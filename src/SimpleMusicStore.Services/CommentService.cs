@@ -33,13 +33,10 @@ namespace SimpleMusicStore.Services
 
         public Task Delete(int commentId)
         {
-
-            //if (UserIsAuthor(_currentUser.Id, commentId))
-            //   return _db.Comments.Delete(commentId);
-            //else
-            //    throw new ArgumentException(ErrorMessages.FORBIDDEN_COMMENT_DELETION);
-            return _db.Comments.Delete(commentId); 
-
+            if (UserIsAuthor(_currentUser.Id, commentId))
+                return _db.Comments.Delete(commentId);
+            else
+                throw new ArgumentException(ErrorMessages.FORBIDDEN_COMMENT_DELETION);
         }
         public async Task Edit(EditComment comment)
         {

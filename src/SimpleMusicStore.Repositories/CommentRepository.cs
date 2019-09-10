@@ -39,6 +39,7 @@ namespace SimpleMusicStore.Repositories
             if (toDelete != null)
             {
                 _set.Remove(toDelete);
+                await _context.SaveChangesAsync();
             }
             else
             {
