@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SimpleMusicStore.Contracts.Repositories;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace SimpleMusicStore.Data
     public class DbRepository<TEntity>
         where TEntity : class
     {
-        private readonly SimpleMusicStoreDbContext _context;
+        protected readonly SimpleMusicStoreDbContext _context;
         protected DbSet<TEntity> _set;
         protected IMapper _mapper;
 
@@ -27,7 +28,7 @@ namespace SimpleMusicStore.Data
         {
             _context = context;
             _set = _context.Set<TEntity>();
-        }
+        }      
 
         //public Task Add(TEntity entity)
         //{

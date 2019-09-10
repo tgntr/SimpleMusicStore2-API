@@ -7,17 +7,13 @@ using System.Text;
 
 namespace SimpleMusicStore.Data.Relations
 {
-    class RecordCommentsRelations : IEntityTypeConfiguration<RecordComment>
+    class RecordCommentsRelations : IEntityTypeConfiguration<Comment>
     {
-        public void Configure(EntityTypeBuilder<RecordComment> builder)
+        public void Configure(EntityTypeBuilder<Comment> builder)
         {
-            builder.HasOne(rc => rc.Record)
-                .WithMany(c => c.RecordComments)
-                .HasForeignKey(rc => rc.RecordId);
-
-            builder.HasOne(rc => rc.Comment)
-                .WithMany(r => r.RecordComments)
-                .HasForeignKey(rc => rc.CommentId);
+            builder.HasOne(c => c.Record)
+                .WithMany(r => r.Comments)
+                .HasForeignKey(c => c.RecordId);
         }
     }
 }

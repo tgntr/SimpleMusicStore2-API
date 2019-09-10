@@ -9,7 +9,8 @@ namespace SimpleMusicStore.Entities.Common
 	{
 		public UserActivity()
 		{
-			Date = DateTime.UtcNow;
+            //TODO: See the references and what can you do about it.
+			//Date = DateTime.UtcNow;
 		}
 
 		[Required]

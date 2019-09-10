@@ -29,11 +29,25 @@ namespace SimpleMusicStore.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<RecordComment> RecordComments { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
+        }
+
+        public override int SaveChanges()
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is Entities.Comment && (
+                        e.State == EntityState.Added));
+
+            foreach (var entityEntry in entries)
+            {
+                ((Entities.Comment)entityEntry.Entity).Date = DateTime.UtcNow;
+            }
+
+            return base.SaveChanges();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
