@@ -19,6 +19,7 @@ namespace SimpleMusicStore.Contracts.Repositories
         IWishRepository Wishes { get; }
         IUserRepository Users { get; }
         IStockRepository Stocks { get; }
+        ICommentRepository Comments { get; }
         Task SaveChanges();
     }
 }
