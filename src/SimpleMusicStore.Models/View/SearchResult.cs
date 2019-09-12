@@ -6,8 +6,11 @@ namespace SimpleMusicStore.Models.View
 {
     public class SearchResult
     {
-        public IEnumerable<RecordDetails> Records { get; set; }
-        public IEnumerable<ArtistDetails> Artists { get; set; }
-        public IEnumerable<LabelDetails> Labels { get; set; }
+        public SearchResult() { }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Image { get; set; }
+        public string ContentType { get; set; }
     }
 }

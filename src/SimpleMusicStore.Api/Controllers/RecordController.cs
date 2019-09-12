@@ -35,9 +35,9 @@ namespace SimpleMusicStore.Api.Controllers
         }
 
         [HttpPost]
-        public IEnumerable<RecordDetails> Filter([FromBody] FilterCriterias criterias)
+        public IEnumerable<RecordDetails> Filter(int page, [FromBody] FilterCriterias criterias)
         {
-            return _browser.Filter(criterias);
+            return _browser.Filter(criterias, page);
         }
 
         public Task<RecordView> Details(int id)

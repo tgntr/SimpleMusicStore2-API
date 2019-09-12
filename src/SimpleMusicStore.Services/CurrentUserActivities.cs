@@ -7,7 +7,7 @@ using SimpleMusicStore.Models.View;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SimpleMusicStore.Repositories
+namespace SimpleMusicStore.Services
 {
     public class CurrentUserActivities : ICurrentUserActivities
     {

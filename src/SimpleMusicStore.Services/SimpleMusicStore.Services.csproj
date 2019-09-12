@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="PagedList" Version="1.17.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SimpleMusicStore.Auth\SimpleMusicStore.Auth.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.BackgroundServiceProvider\SimpleMusicStore.BackgroundServiceProvider.csproj" />
     <ProjectReference Include="..\SimpleMusicStore.Contracts\SimpleMusicStore.Contracts.csproj" />

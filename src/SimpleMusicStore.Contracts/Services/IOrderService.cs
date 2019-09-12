@@ -14,6 +14,5 @@ namespace SimpleMusicStore.Contracts.Services
         Task EmptyCart();
         Task Complete(int addressId);
         Task<OrderView> Find(int orderId);
-        IEnumerable<OrderDetails> FindAll();
     }
 }

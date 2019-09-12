@@ -24,9 +24,9 @@ namespace SimpleMusicStore.Api.Controllers
             _discogs = discogs;
         }
 
-        public async Task<NewRecord> Find([RegularExpression(DiscogsConstants.DISCOGS_URL_PATTERN)]string url)
+        public Task<NewRecord> Find([RegularExpression(DiscogsConstants.DISCOGS_URL_PATTERN)]string url)
         {
-            return await _discogs.ExtractInformation(url.AsUri());
+            return _discogs.ExtractInformation(url.AsUri());
         }
     }
 }

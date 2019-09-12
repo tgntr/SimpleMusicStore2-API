@@ -12,6 +12,5 @@ namespace SimpleMusicStore.Contracts.Repositories
     {
         Task Add(NewOrder order);
         Task<OrderView> Find(int id);
-        IEnumerable<OrderDetails> FindAll(string userId);
     }
 }

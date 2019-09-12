@@ -2,6 +2,7 @@
 using SimpleMusicStore.Models.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SimpleMusicStore.Entities
 {
@@ -16,7 +17,7 @@ namespace SimpleMusicStore.Entities
             Orders = new List<Order>();
             IsSubscribed = true;
         }
-        //todo add validations
+        [Required, EmailAddress]
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

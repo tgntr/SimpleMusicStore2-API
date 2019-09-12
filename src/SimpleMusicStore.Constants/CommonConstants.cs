@@ -10,5 +10,6 @@ namespace SimpleMusicStore.Constants
             BUCKET_NAME = "simplemusicstore",
             MP3 = "audio/mpeg",
             STORAGE_URL = @"https://storage.googleapis.com/simplemusicstore/";
+        public const int PAGE_SIZE = 24;
     }
 }
