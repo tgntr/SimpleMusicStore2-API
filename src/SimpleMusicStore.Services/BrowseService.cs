@@ -1,4 +1,5 @@
-﻿using SimpleMusicStore.Constants;
+﻿using PagedList;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Sorting;
@@ -9,6 +10,7 @@ using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace SimpleMusicStore.Services
 {
@@ -33,19 +35,32 @@ namespace SimpleMusicStore.Services
             };
         }
 
-        public IEnumerable<RecordDetails> Filter(FilterCriterias criterias)
+        public IEnumerable<RecordDetails> Filter(FilterCriterias criterias, int page)
         {
-            return _sorter.Sort(criterias.Sort, _db.Records.FindAll(criterias));
+            return _sorter.Sort(criterias.Sort, _db.Records.FindAll(criterias))
+                .ToPagedList(page, CommonConstants.PAGE_SIZE);
+
         }
 
-        public SearchResult Search(string searchTerm)
+        public IEnumerable<SearchResult> Search(string searchTerm)
         {
-            return new SearchResult
-            {
-                Records = _db.Records.FindAll(searchTerm),
-                Artists = _db.Artists.FindAll(searchTerm),
-                Labels = _db.Labels.FindAll(searchTerm)
-            };
+            return _db.Records.FindAll(searchTerm)
+                .Concat(_db.Artists.FindAll(searchTerm))
+                .Concat(_db.Labels.FindAll(searchTerm))
+                .OrderByDescending(r => Match(r.Name, searchTerm))
+                .Take(10);
+        }
+
+        private int Match(string name, string searchTerm)
+        {
+            if (name.StartsWith(searchTerm, StringComparison.InvariantCultureIgnoreCase))
+                return searchTerm.Length * 3;
+            else if (name.Split().Any(n => n.StartsWith(searchTerm, StringComparison.InvariantCultureIgnoreCase)))
+                return searchTerm.Length * 2;
+            else if (name.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase))
+                return 1;
+            else
+                return 2;
         }
 
         private IEnumerable<string> ExtractAllSortTypes()

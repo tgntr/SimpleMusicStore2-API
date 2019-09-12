@@ -49,8 +49,10 @@ namespace SimpleMusicStore.Repositories
 
         public IEnumerable<RecordDetails> FindAllInStock()
         {
-            return _set.Where(r => r.Availability() > 0).Select(_mapper.Map<RecordDetails>);
+            return _set.Where(IsInStock).Select(_mapper.Map<RecordDetails>);
         }
+
+        
 
         public IEnumerable<RecordDetails> FindAll(FilterCriterias criterias)
         {
@@ -60,11 +62,11 @@ namespace SimpleMusicStore.Repositories
                 .Select(_mapper.Map<RecordDetails>);
         }
 
-        public IEnumerable<RecordDetails> FindAll(string searchTerm)
+        public IEnumerable<SearchResult> FindAll(string searchTerm)
         {
-            return ((IEnumerable<Record>)_set)
-                .Search(searchTerm)
-                .Select(_mapper.Map<RecordDetails>);
+			return ((IEnumerable<Record>)_set)
+				.Search(searchTerm)
+				.Select(_mapper.Map<SearchResult>);
         }
 
         public IEnumerable<string> AvailableFormats()
@@ -104,13 +106,18 @@ namespace SimpleMusicStore.Repositories
 
         private IEnumerable<Record> FindAll(bool mustBeInStock = false)
         {
-            IEnumerable<Record> records;
+            IEnumerable<Record> records = _set;
             if (mustBeInStock)
-                records = _set.Where(r => r.Availability() > 0);
+                records = records.Where(IsInStock);
             else
                 records = _set;
 
             return records;
+        }
+
+        private bool IsInStock(Record r)
+        {
+            return r.Stocks.Sum(s => s.Quantity) - r.Orders.Sum(i => i.Quantity) > 0;
         }
     }
 }
