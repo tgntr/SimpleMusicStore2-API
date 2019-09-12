@@ -72,12 +72,6 @@ namespace SimpleMusicStore.Services
             await _cart.EmptyCart();
         }
 
-        public IEnumerable<OrderDetails> FindAll()
-        {
-            //_validator.AccessibleByCurrentUser(userId);
-            return _db.Orders.FindAll(_currentUser.Id);
-        }
-
         private async Task AddNewOrder(int addressId)
         {
             var order = new NewOrder

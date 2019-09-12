@@ -17,8 +17,8 @@ namespace SimpleMusicStore.Api.Controllers
         {
             _browser = browser;
         }
-        
-        public SearchResult Index([MinLength(1)]string searchTerm)
+
+        public IEnumerable<SearchResult> Index([Required, MinLength(1)]string searchTerm)
         {
             return _browser.Search(searchTerm);
         }

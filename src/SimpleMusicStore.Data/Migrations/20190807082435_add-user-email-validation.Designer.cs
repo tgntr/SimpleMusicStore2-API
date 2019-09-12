@@ -3,19 +3,21 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleMusicStore.Data;
 
 namespace SimpleMusicStore.Data.Migrations
 {
     [DbContext(typeof(SimpleMusicStoreDbContext))]
-    partial class SimpleMusicStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190807082435_add-user-email-validation")]
+    partial class adduseremailvalidation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -76,26 +78,6 @@ namespace SimpleMusicStore.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ArtistFollows");
-                });
-
-            modelBuilder.Entity("SimpleMusicStore.Entities.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Text");
-
-                    b.Property<string>("UserId")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("SimpleMusicStore.Entities.Item", b =>
@@ -196,25 +178,6 @@ namespace SimpleMusicStore.Data.Migrations
                     b.HasIndex("LabelId");
 
                     b.ToTable("Records");
-                });
-
-            modelBuilder.Entity("SimpleMusicStore.Entities.RecordComment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CommentId");
-
-                    b.Property<int>("RecordId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CommentId");
-
-                    b.HasIndex("RecordId");
-
-                    b.ToTable("RecordComments");
                 });
 
             modelBuilder.Entity("SimpleMusicStore.Entities.Stock", b =>
@@ -328,14 +291,6 @@ namespace SimpleMusicStore.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SimpleMusicStore.Entities.Comment", b =>
-                {
-                    b.HasOne("SimpleMusicStore.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("SimpleMusicStore.Entities.Item", b =>
                 {
                     b.HasOne("SimpleMusicStore.Entities.Order", "Order")
@@ -385,19 +340,6 @@ namespace SimpleMusicStore.Data.Migrations
                     b.HasOne("SimpleMusicStore.Entities.Label", "Label")
                         .WithMany("Records")
                         .HasForeignKey("LabelId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SimpleMusicStore.Entities.RecordComment", b =>
-                {
-                    b.HasOne("SimpleMusicStore.Entities.Comment", "Comment")
-                        .WithMany("RecordComments")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SimpleMusicStore.Entities.Record", "Record")
-                        .WithMany("RecordComments")
-                        .HasForeignKey("RecordId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
