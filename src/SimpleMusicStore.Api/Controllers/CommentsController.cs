@@ -24,21 +24,21 @@ namespace SimpleMusicStore.Api.Controllers
             return _comments.All(id);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
-        public Task Add([FromBody] NewComment comment)
+        public Task<Comment> Add([FromBody]NewComment comment)
         {
             return _comments.Add(comment);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost]
-        public Task Edit([FromBody]EditComment comment)
+        public Task<Comment> Edit([FromBody]EditComment comment)
         {
             return _comments.Edit(comment);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpDelete]
         public Task Delete(int Id)
         {

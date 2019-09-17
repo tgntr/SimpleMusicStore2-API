@@ -61,7 +61,8 @@ namespace SimpleMusicStore.Api
             //.ForMember(rd => rd.Artist, src => src.MapFrom(w => w.Record.Artist));
             CreateMap<RecordView, ItemDetails>();
             CreateMap<Entities.Comment, Models.View.Comment>();
-            CreateMap<NewComment, Entities.Comment>();
+            CreateMap<NewComment, Entities.Comment>()
+                .ForMember(c => c.UserId, src => src.MapFrom(nc => nc.UserId));
             CreateMap<EditComment, Entities.Comment>();
             CreateMap<Video, VideoDetails>();
             CreateMap<Track, TrackDetails>();
