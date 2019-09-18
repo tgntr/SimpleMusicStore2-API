@@ -8,10 +8,9 @@ namespace SimpleMusicStore.Entities.Common
 	public abstract class UserActivity
 	{
 		public UserActivity()
-		{
-            //TODO: See the references and what can you do about it.
-			//Date = DateTime.UtcNow;
-		}
+		{           
+            Date = DateTime.UtcNow;
+        }
 
 		[Required]
 		public string UserId { get; set; }

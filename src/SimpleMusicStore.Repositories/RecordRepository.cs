@@ -42,9 +42,27 @@ namespace SimpleMusicStore.Repositories
 
         public async Task<RecordView> Find(int id)
         {
-            var record = await _set.FindAsync(id);
+            var record = await _set.FindAsync(id);             
             ValidateThatRecordExists(record);
-            return _mapper.Map<RecordView>(record);
+            return FillUsernamesInComments(record); ;
+        }
+
+        private RecordView FillUsernamesInComments(Record record)
+        {
+            var mappedComments = new List<Models.View.CommentView>();
+            foreach (var comment in record.Comments)
+            {
+                var user = _context.Users.Where(u => u.Id == comment.UserId).FirstOrDefault();
+                if (user != null)
+                {
+                    var mappedComment = _mapper.Map<Models.View.CommentView>(comment);
+                    mappedComment.ByUser = string.Concat(user.FirstName, " ", user.LastName);
+                    mappedComments.Add(mappedComment);
+                }
+            }
+            var mappedrecord = _mapper.Map<RecordView>(record);
+            mappedrecord.Comments = mappedComments;
+            return mappedrecord;
         }
 
         public IEnumerable<RecordDetails> FindAllInStock()

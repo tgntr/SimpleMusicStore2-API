@@ -12,7 +12,7 @@ namespace SimpleMusicStore.Entities
         {
 
         }
-        
+        public DateTime DateEdited { get; set; }
         public int Id { get; set; }
         
         public string Text { get; set; }

@@ -1,20 +1,12 @@
-﻿using AutoMapper;
-using SimpleMusicStore.Constants;
-using SimpleMusicStore.Contracts;
+﻿using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.BackgroundServiceProvider;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Sorting;
 using SimpleMusicStore.Contracts.Validators;
-using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.Binding;
-using SimpleMusicStore.Models.MusicLibraries;
 using SimpleMusicStore.Models.View;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
@@ -86,9 +78,9 @@ namespace SimpleMusicStore.Services
 
         private async Task<RecordView> GenerateRecordView(int id)
         {
-            var record = await _db.Records.Find(id);
+            var record = await _db.Records.Find(id);            
             record.IsInWishlist = _currentUser.IsRecordInWishlist(id);
             return record;
-        }
+        }       
     }
 }
