@@ -18,5 +18,6 @@ namespace SimpleMusicStore.Contracts.Validators
         void CartIsNotEmpty(IDictionary<int, int> items);
         Task AddressIsValid(int id);
         void AccessibleByCurrentUser(string userId);
+        bool IsAuthor(string userId, int commentId);
     }
 }
