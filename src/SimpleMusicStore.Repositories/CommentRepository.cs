@@ -13,22 +13,20 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories
 {
-    public class CommentRepository : DbRepository<Entities.Comment>, ICommentRepository
+    public class CommentRepository : DbRepository<Comment>, ICommentRepository
     {
         public CommentRepository(SimpleMusicStoreDbContext db, IMapper mapper) : base(db, mapper)
         {
         }
 
-        public async Task Add(NewComment comment)
+        public async Task<CommentView> Add(NewComment comment)
         {
-            var comm = await _set.AddAsync(_mapper.Map<Entities.Comment>(comment));
-            FillUserName(comment, comm);
-            await _context.SaveChangesAsync();
-
+            var newComment = await _set.AddAsync(_mapper.Map<Comment>(comment));
+            return FillUserName(comment, newComment);
         }
 
 
-        public IEnumerable<Models.View.Comment> AllFor(int recordId)
+        public IEnumerable<CommentView> AllFor(int recordId)
         {
             var comments = _set.Where(comment => comment.RecordId == recordId).ToList();
             return FillUserNames(comments);
@@ -37,27 +35,21 @@ namespace SimpleMusicStore.Repositories
         {
             var toDelete = await _set.FindAsync(commentId);
             if (toDelete != null)
-            {
                 _set.Remove(toDelete);
-                await _context.SaveChangesAsync();
-            }
             else
-            {
                 throw new ArgumentException(ErrorMessages.INVALID_COMMENT);
-            }
 
         }
 
-        public async Task<Models.View.Comment> Edit(EditComment comment)
+        public async Task<CommentView> Edit(EditComment comment)
         {
             var record = await _set.FindAsync(comment.Id);
-            if (record != null)
+            if (record != null && record.UserId == comment.UserId)
             {
                 _context.Attach(record);
-                record.Date = DateTime.Now;
+                record.DateEdited = DateTime.Now;
                 record.Text = comment.Text;
-                _context.SaveChanges();
-                return _mapper.Map<Models.View.Comment>(record);
+                return _mapper.Map<CommentView>(record);
             }
             else
             {
@@ -66,25 +58,26 @@ namespace SimpleMusicStore.Repositories
 
         }
 
-        public async Task<Entities.Comment> Get(int commentId)
+        public async Task<Comment> Get(int commentId)
         {
-           return await _set.FindAsync(commentId);
+            return await _set.FindAsync(commentId);
         }
-        private void FillUserName(NewComment comment, Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<Entities.Comment> comm)
+        private CommentView FillUserName(NewComment comment, Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<Comment> commentEntity)
         {
-            var newComment = _mapper.Map<Models.View.Comment>(comm.Entity);
+            var newComment = _mapper.Map<CommentView>(commentEntity.Entity);
             var user = _context.Users.FirstOrDefault(u => u.Id == comment.UserId);
             newComment.ByUser = string.Concat(user.FirstName, " ", user.LastName);
+            return newComment;
         }
 
-        private IEnumerable<Models.View.Comment> FillUserNames(List<Entities.Comment> comments)
+        private IEnumerable<CommentView> FillUserNames(List<Comment> comments)
         {
             foreach (var comment in comments)
             {
                 var user = _context.Users.Where(u => u.Id == comment.UserId).FirstOrDefault();
                 if (user != null)
                 {
-                    var mappedComment = _mapper.Map<Models.View.Comment>(comment);
+                    var mappedComment = _mapper.Map<CommentView>(comment);
                     mappedComment.ByUser = string.Concat(user.FirstName, " ", user.LastName);
                     yield return mappedComment;
                 }

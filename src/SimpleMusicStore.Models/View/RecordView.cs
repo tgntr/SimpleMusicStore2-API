@@ -13,7 +13,7 @@ namespace SimpleMusicStore.Models.View
         public int Year { get; set; }
         public IEnumerable<VideoDetails> Videos { get; set; }
         public IEnumerable<TrackDetails> Tracklist { get; set; }
-        public IEnumerable<Models.View.Comment> Comments { get; set; }
+        public List<CommentView> Comments { get; set; }
         public ArtistDetails Artist { get; set; }
         public LabelDetails Label { get; set; }
         public decimal Price { get; set; }

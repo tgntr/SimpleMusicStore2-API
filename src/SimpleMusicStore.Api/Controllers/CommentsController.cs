@@ -19,21 +19,21 @@ namespace SimpleMusicStore.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Comment> All(int id)
+        public IEnumerable<CommentView> All(int id)
         {
             return _comments.All(id);
         }
 
         [Authorize]
         [HttpPost]
-        public Task<Comment> Add([FromBody]NewComment comment)
+        public Task<CommentView> Add([FromBody]NewComment comment)
         {
             return _comments.Add(comment);
         }
 
         [Authorize]
         [HttpPost]
-        public Task<Comment> Edit([FromBody]EditComment comment)
+        public Task<CommentView> Edit([FromBody]EditComment comment)
         {
             return _comments.Edit(comment);
         }

@@ -1,4 +1,5 @@
 ﻿using SimpleMusicStore.Models.Binding;
+using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,9 +9,9 @@ namespace SimpleMusicStore.Contracts.Services
 {
     public interface ICommentsService
     {
-        IEnumerable<Models.View.Comment> All(int recordId);
-        Task Add(NewComment comment);
-        Task Edit(EditComment comment);
+        IEnumerable<CommentView> All(int recordId);
+        Task<CommentView> Add(NewComment comment);
+        Task<CommentView> Edit(EditComment comment);
         Task Delete(int commentId);
     }
 }
