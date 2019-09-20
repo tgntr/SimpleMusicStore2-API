@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleMusicStore.Data;
 
 namespace SimpleMusicStore.Data.Migrations
 {
     [DbContext(typeof(SimpleMusicStoreDbContext))]
-    partial class SimpleMusicStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190910080634_commentsUpdated")]
+    partial class commentsUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,8 +87,6 @@ namespace SimpleMusicStore.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Date");
-
-                    b.Property<DateTime>("DateEdited");
 
                     b.Property<int>("RecordId");
 
@@ -220,7 +220,7 @@ namespace SimpleMusicStore.Data.Migrations
 
                     b.HasIndex("RecordId");
 
-                    b.ToTable("Stocks");
+                    b.ToTable("Stock");
                 });
 
             modelBuilder.Entity("SimpleMusicStore.Entities.Track", b =>
@@ -247,8 +247,7 @@ namespace SimpleMusicStore.Data.Migrations
                 {
                     b.Property<string>("Id");
 
-                    b.Property<string>("Email")
-                        .IsRequired();
+                    b.Property<string>("Email");
 
                     b.Property<string>("FirstName");
 

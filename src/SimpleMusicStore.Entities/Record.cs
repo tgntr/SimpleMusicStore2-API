@@ -43,6 +43,7 @@ namespace SimpleMusicStore.Entities
         public virtual ICollection<Video> Videos { get; set; }
         public virtual ICollection<Track> Tracklist { get; set; }
         public virtual ICollection<Stock> Stocks { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
         public int Popularity() => (Orders.Sum(i => i.Quantity) * 2) + WishedBy.Count;
         public int Availability() => Stocks.Sum(s => s.Quantity) - Orders.Sum(i => i.Quantity);
 

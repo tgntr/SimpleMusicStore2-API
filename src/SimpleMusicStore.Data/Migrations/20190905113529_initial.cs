@@ -41,7 +41,8 @@ namespace SimpleMusicStore.Data.Migrations
                     Id = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true)
+                    LastName = table.Column<string>(nullable: true),
+                    IsSubscribed = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {

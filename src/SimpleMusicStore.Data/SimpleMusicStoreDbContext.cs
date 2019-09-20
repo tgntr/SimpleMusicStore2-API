@@ -28,6 +28,7 @@ namespace SimpleMusicStore.Data
         public DbSet<Video> Videos { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<Stock> Stocks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -43,6 +44,7 @@ namespace SimpleMusicStore.Data
             builder.ApplyConfiguration(new WishRelations());
             builder.ApplyConfiguration(new ItemRelations());
             builder.ApplyConfiguration(new OrderRelations());
+            builder.ApplyConfiguration(new RecordCommentsRelations());
         }
     }
 }

@@ -23,6 +23,7 @@ namespace SimpleMusicStore.Repositories
             IRecordRepository records,
             IWishRepository wishes,
             IUserRepository users,
+            ICommentRepository comments,
             //ICurrentUserActivities currentUser,
             //IServiceValidator validator,
             IStockRepository stocks)
@@ -37,6 +38,7 @@ namespace SimpleMusicStore.Repositories
             Records = records;
             Wishes = wishes;
             Users = users;
+            Comments = comments;
             //CurrentUser = currentUser;
             //Validator = validator;
             Stocks = stocks;
@@ -51,6 +53,7 @@ namespace SimpleMusicStore.Repositories
         public IRecordRepository Records { get; }
         public IWishRepository Wishes { get; }
         public IUserRepository Users { get; }
+        public ICommentRepository Comments { get; set; }
         //public ICurrentUserActivities CurrentUser { get; }
         //public IServiceValidator Validator { get; }
         public IStockRepository Stocks { get; }

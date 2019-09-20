@@ -37,6 +37,7 @@ namespace SimpleMusicStore.Api.StartupConfigurations
             services.AddScoped<Sorter, RecordSorter>();
             services.AddScoped<IBrowseService, BrowseService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICommentsService, CommentService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
@@ -53,6 +54,7 @@ namespace SimpleMusicStore.Api.StartupConfigurations
             services.AddScoped<ICurrentUserActivities, CurrentUserActivities>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IStockRepository, StockRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }

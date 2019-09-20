@@ -10,14 +10,14 @@ using SimpleMusicStore.Data;
 namespace SimpleMusicStore.Data.Migrations
 {
     [DbContext(typeof(SimpleMusicStoreDbContext))]
-    [Migration("20190701143917_users_newsletter_subscribtion")]
-    partial class users_newsletter_subscribtion
+    [Migration("20190912094609_update-stocks")]
+    partial class updatestocks
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -78,6 +78,30 @@ namespace SimpleMusicStore.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ArtistFollows");
+                });
+
+            modelBuilder.Entity("SimpleMusicStore.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("RecordId");
+
+                    b.Property<string>("Text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecordId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("SimpleMusicStore.Entities.Item", b =>
@@ -196,7 +220,7 @@ namespace SimpleMusicStore.Data.Migrations
 
                     b.HasIndex("RecordId");
 
-                    b.ToTable("Stock");
+                    b.ToTable("Stocks");
                 });
 
             modelBuilder.Entity("SimpleMusicStore.Entities.Track", b =>
@@ -223,7 +247,8 @@ namespace SimpleMusicStore.Data.Migrations
                 {
                     b.Property<string>("Id");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
                     b.Property<string>("FirstName");
 
@@ -286,6 +311,19 @@ namespace SimpleMusicStore.Data.Migrations
 
                     b.HasOne("SimpleMusicStore.Entities.User", "User")
                         .WithMany("FollowedArtists")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SimpleMusicStore.Entities.Comment", b =>
+                {
+                    b.HasOne("SimpleMusicStore.Entities.Record", "Record")
+                        .WithMany("Comments")
+                        .HasForeignKey("RecordId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SimpleMusicStore.Entities.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

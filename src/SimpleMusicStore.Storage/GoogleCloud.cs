@@ -7,6 +7,7 @@ using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Contracts.BackgroundServiceProvider;
+using SimpleMusicStore.Models.Binding;
 
 namespace SimpleMusicStore.Storage
 {
@@ -18,7 +19,7 @@ namespace SimpleMusicStore.Storage
         public GoogleCloud(IBackgroundTaskQueue background)
         {
             //TODO move credentials file
-            _storage = StorageClient.Create();
+            _storage = StorageClient.Create(GoogleCredential.FromJson("appsettings"));
             _background = background;
         }
 

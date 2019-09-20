@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleMusicStore.Data;
 
 namespace SimpleMusicStore.Data.Migrations
 {
     [DbContext(typeof(SimpleMusicStoreDbContext))]
-    partial class SimpleMusicStoreDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190909111723_comments")]
+    partial class comments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,18 +88,12 @@ namespace SimpleMusicStore.Data.Migrations
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<DateTime>("DateEdited");
-
-                    b.Property<int>("RecordId");
-
                     b.Property<string>("Text");
 
                     b.Property<string>("UserId")
                         .IsRequired();
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RecordId");
 
                     b.HasIndex("UserId");
 
@@ -204,6 +200,25 @@ namespace SimpleMusicStore.Data.Migrations
                     b.ToTable("Records");
                 });
 
+            modelBuilder.Entity("SimpleMusicStore.Entities.RecordComment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CommentId");
+
+                    b.Property<int>("RecordId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("RecordId");
+
+                    b.ToTable("RecordComments");
+                });
+
             modelBuilder.Entity("SimpleMusicStore.Entities.Stock", b =>
                 {
                     b.Property<int>("Id")
@@ -220,7 +235,7 @@ namespace SimpleMusicStore.Data.Migrations
 
                     b.HasIndex("RecordId");
 
-                    b.ToTable("Stocks");
+                    b.ToTable("Stock");
                 });
 
             modelBuilder.Entity("SimpleMusicStore.Entities.Track", b =>
@@ -247,8 +262,7 @@ namespace SimpleMusicStore.Data.Migrations
                 {
                     b.Property<string>("Id");
 
-                    b.Property<string>("Email")
-                        .IsRequired();
+                    b.Property<string>("Email");
 
                     b.Property<string>("FirstName");
 
@@ -317,11 +331,6 @@ namespace SimpleMusicStore.Data.Migrations
 
             modelBuilder.Entity("SimpleMusicStore.Entities.Comment", b =>
                 {
-                    b.HasOne("SimpleMusicStore.Entities.Record", "Record")
-                        .WithMany("Comments")
-                        .HasForeignKey("RecordId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("SimpleMusicStore.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -377,6 +386,19 @@ namespace SimpleMusicStore.Data.Migrations
                     b.HasOne("SimpleMusicStore.Entities.Label", "Label")
                         .WithMany("Records")
                         .HasForeignKey("LabelId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SimpleMusicStore.Entities.RecordComment", b =>
+                {
+                    b.HasOne("SimpleMusicStore.Entities.Comment", "Comment")
+                        .WithMany("RecordComments")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SimpleMusicStore.Entities.Record", "Record")
+                        .WithMany("RecordComments")
+                        .HasForeignKey("RecordId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
