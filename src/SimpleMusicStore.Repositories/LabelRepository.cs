@@ -56,7 +56,7 @@ namespace SimpleMusicStore.Repositories
                 .Select(_mapper.Map<SearchResult>);
         }
 
-        private static void ValidateThatLabelExists(Label label)
+        private void ValidateThatLabelExists(Label label)
         {
             if (label == null)
                 throw new ArgumentException(ErrorMessages.INVALID_LABEL);

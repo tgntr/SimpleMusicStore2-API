@@ -22,14 +22,13 @@ namespace SimpleMusicStore.Repositories
         public async Task<CommentView> Add(NewComment comment)
         {
             var newComment = await _set.AddAsync(_mapper.Map<Comment>(comment));
-            return FillUserName(comment, newComment);
+            return _mapper.Map<CommentView>(newComment.Entity);
         }
 
 
-        public IEnumerable<CommentView> AllFor(int recordId)
+        public IEnumerable<CommentView> FindAll(int recordId)
         {
-            var comments = _set.Where(comment => comment.RecordId == recordId).ToList();
-            return FillUserNames(comments);
+            return _set.Where(comment => comment.RecordId == recordId).Select(_mapper.Map<CommentView>);
         }
         public async Task Delete(int commentId)
         {
@@ -58,31 +57,31 @@ namespace SimpleMusicStore.Repositories
 
         }
 
-        public async Task<Comment> Get(int commentId)
+        public Task<Comment> Find(int commentId)
         {
-            return await _set.FindAsync(commentId);
+            return _set.FindAsync(commentId);
         }
-        private CommentView FillUserName(NewComment comment, Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<Comment> commentEntity)
-        {
-            var newComment = _mapper.Map<CommentView>(commentEntity.Entity);
-            var user = _context.Users.FirstOrDefault(u => u.Id == comment.UserId);
-            newComment.ByUser = string.Concat(user.Name);
-            return newComment;
-        }
-
-        private IEnumerable<CommentView> FillUserNames(List<Comment> comments)
-        {
-            foreach (var comment in comments)
-            {
-                var user = _context.Users.Where(u => u.Id == comment.UserId).FirstOrDefault();
-                if (user != null)
-                {
-                    var mappedComment = _mapper.Map<CommentView>(comment);
-                    mappedComment.ByUser = string.Concat(user.Name);
-                    yield return mappedComment;
-                }
-            }
-        }
+        //private CommentView FillUserName(NewComment comment, Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<Comment> commentEntity)
+        //{
+        //    var newComment = _mapper.Map<CommentView>(commentEntity.Entity);
+        //    var user = _context.Users.FirstOrDefault(u => u.Id == comment.UserId);
+        //    newComment.ByUser = string.Concat(user.Name);
+        //    return newComment;
+        //}
+        //
+        //private IEnumerable<CommentView> FillUserNames(List<Comment> comments)
+        //{
+        //    foreach (var comment in comments)
+        //    {
+        //        var user = _context.Users.Where(u => u.Id == comment.UserId).FirstOrDefault();
+        //        if (user != null)
+        //        {
+        //            var mappedComment = _mapper.Map<CommentView>(comment);
+        //            mappedComment.ByUser = string.Concat(user.Name);
+        //            yield return mappedComment;
+        //        }
+        //    }
+        //}
 
     }
 }

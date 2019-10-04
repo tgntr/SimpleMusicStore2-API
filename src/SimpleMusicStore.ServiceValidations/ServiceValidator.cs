@@ -112,13 +112,11 @@ namespace SimpleMusicStore.ServiceValidations
                 throw new ArgumentException(ErrorMessages.INACCESSIBLE);
         }
 
-        public bool IsAuthor(int userId, int commentId)
+        public async Task IsCommentAuthor(int userId, int commentId)
         {
-            var currentComment = _db.Comments.Get(commentId).Result;
+            var currentComment = await _db.Comments.Find(commentId);
             if (currentComment.UserId != userId)
                 throw new ArgumentException(ErrorMessages.FORBIDDEN_COMMENT_DELETION);
-            else
-                return true;
         }
     }
 }

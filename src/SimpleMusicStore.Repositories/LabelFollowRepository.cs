@@ -30,7 +30,7 @@ namespace SimpleMusicStore.Repositories
             _set.Remove(labelFollow);
         }
 
-        private static void ValidateThatLabelFollowExists(LabelFollow labelFollow)
+        private void ValidateThatLabelFollowExists(LabelFollow labelFollow)
         {
             if (labelFollow == null)
                 throw new ArgumentException(ErrorMessages.LABEL_NOT_FOLLOWED);

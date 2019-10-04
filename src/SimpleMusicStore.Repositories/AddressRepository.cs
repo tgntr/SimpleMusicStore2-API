@@ -52,7 +52,7 @@ namespace SimpleMusicStore.Repositories
             address.IsActive = false;
         }
 
-        private static void ValidateThatAddressExists(Address address)
+        private void ValidateThatAddressExists(Address address)
         {
             if (address == null)
                 throw new ArgumentException(ErrorMessages.INVALID_ADDRESS);

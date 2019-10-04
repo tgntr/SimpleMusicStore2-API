@@ -12,6 +12,6 @@ namespace SimpleMusicStore.Contracts.Repositories
         Task Delete(int commentId);
         Task<CommentView> Edit(EditComment comment);
         IEnumerable<CommentView> AllFor(int recordId);
-        Task<Comment> Get(int commentId);
+        Task<Comment> Find(int commentId);
     }
 }

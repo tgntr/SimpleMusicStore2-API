@@ -55,9 +55,9 @@ namespace SimpleMusicStore.ShoppingCart
             await SaveShoppingCart();
         }
 
-        private async Task SaveShoppingCart()
+        private Task SaveShoppingCart()
         {
-            await _cacheProvider.StringSetAsync(_currentUser.Id.ToString(), JsonConvert.SerializeObject(_items));
+            return _cacheProvider.StringSetAsync(_currentUser.Id.ToString(), JsonConvert.SerializeObject(_items));
         }
 
         private Dictionary<int, int> FindCurrentUserCart()

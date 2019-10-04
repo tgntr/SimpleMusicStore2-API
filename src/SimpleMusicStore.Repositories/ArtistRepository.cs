@@ -26,7 +26,7 @@ namespace SimpleMusicStore.Repositories
         {
             if (!await Exists(int.Parse(artist.Id)))
             {
-                _set.Add(_mapper.Map<Artist>(artist));
+                await _set.AddAsync(_mapper.Map<Artist>(artist));
             }
         }
 
@@ -49,7 +49,7 @@ namespace SimpleMusicStore.Repositories
                 .Select(_mapper.Map<SearchResult>);
         }
 
-        private static void ValidateThatArtistExists(Artist artist)
+        private void ValidateThatArtistExists(Artist artist)
         {
             if (artist == null)
                 throw new ArgumentException(ErrorMessages.INVALID_ARTIST);
