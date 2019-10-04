@@ -57,12 +57,12 @@ namespace SimpleMusicStore.ShoppingCart
 
         private async Task SaveShoppingCart()
         {
-            await _cacheProvider.StringSetAsync(_currentUser.Id, JsonConvert.SerializeObject(_items));
+            await _cacheProvider.StringSetAsync(_currentUser.Id.ToString(), JsonConvert.SerializeObject(_items));
         }
 
         private Dictionary<int, int> FindCurrentUserCart()
         {
-            var cart = _cacheProvider.StringGet(_currentUser.Id);
+            var cart = _cacheProvider.StringGet(_currentUser.Id.ToString());
             if (string.IsNullOrEmpty(cart))
             {
                 return new Dictionary<int, int>();

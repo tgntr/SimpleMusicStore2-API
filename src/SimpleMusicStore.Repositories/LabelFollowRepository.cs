@@ -18,12 +18,12 @@ namespace SimpleMusicStore.Repositories
         {
         }
 
-        public Task Add(int labelId, string userId)
+        public Task Add(int labelId, int userId)
         {
             return _set.AddAsync(new LabelFollow(labelId, userId));
         }
 
-		public async Task Delete(int labelId, string userId)
+		public async Task Delete(int labelId, int userId)
         {
             var labelFollow = await _set.FindAsync(labelId, userId);
             ValidateThatLabelFollowExists(labelFollow);
@@ -36,7 +36,7 @@ namespace SimpleMusicStore.Repositories
                 throw new ArgumentException(ErrorMessages.LABEL_NOT_FOLLOWED);
         }
 
-        public Task<bool> Exists(int labelId, string userId)
+        public Task<bool> Exists(int labelId, int userId)
         {
             return _set.AnyAsync(f => f.LabelId == labelId && f.UserId == userId);
         }

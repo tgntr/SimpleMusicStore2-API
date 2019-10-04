@@ -1,26 +1,23 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using SimpleMusicStore.Contracts.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using SimpleMusicStore.Contracts.Auth;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Api.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly IUserService _users;
+        private readonly AuthenticationHandler _authenticator;
 
-        public AuthController(IUserService users)
+        public AuthController(AuthenticationHandler authenticator)
 			: base()
 		{
-            _users = users;
+            _authenticator = authenticator;
         }
 
-        [Authorize]
-		public Task Login()
+		public Task<string> Google(string token)
 		{
-            return _users.Add(User);
-		}
+            return _authenticator.Google(token);
+
+        }
     }
 }

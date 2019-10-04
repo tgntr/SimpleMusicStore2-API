@@ -56,7 +56,7 @@ namespace SimpleMusicStore.Repositories
                 if (user != null)
                 {
                     var mappedComment = _mapper.Map<Models.View.CommentView>(comment);
-                    mappedComment.ByUser = string.Concat(user.FirstName, " ", user.LastName);
+                    mappedComment.ByUser = string.Concat(user.Name);
                     mappedComments.Add(mappedComment);
                 }
             }

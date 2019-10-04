@@ -39,8 +39,7 @@ namespace SimpleMusicStore.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -67,7 +66,7 @@ namespace SimpleMusicStore.Data.Migrations
                 {
                     b.Property<int>("ArtistId");
 
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId");
 
                     b.Property<DateTime>("Date");
 
@@ -92,8 +91,7 @@ namespace SimpleMusicStore.Data.Migrations
 
                     b.Property<string>("Text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -137,7 +135,7 @@ namespace SimpleMusicStore.Data.Migrations
                 {
                     b.Property<int>("LabelId");
 
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId");
 
                     b.Property<DateTime>("Date");
 
@@ -158,8 +156,7 @@ namespace SimpleMusicStore.Data.Migrations
 
                     b.Property<int>("DeliveryAddressId");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -245,18 +242,23 @@ namespace SimpleMusicStore.Data.Migrations
 
             modelBuilder.Entity("SimpleMusicStore.Entities.User", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
                         .IsRequired();
 
-                    b.Property<string>("FirstName");
-
                     b.Property<bool>("IsSubscribed");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Role");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -283,7 +285,7 @@ namespace SimpleMusicStore.Data.Migrations
                 {
                     b.Property<int>("RecordId");
 
-                    b.Property<string>("UserId");
+                    b.Property<int>("UserId");
 
                     b.Property<DateTime>("Date");
 

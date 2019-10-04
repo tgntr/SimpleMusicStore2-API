@@ -105,14 +105,14 @@ namespace SimpleMusicStore.ServiceValidations
                 throw new ArgumentException(ErrorMessages.INVALID_ADDRESS);
         }
 
-        public void AccessibleByCurrentUser(string userId)
+        public void AccessibleByCurrentUser(int userId)
         {
             //TODO make them accessible by admins when u implement roles
             if (userId != _currentUser.Id)
                 throw new ArgumentException(ErrorMessages.INACCESSIBLE);
         }
 
-        public bool IsAuthor(string userId, int commentId)
+        public bool IsAuthor(int userId, int commentId)
         {
             var currentComment = _db.Comments.Get(commentId).Result;
             if (currentComment.UserId != userId)

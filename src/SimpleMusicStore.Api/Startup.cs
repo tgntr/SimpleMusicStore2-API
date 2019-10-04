@@ -17,6 +17,7 @@ using SimpleMusicStore.Api.StartupConfigurations;
 using Hangfire;
 using SimpleMusicStore.Newsletter;
 using SimpleMusicStore.Contracts.Newsletter;
+using SimpleMusicStore.Auth.Extensions;
 
 namespace SimpleMusicStore.Api
 {
@@ -41,7 +42,7 @@ namespace SimpleMusicStore.Api
             services.AddRepositories();
             services.AddSingleton(RedisDatabase());
             services.AddBackgroundServiceProvider();
-            services.AddGoogleAuthentication(GoogleAuthClientId());
+            services.AddJwtAuthentication(JwtPayload());
             services.AddNewsletter(EmailSenderCredentials());
             services.AddHangfire(HangfireConnectionString());
 
@@ -80,6 +81,8 @@ namespace SimpleMusicStore.Api
         }
         private string GoogleAuthClientId() => Configuration["GoogleAuth:ClientId"];
         private IConfigurationSection EmailSenderCredentials() => Configuration.GetSection("EmailSender");
+
+        private IConfigurationSection JwtPayload() => Configuration.GetSection("JwtPayload");
 
         private string DbConnectionString() => Configuration["Database:Connection"];
         private string HangfireConnectionString() => Configuration["Hangfire:Connection"];

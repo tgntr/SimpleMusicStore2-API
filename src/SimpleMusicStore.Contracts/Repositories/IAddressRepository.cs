@@ -8,10 +8,10 @@ namespace SimpleMusicStore.Contracts.Repositories
 {
     public interface IAddressRepository
     {
-        IEnumerable<AddressDetails> FindAll(string userId);
+        IEnumerable<AddressDetails> FindAll(int userId);
         Task Add(NewAddress address);
         Task Edit(AddressEdit address);
         Task Remove(int addressId);
-        Task<bool> Exists(int id, string userId);
+        Task<bool> Exists(int id, int userId);
     }
 }

@@ -19,7 +19,7 @@ namespace SimpleMusicStore.Storage
         public GoogleCloud(IBackgroundTaskQueue background)
         {
             //TODO move credentials file
-            _storage = StorageClient.Create(GoogleCredential.FromJson("appsettings"));
+            _storage = StorageClient.Create();
             _background = background;
         }
 

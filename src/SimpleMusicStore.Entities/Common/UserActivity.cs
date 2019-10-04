@@ -13,7 +13,7 @@ namespace SimpleMusicStore.Entities.Common
         }
 
 		[Required]
-		public string UserId { get; set; }
+		public int UserId { get; set; }
 		public virtual User User { get; set; }
 
 		public DateTime Date { get; set; }

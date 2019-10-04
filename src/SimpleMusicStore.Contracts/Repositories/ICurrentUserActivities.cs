@@ -19,6 +19,6 @@ namespace SimpleMusicStore.Contracts.Repositories
         bool IsArtistFollowed(int artistId);
         bool IsLabelFollowed(int labelId);
         bool IsAuthenticated { get; }
-        string Id { get; }
+        int Id { get; }
     }
 }

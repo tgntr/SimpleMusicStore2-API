@@ -4,12 +4,9 @@ using SimpleMusicStore.Models;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.MusicLibraries;
 using SimpleMusicStore.Models.View;
-using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
+using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace SimpleMusicStore.Api
 {
@@ -71,11 +68,6 @@ namespace SimpleMusicStore.Api
             CreateMap<NewOrder, Order>();
             CreateMap<NewAddress, Address>();
             CreateMap<AddressEdit, Address>();
-            CreateMap<ClaimsPrincipal, User>()
-                .ForMember(u => u.Id, src => src.MapFrom(c => c.FindFirstValue(JwtRegisteredClaimNames.Sub)))
-                .ForMember(u => u.FirstName, src => src.MapFrom(c => c.FindFirstValue(JwtRegisteredClaimNames.GivenName)))
-                .ForMember(u => u.LastName, src => src.MapFrom(c => c.FindFirstValue(JwtRegisteredClaimNames.FamilyName)))
-                .ForMember(u => u.Email, src => src.MapFrom(c => c.FindFirstValue(JwtRegisteredClaimNames.Email)));
             CreateMap<User, UserDetails>();
             CreateMap<User, SubscriberDetails>()
                 .ForMember(s => s.FollowedArtists, src => src.MapFrom(u => u.FollowedArtists.Select(fa => fa.ArtistId)))
@@ -87,6 +79,7 @@ namespace SimpleMusicStore.Api
                 .ForMember(result => result.ContentType, src => src.MapFrom(a => "Artist"));
             CreateMap<Label, SearchResult>()
                 .ForMember(result => result.ContentType, src => src.MapFrom(a => "Label"));
+            CreateMap<User, UserClaims>().ReverseMap();
         }
     }
 }

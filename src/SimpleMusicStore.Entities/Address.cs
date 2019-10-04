@@ -26,7 +26,7 @@ namespace SimpleMusicStore.Entities
         public string Street { get; set; }
         public bool IsActive { get; set; }
         [Required]
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
     }

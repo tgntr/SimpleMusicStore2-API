@@ -17,7 +17,7 @@ namespace SimpleMusicStore.Contracts.Validators
         Task RecordIsNotInWishlist(int recordId);
         void CartIsNotEmpty(IDictionary<int, int> items);
         Task AddressIsValid(int id);
-        void AccessibleByCurrentUser(string userId);
-        bool IsAuthor(string userId, int commentId);
+        void AccessibleByCurrentUser(int userId);
+        bool IsAuthor(int userId, int commentId);
     }
 }

@@ -26,7 +26,7 @@ namespace SimpleMusicStore.Services
             }
         }
 
-        public string Id { get; }
+        public int Id { get; }
         public bool IsAuthenticated { get; }
 
         public IEnumerable<WishDetails> Wishlist => 

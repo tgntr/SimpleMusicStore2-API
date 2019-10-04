@@ -15,17 +15,17 @@ namespace SimpleMusicStore.Repositories
         {
         }
 
-        public Task Add(int recordId, string userId)
+        public Task Add(int recordId, int userId)
         {
             return _set.AddAsync(new Wish(recordId, userId));
         }
 
-        public Task<bool> Exists(int recordId, string userId)
+        public Task<bool> Exists(int recordId, int userId)
         {
             return _set.AnyAsync(w => w.RecordId == recordId && w.UserId == userId);
         }
 
-		public async Task Delete(int recordId, string userId)
+		public async Task Delete(int recordId, int userId)
         {
             var wish = await _set.FindAsync(recordId, userId);
             ValidateThatWishExists(wish);

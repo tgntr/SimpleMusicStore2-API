@@ -3,10 +3,11 @@ using SimpleMusicStore.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleMusicStore.Entities
 {
-    public class User : EntityWithCustomId<string>
+    public class User : Entity<int>
     {
         public User()
         {
@@ -19,8 +20,8 @@ namespace SimpleMusicStore.Entities
         }
         [Required, EmailAddress]
         public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string Name { get; set; }
+        public string Role { get; set; }
         public bool IsSubscribed { get; set; }
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<ArtistFollow> FollowedArtists { get; set; }

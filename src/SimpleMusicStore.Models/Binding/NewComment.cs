@@ -7,7 +7,7 @@ namespace SimpleMusicStore.Models.Binding
 {
     public class NewComment
     {
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         [MinLength(1), Required]
         public string Text { get; set; }
         [Required]

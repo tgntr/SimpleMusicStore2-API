@@ -23,8 +23,8 @@ namespace SimpleMusicStore.Services
             var userId = user.FindFirstValue(JwtRegisteredClaimNames.Sub);
             if (!await _db.Users.Exists(userId))
             {
-                await _db.Users.Add(user);
-                await _db.SaveChanges();
+                //await _db.Users.Add(user);
+                //await _db.SaveChanges();
             }
         }
     }

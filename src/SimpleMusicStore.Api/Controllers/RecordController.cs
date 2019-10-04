@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
@@ -22,7 +23,7 @@ namespace SimpleMusicStore.Api.Controllers
             _browser = browser;
         }
 
-        [Authorize]
+        [Authorize(Roles = Roles.ADMIN)]
         [HttpPost]
         public Task Add([FromBody] NewRecord record)
         {

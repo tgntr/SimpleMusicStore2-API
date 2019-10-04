@@ -39,6 +39,7 @@ namespace SimpleMusicStore.Api.StartupConfigurations
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICommentsService, CommentService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<AuthenticationHandler, Jwt>();
         }
 
         public static void AddRepositories(this IServiceCollection services)

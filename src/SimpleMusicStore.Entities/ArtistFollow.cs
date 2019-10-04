@@ -14,7 +14,7 @@ namespace SimpleMusicStore.Entities
         {
         }
 
-        public ArtistFollow(int artistId, string userId)
+        public ArtistFollow(int artistId, int userId)
             :base()
         {
             ArtistId = artistId;

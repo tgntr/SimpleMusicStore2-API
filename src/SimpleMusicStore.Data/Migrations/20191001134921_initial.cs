@@ -38,10 +38,11 @@ namespace SimpleMusicStore.Data.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
-                    Email = table.Column<string>(nullable: true),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Email = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Role = table.Column<string>(nullable: true),
                     IsSubscribed = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -92,7 +93,7 @@ namespace SimpleMusicStore.Data.Migrations
                     City = table.Column<string>(maxLength: 20, nullable: false),
                     Street = table.Column<string>(maxLength: 50, nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,7 +110,7 @@ namespace SimpleMusicStore.Data.Migrations
                 name: "ArtistFollows",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     ArtistId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false)
                 },
@@ -134,7 +135,7 @@ namespace SimpleMusicStore.Data.Migrations
                 name: "LabelFollows",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     LabelId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false)
                 },
@@ -156,7 +157,36 @@ namespace SimpleMusicStore.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Stock",
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<int>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    DateEdited = table.Column<DateTime>(nullable: false),
+                    Text = table.Column<string>(nullable: true),
+                    RecordId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Records_RecordId",
+                        column: x => x.RecordId,
+                        principalTable: "Records",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Stocks",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -167,9 +197,9 @@ namespace SimpleMusicStore.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stock", x => x.Id);
+                    table.PrimaryKey("PK_Stocks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Stock_Records_RecordId",
+                        name: "FK_Stocks_Records_RecordId",
                         column: x => x.RecordId,
                         principalTable: "Records",
                         principalColumn: "Id",
@@ -221,7 +251,7 @@ namespace SimpleMusicStore.Data.Migrations
                 name: "Wishes",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     RecordId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false)
                 },
@@ -248,7 +278,7 @@ namespace SimpleMusicStore.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     DeliveryAddressId = table.Column<int>(nullable: false)
                 },
@@ -305,6 +335,16 @@ namespace SimpleMusicStore.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_RecordId",
+                table: "Comments",
+                column: "RecordId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_UserId",
+                table: "Comments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Items_OrderId",
                 table: "Items",
                 column: "OrderId");
@@ -335,14 +375,20 @@ namespace SimpleMusicStore.Data.Migrations
                 column: "LabelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stock_RecordId",
-                table: "Stock",
+                name: "IX_Stocks_RecordId",
+                table: "Stocks",
                 column: "RecordId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tracks_RecordId",
                 table: "Tracks",
                 column: "RecordId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Videos_RecordId",
@@ -361,13 +407,16 @@ namespace SimpleMusicStore.Data.Migrations
                 name: "ArtistFollows");
 
             migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
                 name: "Items");
 
             migrationBuilder.DropTable(
                 name: "LabelFollows");
 
             migrationBuilder.DropTable(
-                name: "Stock");
+                name: "Stocks");
 
             migrationBuilder.DropTable(
                 name: "Tracks");

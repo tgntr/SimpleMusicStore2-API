@@ -9,7 +9,6 @@ using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories
@@ -21,32 +20,53 @@ namespace SimpleMusicStore.Repositories
         {
         }
         
-        public async Task<UserDetails> Find(string id)
+        public async Task<UserDetails> Find(int id)
         {
             var user = await _set.FindAsync(id);
             ValidateThatUserExists(user);
             return _mapper.Map<UserDetails>(user);
         }
 
-        private void ValidateThatUserExists(User user)
+        public async Task<UserClaims> Find(string email)
         {
-            if (user == null)
-                throw new ArgumentException(ErrorMessages.INVALID_USER);
+            var user = await _set.FirstOrDefaultAsync(u => u.Email == email);
+            ValidateThatUserExists(user);
+            return _mapper.Map<UserClaims>(user);
         }
 
-        public Task Add(ClaimsPrincipal user)
+        public Task Add(UserClaims newUser)
         {
-            return _set.AddAsync(_mapper.Map<User>(user));
+            var user = _mapper.Map<User>(newUser);
+            AssignToRole(user);
+            return _set.AddAsync(user);
         }
 
-        public Task<bool> Exists(string id)
+        private void AssignToRole(User user)
         {
-            return _set.AnyAsync(u => u.Id == id);
+            if (_set.Any())
+            {
+                user.Role = Roles.USER;
+            }
+            else
+            {
+                user.Role = Roles.ADMIN;
+            }
+        }
+
+        public Task<bool> Exists(string email)
+        {
+            return _set.AnyAsync(u => u.Email == email);
         }
 
         public IEnumerable<SubscriberDetails> Subscribers()
         {
             return _set.Where(u => u.IsSubscribed).Select(_mapper.Map<SubscriberDetails>);
+        }
+
+        private void ValidateThatUserExists(User user)
+        {
+            if (user == null)
+                throw new ArgumentException(ErrorMessages.INVALID_USER);
         }
     }
 }

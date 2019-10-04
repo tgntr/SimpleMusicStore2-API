@@ -15,7 +15,7 @@ namespace SimpleMusicStore.Auth
             _claims = http.HttpContext.User;
         }
 
-        public string Id => FindClaim(JwtRegisteredClaimNames.Sub);
+        public int Id => int.Parse(FindClaim(ClaimTypes.NameIdentifier));
         //public string Email => FindClaim(JwtRegisteredClaimNames.Email);
         public bool IsAuthenticated => _claims.Identity.IsAuthenticated;
         private string FindClaim(string type) => _claims.FindFirstValue(type);

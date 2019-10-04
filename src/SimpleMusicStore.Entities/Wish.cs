@@ -13,7 +13,7 @@ namespace SimpleMusicStore.Entities
         {
         }
 
-        public Wish(int recordId, string userId)
+        public Wish(int recordId, int userId)
             :base()
         {
             RecordId = recordId;

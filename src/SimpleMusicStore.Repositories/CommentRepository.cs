@@ -66,7 +66,7 @@ namespace SimpleMusicStore.Repositories
         {
             var newComment = _mapper.Map<CommentView>(commentEntity.Entity);
             var user = _context.Users.FirstOrDefault(u => u.Id == comment.UserId);
-            newComment.ByUser = string.Concat(user.FirstName, " ", user.LastName);
+            newComment.ByUser = string.Concat(user.Name);
             return newComment;
         }
 
@@ -78,7 +78,7 @@ namespace SimpleMusicStore.Repositories
                 if (user != null)
                 {
                     var mappedComment = _mapper.Map<CommentView>(comment);
-                    mappedComment.ByUser = string.Concat(user.FirstName, " ", user.LastName);
+                    mappedComment.ByUser = string.Concat(user.Name);
                     yield return mappedComment;
                 }
             }

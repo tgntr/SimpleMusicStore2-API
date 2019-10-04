@@ -35,12 +35,12 @@ namespace SimpleMusicStore.Repositories
             address.Country = addressDetails.Country;
         }
 
-        public Task<bool> Exists(int id, string userId)
+        public Task<bool> Exists(int id, int userId)
         {
             return _set.AnyAsync(a => a.Id == id && a.UserId == userId);
         }
 
-        public IEnumerable<AddressDetails> FindAll(string userId)
+        public IEnumerable<AddressDetails> FindAll(int userId)
         {
             return _set.Where(a => a.UserId == userId && a.IsActive).Select(_mapper.Map<AddressDetails>);
         }

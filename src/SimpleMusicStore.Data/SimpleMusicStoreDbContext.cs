@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SimpleMusicStore.Data.Relations;
 using SimpleMusicStore.Entities;
 
@@ -39,6 +34,9 @@ namespace SimpleMusicStore.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
             builder.ApplyConfiguration(new ArtistFollowRelations());
             builder.ApplyConfiguration(new LabelFollowRelations());
             builder.ApplyConfiguration(new WishRelations());
