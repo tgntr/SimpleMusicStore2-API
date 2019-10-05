@@ -10,30 +10,30 @@ using SimpleMusicStore.Models.View;
 
 namespace SimpleMusicStore.Api.Controllers
 {
-    public class CommentsController : Controller
+    public class CommentController : Controller
     {
-        private readonly ICommentsService _comments;
-        public CommentsController(ICommentsService comments)
+        private readonly ICommentService _comments;
+        public CommentController(ICommentService comments)
         {
             _comments = comments;
         }
 
         [HttpGet]
-        public IEnumerable<CommentView> All(int id)
+        public IEnumerable<CommentView> FindAll(int recordId)
         {
-            return _comments.All(id);
+            return _comments.FindAll(recordId);
         }
 
         [Authorize]
         [HttpPost]
-        public Task<CommentView> Add([FromBody]NewComment comment)
+        public Task Add([FromBody]NewComment comment)
         {
             return _comments.Add(comment);
         }
 
         [Authorize]
         [HttpPost]
-        public Task<CommentView> Edit([FromBody]EditComment comment)
+        public Task Edit([FromBody]EditComment comment)
         {
             return _comments.Edit(comment);
         }

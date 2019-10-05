@@ -24,14 +24,9 @@ namespace SimpleMusicStore.Services
 
         public async Task<LabelView> Find(int id)
         {
-            return await GenerateLabelView(id);
-        }
-
-        private async Task<LabelView> GenerateLabelView(int id)
-        {
-            var label = await _db.Labels.Find(id);
-            label.IsFollowed = _currentUser.IsLabelFollowed(id);
-            return label;
-        }
+			var label = await _db.Labels.Find(id);
+			label.IsFollowed = _currentUser.IsLabelFollowed(id);
+			return label;
+		}
     }
 }

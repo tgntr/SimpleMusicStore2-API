@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
@@ -19,16 +20,18 @@ namespace SimpleMusicStore.Repositories
         {
         }
 
-        public async Task<CommentView> Add(NewComment comment)
+        public Task Add(NewComment comment)
         {
-            var newComment = await _set.AddAsync(_mapper.Map<Comment>(comment));
-            return _mapper.Map<CommentView>(newComment.Entity);
+            return _set.AddAsync(_mapper.Map<Comment>(comment));
         }
 
 
         public IEnumerable<CommentView> FindAll(int recordId)
         {
-            return _set.Where(comment => comment.RecordId == recordId).Select(_mapper.Map<CommentView>);
+            return _set
+				.Where(comment => comment.RecordId == recordId)
+				.OrderByDescending(c=>c.Date)
+				.Select(_mapper.Map<CommentView>);
         }
         public async Task Delete(int commentId)
         {
@@ -40,15 +43,14 @@ namespace SimpleMusicStore.Repositories
 
         }
 
-        public async Task<CommentView> Edit(EditComment comment)
+        public async Task Edit(EditComment comment)
         {
             var record = await _set.FindAsync(comment.Id);
-            if (record != null && record.UserId == comment.UserId)
+            if (record != null)
             {
                 _context.Attach(record);
                 record.DateEdited = DateTime.Now;
                 record.Text = comment.Text;
-                return _mapper.Map<CommentView>(record);
             }
             else
             {
@@ -57,9 +59,9 @@ namespace SimpleMusicStore.Repositories
 
         }
 
-        public Task<Comment> Find(int commentId)
+        public Task<bool> IsAuthor(int commentId, int userId)
         {
-            return _set.FindAsync(commentId);
+			return _set.AnyAsync(c => c.Id == commentId && c.UserId == userId);
         }
         //private CommentView FillUserName(NewComment comment, Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<Comment> commentEntity)
         //{

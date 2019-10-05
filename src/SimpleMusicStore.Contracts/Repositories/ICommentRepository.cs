@@ -8,10 +8,11 @@ namespace SimpleMusicStore.Contracts.Repositories
 {
     public interface ICommentRepository
     {
-        Task<CommentView> Add(NewComment comment);
+        Task Add(NewComment comment);
         Task Delete(int commentId);
-        Task<CommentView> Edit(EditComment comment);
-        IEnumerable<CommentView> AllFor(int recordId);
-        Task<Comment> Find(int commentId);
-    }
+        Task Edit(EditComment comment);
+        IEnumerable<CommentView> FindAll(int recordId);
+		Task<bool> IsAuthor(int commentId, int userId);
+
+	}
 }

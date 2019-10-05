@@ -23,14 +23,9 @@ namespace SimpleMusicStore.Services
 
         public async Task<ArtistView> Find(int id)
         {
-            return await GenerateArtistView(id);
-        }
-
-        private async Task<ArtistView> GenerateArtistView(int id)
-        {
-            var artist = await _db.Artists.Find(id);
-            artist.IsFollowed = _currentUser.IsArtistFollowed(id);
-            return artist;
-        }
+			var artist = await _db.Artists.Find(id);
+			artist.IsFollowed = _currentUser.IsArtistFollowed(id);
+			return artist;
+		}
     }
 }

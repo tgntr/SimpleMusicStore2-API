@@ -16,7 +16,7 @@ namespace SimpleMusicStore.Models.Auth
 			ISSUED_AT = "IssuedAt",
 			JTI = "Jti";
 
-		private const int DEFAULT_DURATION = 2;
+		private const int DEFAULT_DURATION = 300;
 		//TODO proper configuration in appsettings
 		//TODO should this class be in Models or Auth project?
         [JsonProperty(SECRET)]

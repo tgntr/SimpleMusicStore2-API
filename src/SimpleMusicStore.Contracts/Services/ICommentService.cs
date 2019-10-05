@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Services
 {
-    public interface ICommentsService
+    public interface ICommentService
     {
-        IEnumerable<CommentView> All(int recordId);
-        Task<CommentView> Add(NewComment comment);
-        Task<CommentView> Edit(EditComment comment);
+        IEnumerable<CommentView> FindAll(int recordId);
+        Task Add(NewComment comment);
+        Task Edit(EditComment comment);
         Task Delete(int commentId);
     }
 }
