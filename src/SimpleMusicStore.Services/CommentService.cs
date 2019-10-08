@@ -31,9 +31,9 @@ namespace SimpleMusicStore.Services
 			await _db.SaveChanges();
 		}
 
-		public IEnumerable<CommentView> FindAll(int recordId)
+		public IEnumerable<CommentView> FindAll(int recordId, int page)
 		{
-			return _db.Comments.FindAll(recordId);
+			return _db.Comments.FindAll(recordId, page);
 		}
 
 		public async Task Delete(int commentId)

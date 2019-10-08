@@ -9,7 +9,7 @@ namespace SimpleMusicStore.Contracts.Services
 {
     public interface ICommentService
     {
-        IEnumerable<CommentView> FindAll(int recordId);
+        IEnumerable<CommentView> FindAll(int recordId, int page);
         Task Add(NewComment comment);
         Task Edit(EditComment comment);
         Task Delete(int commentId);

@@ -11,10 +11,10 @@ namespace SimpleMusicStore.Contracts.Repositories
         IEnumerable<ArtistFollowDetails> FollowedArtists { get; }
         IEnumerable<LabelFollowDetails> FollowedLabels { get; }
         IEnumerable<OrderView> Orders { get; }
-        IEnumerable<OrderDetails> OrdersOrdered();
-        IEnumerable<WishDetails> WishlistOrdered();
-        IEnumerable<ArtistFollowDetails> FollowedArtistsOrdered();
-        IEnumerable<LabelFollowDetails> FollowedLabelsOrdered();
+        IEnumerable<OrderDetails> OrdersOrdered(int page);
+        IEnumerable<WishDetails> WishlistOrdered(int page);
+        IEnumerable<ArtistFollowDetails> FollowedArtistsOrdered(int page);
+        IEnumerable<LabelFollowDetails> FollowedLabelsOrdered(int page);
         bool IsRecordInWishlist(int recordId);
         bool IsArtistFollowed(int artistId);
         bool IsLabelFollowed(int labelId);

@@ -44,7 +44,7 @@ namespace SimpleMusicStore.Repositories
         {
             var record = await _set.FindAsync(id);             
             ValidateThatRecordExists(record);
-            return FillUsernamesInComments(record); ;
+            return _mapper.Map<RecordView>(record);
         }
 
         
@@ -120,24 +120,6 @@ namespace SimpleMusicStore.Repositories
         private bool IsInStock(Record r)
         {
             return r.Stocks.Sum(s => s.Quantity) - r.Orders.Sum(i => i.Quantity) > 0;
-        }
-
-        private RecordView FillUsernamesInComments(Record record)
-        {
-            var mappedComments = new List<Models.View.CommentView>();
-            foreach (var comment in record.Comments)
-            {
-                var user = _context.Users.Where(u => u.Id == comment.UserId).FirstOrDefault();
-                if (user != null)
-                {
-                    var mappedComment = _mapper.Map<Models.View.CommentView>(comment);
-                    mappedComment.ByUser = string.Concat(user.Name);
-                    mappedComments.Add(mappedComment);
-                }
-            }
-            var mappedrecord = _mapper.Map<RecordView>(record);
-            mappedrecord.Comments = mappedComments;
-            return mappedrecord;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using PagedList;
 using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
@@ -26,11 +27,12 @@ namespace SimpleMusicStore.Repositories
         }
 
 
-        public IEnumerable<CommentView> FindAll(int recordId)
+        public IEnumerable<CommentView> FindAll(int recordId, int page)
         {
             return _set
 				.Where(comment => comment.RecordId == recordId)
 				.OrderByDescending(c=>c.Date)
+                .ToPagedList(page, CommonConstants.PAGE_SIZE)
 				.Select(_mapper.Map<CommentView>);
         }
         public async Task Delete(int commentId)

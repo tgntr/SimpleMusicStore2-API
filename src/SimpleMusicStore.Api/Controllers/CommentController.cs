@@ -19,9 +19,9 @@ namespace SimpleMusicStore.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<CommentView> FindAll(int recordId)
+        public IEnumerable<CommentView> FindAll(int recordId, int page)
         {
-            return _comments.FindAll(recordId);
+            return _comments.FindAll(recordId, page);
         }
 
         [Authorize]

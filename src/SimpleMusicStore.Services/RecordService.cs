@@ -38,7 +38,6 @@ namespace SimpleMusicStore.Services
         {
 			var record = await _db.Records.Find(id);
 			record.IsInWishlist = _currentUser.IsRecordInWishlist(id);
-			record.Comments.Reverse();
 			return record;
 		}
 

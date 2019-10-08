@@ -11,7 +11,7 @@ namespace SimpleMusicStore.Contracts.Repositories
         Task Add(NewComment comment);
         Task Delete(int commentId);
         Task Edit(EditComment comment);
-        IEnumerable<CommentView> FindAll(int recordId);
+        IEnumerable<CommentView> FindAll(int recordId, int page);
 		Task<bool> IsAuthor(int commentId, int userId);
 
 	}

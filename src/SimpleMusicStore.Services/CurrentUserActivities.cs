@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using PagedList;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Entities;
@@ -41,17 +43,17 @@ namespace SimpleMusicStore.Services
         public IEnumerable<OrderView> Orders => 
             _currentUser.Orders;
 
-        public IEnumerable<WishDetails> WishlistOrdered() => 
-            Wishlist.OrderByDescending(o => o.Date);
+        public IEnumerable<WishDetails> WishlistOrdered(int page) => 
+            Wishlist.OrderByDescending(o => o.Date).ToPagedList(page, CommonConstants.PAGE_SIZE);
 
-        public IEnumerable<ArtistFollowDetails> FollowedArtistsOrdered() => 
-            FollowedArtists.OrderByDescending(fa => fa.Date);
+        public IEnumerable<ArtistFollowDetails> FollowedArtistsOrdered(int page) => 
+            FollowedArtists.OrderByDescending(fa => fa.Date).ToPagedList(page, CommonConstants.PAGE_SIZE);
 
-        public IEnumerable<LabelFollowDetails> FollowedLabelsOrdered() => 
-            FollowedLabels.OrderByDescending(fl => fl.Date);
+        public IEnumerable<LabelFollowDetails> FollowedLabelsOrdered(int page) => 
+            FollowedLabels.OrderByDescending(fl => fl.Date).ToPagedList(page, CommonConstants.PAGE_SIZE);
 
-        public IEnumerable<OrderDetails> OrdersOrdered() => 
-            Orders.OrderByDescending(o => o.Date).Select(_mapper.Map<OrderDetails>);
+        public IEnumerable<OrderDetails> OrdersOrdered(int page) => 
+            Orders.OrderByDescending(o => o.Date).ToPagedList(page, CommonConstants.PAGE_SIZE).Select(_mapper.Map<OrderDetails>);
 
         public bool IsRecordInWishlist(int recordId)
         {
