@@ -1,23 +1,17 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Hangfire;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Http;
-using System;
-using StackExchange.Redis;
-using SimpleMusicStore.Data;
-using SimpleMusicStore.ModelValidations;
-using SimpleMusicStore.BackgroundServiceProvider;
-using SimpleMusicStore.Contracts.BackgroundServiceProvider;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using SimpleMusicStore.Auth;
-using SimpleMusicStore.EmailSender;
 using SimpleMusicStore.Api.StartupConfigurations;
-using Hangfire;
-using SimpleMusicStore.Newsletter;
-using SimpleMusicStore.Contracts.Newsletter;
 using SimpleMusicStore.Auth.Extensions;
+using SimpleMusicStore.Data;
+using SimpleMusicStore.EmailSender;
+using SimpleMusicStore.ModelValidations;
+using SimpleMusicStore.Newsletter;
+using StackExchange.Redis;
 
 namespace SimpleMusicStore.Api
 {
@@ -41,7 +35,6 @@ namespace SimpleMusicStore.Api
             services.AddCustomServices(Configuration);
             services.AddRepositories();
             services.AddSingleton(RedisDatabase());
-            services.AddBackgroundServiceProvider();
             services.AddJwtAuthentication(JwtPayload());
             services.AddNewsletter(EmailSenderCredentials());
             services.AddHangfire(HangfireConnectionString());

@@ -35,8 +35,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.ServiceVal
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.ModelValidations", "SimpleMusicStore.ModelValidations\SimpleMusicStore.ModelValidations.csproj", "{A809F785-42A3-4CBE-94A7-141BC7375628}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.BackgroundServiceProvider", "SimpleMusicStore.BackgroundServiceProvider\SimpleMusicStore.BackgroundServiceProvider.csproj", "{CC79F00A-5F65-4050-A85D-7F3B53314C86}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleMusicStore.Newsletter", "SimpleMusicStore.Newsletter\SimpleMusicStore.Newsletter.csproj", "{75B64BE8-4503-44A8-8721-A2FF6284402A}"
 EndProject
 Global
@@ -109,10 +107,6 @@ Global
 		{A809F785-42A3-4CBE-94A7-141BC7375628}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A809F785-42A3-4CBE-94A7-141BC7375628}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A809F785-42A3-4CBE-94A7-141BC7375628}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CC79F00A-5F65-4050-A85D-7F3B53314C86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC79F00A-5F65-4050-A85D-7F3B53314C86}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC79F00A-5F65-4050-A85D-7F3B53314C86}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC79F00A-5F65-4050-A85D-7F3B53314C86}.Release|Any CPU.Build.0 = Release|Any CPU
 		{75B64BE8-4503-44A8-8721-A2FF6284402A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{75B64BE8-4503-44A8-8721-A2FF6284402A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75B64BE8-4503-44A8-8721-A2FF6284402A}.Release|Any CPU.ActiveCfg = Release|Any CPU

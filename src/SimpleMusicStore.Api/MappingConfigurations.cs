@@ -6,7 +6,6 @@ using SimpleMusicStore.Models.MusicLibraries;
 using SimpleMusicStore.Models.View;
 using System.Collections.Generic;
 using System.Linq;
-using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace SimpleMusicStore.Api
 {
@@ -54,13 +53,10 @@ namespace SimpleMusicStore.Api
                 .ForMember(rd => rd.Id, src => src.MapFrom(w => w.Record.Id))
                 .ForMember(rd => rd.Title, src => src.MapFrom(w => w.Record.Title))
                 .ForMember(rd => rd.Image, src => src.MapFrom(w => w.Record.Image));
-            //.ForMember(rd => rd.Label, src => src.MapFrom(w => w.Record.Label))
-            //.ForMember(rd => rd.Artist, src => src.MapFrom(w => w.Record.Artist));
             CreateMap<RecordView, ItemDetails>();
             CreateMap<Comment, CommentView>()
                 .ForMember(dto => dto.ByUser, src => src.MapFrom(c => c.User.Name));
             CreateMap<NewComment, Comment>();
-                //.ForMember(c => c.UserId, src => src.MapFrom(nc => nc.UserId));
             CreateMap<EditComment, Comment>();
             CreateMap<Video, VideoDetails>();
             CreateMap<Track, TrackDetails>();

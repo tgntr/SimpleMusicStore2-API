@@ -28,10 +28,17 @@ namespace SimpleMusicStore.MusicLibrary
         {
             var discogsId = await FindId(uri);
             var record = await DownloadContent<NewRecord>(DiscogsConstants.RELEASE, discogsId);
+            RemoveTracklistHeadings(record);
             record.Label = await DownloadContent<LabelInfo>(DiscogsConstants.LABEL, record.LabelId());
             record.Artist = await ExtractArtistInformation(record.ArtistId());
 
             return record;
+        }
+
+        private void RemoveTracklistHeadings(NewRecord record)
+        {
+            //
+            record.Tracklist = record.Tracklist.Where(t => t.Type_ == "track");
         }
 
         private Task<ArtistInfo> ExtractArtistInformation(string id)

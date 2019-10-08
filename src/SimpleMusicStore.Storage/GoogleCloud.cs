@@ -1,26 +1,19 @@
 ﻿using Google.Cloud.Storage.V1;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Google.Apis.Auth.OAuth2;
-using SimpleMusicStore.Contracts;
-using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Constants;
-using SimpleMusicStore.Contracts.Validators;
-using SimpleMusicStore.Contracts.BackgroundServiceProvider;
-using SimpleMusicStore.Models.Binding;
+using SimpleMusicStore.Contracts;
+using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Storage
 {
     public class GoogleCloud : FileStorage
     {
         private readonly StorageClient _storage;
-        private readonly IBackgroundTaskQueue _background;
 
-        public GoogleCloud(IBackgroundTaskQueue background)
+        public GoogleCloud()
         {
             //TODO move credentials file
             _storage = StorageClient.Create();
-            _background = background;
         }
 
         public Task Upload(IFormFile file, string fileName)

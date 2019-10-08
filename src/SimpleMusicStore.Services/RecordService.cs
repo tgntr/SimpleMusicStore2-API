@@ -1,5 +1,4 @@
 ﻿using SimpleMusicStore.Constants;
-using SimpleMusicStore.Contracts.BackgroundServiceProvider;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Sorting;
@@ -14,20 +13,17 @@ namespace SimpleMusicStore.Services
     public class RecordService : IRecordService
     {
         private readonly IUnitOfWork _db;
-        private readonly IBackgroundTaskQueue _backgroundThread;
         private readonly IServiceValidator _validator;
         private readonly ICurrentUserActivities _currentUser;
         private readonly Sorter _sorter;
 
         public RecordService(IUnitOfWork db,
             Sorter sorter,
-            IBackgroundTaskQueue backgroundThread,
             IServiceValidator validator,
             ICurrentUserActivities currentUser)
         {
             _db = db;
             _sorter = sorter;
-            _backgroundThread = backgroundThread;
             _validator = validator;
             _currentUser = currentUser;
         }

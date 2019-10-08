@@ -25,20 +25,20 @@ namespace SimpleMusicStore.Models.Binding
         public decimal Price { get; set; }
         [Range(1,int.MaxValue), Required]
         public int Quantity { get; set; }
-        public ICollection<RecordVideoInfo> Videos { get; set; }
+        public IEnumerable<RecordVideoInfo> Videos { get; set; }
         [MinLength(1), Required]
-        public ICollection<RecordLabelInfo> Labels { get; set; }
+        public IEnumerable<RecordLabelInfo> Labels { get; set; }
         [MinLength(1), Required]
-        public ICollection<RecordArtistInfo> Artists { get; set; }
+        public IEnumerable<RecordArtistInfo> Artists { get; set; }
         public LabelInfo Label { get; set; }
         public ArtistInfo Artist { get; set; }
-        public ICollection<ImageInfo> Images { get; set; }
+        public IEnumerable<ImageInfo> Images { get; set; }
         [MinLength(1), Required]
-        public ICollection<string> Genres { get; set; }
+        public IEnumerable<string> Genres { get; set; }
         [MinLength(1), Required]
-        public ICollection<RecordTrackInfo> Tracklist { get; set; }
+        public IEnumerable<RecordTrackInfo> Tracklist { get; set; }
         [MinLength(1), Required]
-        public ICollection<RecordFormatInfo> Formats { get; set; }
+        public IEnumerable<RecordFormatInfo> Formats { get; set; }
 
         public string Format() => Formats.First().Name;
         public string Image()
