@@ -24,11 +24,6 @@ namespace SimpleMusicStore.Auth.Extensions
                     options.SaveToken = true;
                     options.TokenValidationParameters = config.JwtConfiguration().ValidationParameters();
                 });
-
-            services.AddAuthorization(options =>
-            {
-                //EXAMPLE POLICY options.AddPolicy("ApiUser", policy => policy.RequireClaim("username"));
-            });
         }
 
         private static JwtConfiguration JwtConfiguration(this IConfigurationSection config)

@@ -1,4 +1,5 @@
-﻿using SimpleMusicStore.Contracts.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Data;
@@ -27,6 +28,10 @@ namespace SimpleMusicStore.Repositories
             IStockRepository stocks)
         {
             _db = db;
+            if (db.Database.EnsureCreated())
+            {
+                db.Database.Migrate();
+            }
             Addresses = addresses;
             ArtistFollows = artistFollows;
             Artists = artists;

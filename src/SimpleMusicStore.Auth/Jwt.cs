@@ -30,17 +30,28 @@ namespace SimpleMusicStore.Auth
 
         public async Task<string> Google(string token)
         {
-            var userInfo = await GoogleJsonWebSignature.ValidateAsync(token);
-            ValidateToken(userInfo);
+            //var userInfo = await GoogleJsonWebSignature.ValidateAsync(token);
+            //ValidateToken(userInfo);
 
-            if (!await _db.Users.Exists(userInfo.Email))
+            //if (!await _db.Users.Exists(userInfo.Email))
+            //{
+            //    await _db.Users.Add(new UserClaims(userInfo.Name, userInfo.Email));
+            //    await _db.SaveChanges();
+            //}
+
+            //var user = await _db.Users.Find(userInfo.Email);
+
+            //return GenerateJwtToken(GenerateClaims(user));
+            var email = $"{token}@aaa.aa";
+
+            if (await _db.Users.Exists(email))
             {
-                await _db.Users.Add(new UserClaims(userInfo.Name, userInfo.Email));
-                await _db.SaveChanges();
+                return "exists";
             }
 
-            var user = await _db.Users.Find(userInfo.Email);
-
+            await _db.Users.Add(new UserClaims(email, email));
+            await _db.SaveChanges();
+            var user = await _db.Users.Find(email);
             return GenerateJwtToken(GenerateClaims(user));
         }
 
