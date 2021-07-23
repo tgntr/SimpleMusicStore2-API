@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Services;
@@ -47,7 +46,7 @@ namespace SimpleMusicStore.Api.Controllers
         }
 
         [HttpPost]
-        public Task AddStock(int recordId , [FromBody,Range(1, 100)] int quantity)
+        public Task AddStock(int recordId, [FromBody, Range(1, 100)] int quantity)
         {
             return _records.AddStock(recordId, quantity);
         }

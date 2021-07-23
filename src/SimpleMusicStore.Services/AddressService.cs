@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using SimpleMusicStore.Contracts.Auth;
+﻿using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Validators;
-using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services

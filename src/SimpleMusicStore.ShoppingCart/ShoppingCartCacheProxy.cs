@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
-using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Validators;
 using StackExchange.Redis;
 using System.Collections.Generic;

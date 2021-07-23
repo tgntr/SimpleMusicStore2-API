@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using PagedList;
 using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
-using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.View;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,28 +29,28 @@ namespace SimpleMusicStore.Services
         public int Id { get; }
         public bool IsAuthenticated { get; }
 
-        public IEnumerable<WishDetails> Wishlist => 
+        public IEnumerable<WishDetails> Wishlist =>
             _currentUser.Wishlist;
 
-        public IEnumerable<ArtistFollowDetails> FollowedArtists => 
+        public IEnumerable<ArtistFollowDetails> FollowedArtists =>
             _currentUser.FollowedArtists;
 
-        public IEnumerable<LabelFollowDetails> FollowedLabels => 
+        public IEnumerable<LabelFollowDetails> FollowedLabels =>
             _currentUser.FollowedLabels;
 
-        public IEnumerable<OrderView> Orders => 
+        public IEnumerable<OrderView> Orders =>
             _currentUser.Orders;
 
-        public IEnumerable<WishDetails> WishlistOrdered(int page) => 
+        public IEnumerable<WishDetails> WishlistOrdered(int page) =>
             Wishlist.OrderByDescending(o => o.Date).ToPagedList(page, CommonConstants.PAGE_SIZE);
 
-        public IEnumerable<ArtistFollowDetails> FollowedArtistsOrdered(int page) => 
+        public IEnumerable<ArtistFollowDetails> FollowedArtistsOrdered(int page) =>
             FollowedArtists.OrderByDescending(fa => fa.Date).ToPagedList(page, CommonConstants.PAGE_SIZE);
 
-        public IEnumerable<LabelFollowDetails> FollowedLabelsOrdered(int page) => 
+        public IEnumerable<LabelFollowDetails> FollowedLabelsOrdered(int page) =>
             FollowedLabels.OrderByDescending(fl => fl.Date).ToPagedList(page, CommonConstants.PAGE_SIZE);
 
-        public IEnumerable<OrderDetails> OrdersOrdered(int page) => 
+        public IEnumerable<OrderDetails> OrdersOrdered(int page) =>
             Orders.OrderByDescending(o => o.Date).ToPagedList(page, CommonConstants.PAGE_SIZE).Select(_mapper.Map<OrderDetails>);
 
         public bool IsRecordInWishlist(int recordId)
@@ -62,7 +60,7 @@ namespace SimpleMusicStore.Services
             else
                 return Wishlist.Any(w => w.Id == recordId);
         }
-        
+
         public bool IsArtistFollowed(int artistId)
         {
             if (!IsAuthenticated)
@@ -75,7 +73,7 @@ namespace SimpleMusicStore.Services
         {
             if (!IsAuthenticated)
                 return false;
-            else 
+            else
                 return FollowedLabels.Any(lf => lf.Id == labelId);
         }
     }

@@ -2,8 +2,6 @@
 using Hangfire.SqlServer;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SimpleMusicStore.Newsletter
 {
@@ -11,7 +9,7 @@ namespace SimpleMusicStore.Newsletter
     {
         public static void AddHangfire(this IServiceCollection services, string connectionString)
         {
-            services.AddHangfire(configuration => 
+            services.AddHangfire(configuration =>
                 configuration
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
                     .UseSimpleAssemblyNameTypeSerializer()

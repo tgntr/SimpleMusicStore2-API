@@ -36,10 +36,10 @@ namespace SimpleMusicStore.Services
 
         public async Task<RecordView> Find(int id)
         {
-			var record = await _db.Records.Find(id);
-			record.IsInWishlist = _currentUser.IsRecordInWishlist(id);
-			return record;
-		}
+            var record = await _db.Records.Find(id);
+            record.IsInWishlist = _currentUser.IsRecordInWishlist(id);
+            return record;
+        }
 
         public NewsFeed NewsFeed()
         {
@@ -71,7 +71,7 @@ namespace SimpleMusicStore.Services
         {
             Task.WaitAll(
                 _db.Artists.Add(recordInfo.Artist),
-                _db.Labels.Add(recordInfo.Label)); 
-        }   
+                _db.Labels.Add(recordInfo.Label));
+        }
     }
 }

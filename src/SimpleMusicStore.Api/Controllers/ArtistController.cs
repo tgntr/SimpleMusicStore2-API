@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Hangfire;
+﻿using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SimpleMusicStore.Contracts;
 using SimpleMusicStore.Contracts.Newsletter;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Models.View;
+using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Api.Controllers
 {
@@ -31,7 +27,7 @@ namespace SimpleMusicStore.Api.Controllers
         public void Send()
         {
             RecurringJob.AddOrUpdate<NewsletterGenerator>("weekly", n => n.Generate(), Cron.Minutely);
-            
+
         }
     }
 }

@@ -1,19 +1,17 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
-using SimpleMusicStore.Sorting;
+using SimpleMusicStore.Models;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
+using SimpleMusicStore.Sorting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using SimpleMusicStore.Constants;
-using SimpleMusicStore.Models;
-using System.Linq.Expressions;
 
 namespace SimpleMusicStore.Repositories
 {
@@ -28,33 +26,33 @@ namespace SimpleMusicStore.Repositories
         {
             return _set.AddAsync(_mapper.Map<Record>(record));
         }
-        
+
 
         public async Task<int> Availability(int id)
-		{
-			return (await _set.FindAsync(id)).Availability();
-		}
+        {
+            return (await _set.FindAsync(id)).Availability();
+        }
 
-		public Task<bool> Exists(int id)
+        public Task<bool> Exists(int id)
         {
             return _set.AnyAsync(r => r.Id == id);
         }
 
         public async Task<RecordView> Find(int id)
         {
-            var record = await _set.FindAsync(id);             
+            var record = await _set.FindAsync(id);
             ValidateThatRecordExists(record);
             return _mapper.Map<RecordView>(record);
         }
 
-        
+
 
         public IEnumerable<RecordDetails> FindAllInStock()
         {
             return _set.Where(IsInStock).Select(_mapper.Map<RecordDetails>);
         }
 
-        
+
 
         public IEnumerable<RecordDetails> FindAll(FilterCriterias criterias)
         {
@@ -66,9 +64,9 @@ namespace SimpleMusicStore.Repositories
 
         public IEnumerable<SearchResult> FindAll(string searchTerm)
         {
-			return ((IEnumerable<Record>)_set)
-				.Search(searchTerm)
-				.Select(_mapper.Map<SearchResult>);
+            return ((IEnumerable<Record>)_set)
+                .Search(searchTerm)
+                .Select(_mapper.Map<SearchResult>);
         }
 
         public IEnumerable<string> AvailableFormats()
@@ -86,7 +84,7 @@ namespace SimpleMusicStore.Repositories
         public IEnumerable<RecordDetails> LatestByFavorites(SubscriberDetails subscriber)
         {
             return _set
-                .Where(r=> IsFromLastSevenDays(r) && IsFromFollowedArtistOrLabel(r, subscriber))
+                .Where(r => IsFromLastSevenDays(r) && IsFromFollowedArtistOrLabel(r, subscriber))
                 .Select(_mapper.Map<RecordDetails>);
         }
 

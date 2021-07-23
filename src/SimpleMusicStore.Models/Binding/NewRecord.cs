@@ -1,10 +1,8 @@
 ﻿using SimpleMusicStore.Constants;
 using SimpleMusicStore.Models.MusicLibraries;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Models.Binding
 {
@@ -23,7 +21,7 @@ namespace SimpleMusicStore.Models.Binding
         public int Year { get; set; }
         [Range(1, 100.00, ErrorMessage = ErrorMessages.PRICE_LIMIT), Required]
         public decimal Price { get; set; }
-        [Range(1,int.MaxValue), Required]
+        [Range(1, int.MaxValue), Required]
         public int Quantity { get; set; }
         public IEnumerable<RecordVideoInfo> Videos { get; set; }
         [MinLength(1), Required]

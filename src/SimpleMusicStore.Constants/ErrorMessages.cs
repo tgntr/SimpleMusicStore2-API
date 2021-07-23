@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SimpleMusicStore.Constants
+﻿namespace SimpleMusicStore.Constants
 {
     public static class ErrorMessages
     {
@@ -32,7 +28,7 @@ namespace SimpleMusicStore.Constants
             INACCESSIBLE = "Requested information is inaccessible!",
             INVALID_COMMENT = "The comment does not exist!",
             FORBIDDEN_COMMENT_DELETION = "You cannot delete this comment!",
-            FORBIDDEN_COMMENT_EDIT = "You cannot edit this comment.", 
+            FORBIDDEN_COMMENT_EDIT = "You cannot edit this comment.",
             INVALID_TOKEN = "Invalid token!";
     }
 }

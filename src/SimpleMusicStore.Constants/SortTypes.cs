@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SimpleMusicStore.Constants
+﻿namespace SimpleMusicStore.Constants
 {
     public enum SortTypes
     {

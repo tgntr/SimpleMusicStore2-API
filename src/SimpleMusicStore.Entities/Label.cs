@@ -16,7 +16,7 @@ namespace SimpleMusicStore.Entities
         public string Name { get; set; }
 
         [Url]
-        public string Image { get; set; } 
+        public string Image { get; set; }
 
         public virtual ICollection<Record> Records { get; set; }
 

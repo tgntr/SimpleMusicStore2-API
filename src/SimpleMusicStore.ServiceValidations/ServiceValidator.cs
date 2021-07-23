@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SimpleMusicStore.Constants;
+﻿using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Auth;
 using SimpleMusicStore.Contracts.Repositories;
-using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Validators;
-using SimpleMusicStore.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -114,7 +111,7 @@ namespace SimpleMusicStore.ServiceValidations
 
         public async Task IsCommentAuthor(int commentId)
         {
-			if (!await _db.Comments.IsAuthor(commentId, _currentUser.Id))
+            if (!await _db.Comments.IsAuthor(commentId, _currentUser.Id))
                 throw new ArgumentException(ErrorMessages.FORBIDDEN_COMMENT_DELETION);
         }
     }

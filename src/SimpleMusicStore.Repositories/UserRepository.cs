@@ -16,10 +16,10 @@ namespace SimpleMusicStore.Repositories
     public class UserRepository : DbRepository<User>, IUserRepository
     {
         public UserRepository(SimpleMusicStoreDbContext db, IMapper mapper)
-            :base(db, mapper)
+            : base(db, mapper)
         {
         }
-        
+
         public async Task<UserDetails> Find(int id)
         {
             var user = await _set.FindAsync(id);

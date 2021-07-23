@@ -1,13 +1,11 @@
 ﻿using SimpleMusicStore.Models.Entities;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace SimpleMusicStore.Entities
 {
     public class Artist : EntityWithCustomId<int>
-	{
+    {
         public Artist()
         {
             Records = new List<Record>();

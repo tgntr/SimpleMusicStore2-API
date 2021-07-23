@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Services
 {
@@ -13,6 +10,6 @@ namespace SimpleMusicStore.Contracts.Services
         Task UnfollowArtist(int artistId);
         Task FollowLabel(int labelId);
         Task UnfollowLabel(int labelId);
-        
+
     }
 }

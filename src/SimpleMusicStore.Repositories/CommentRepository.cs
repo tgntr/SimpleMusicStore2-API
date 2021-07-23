@@ -10,7 +10,6 @@ using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories
@@ -30,10 +29,10 @@ namespace SimpleMusicStore.Repositories
         public IEnumerable<CommentView> FindAll(int recordId, int page)
         {
             return _set
-				.Where(comment => comment.RecordId == recordId)
-				.OrderByDescending(c=>c.Date)
+                .Where(comment => comment.RecordId == recordId)
+                .OrderByDescending(c => c.Date)
                 .ToPagedList(page, CommonConstants.PAGE_SIZE)
-				.Select(_mapper.Map<CommentView>);
+                .Select(_mapper.Map<CommentView>);
         }
         public async Task Delete(int commentId)
         {
@@ -63,7 +62,7 @@ namespace SimpleMusicStore.Repositories
 
         public Task<bool> IsAuthor(int commentId, int userId)
         {
-			return _set.AnyAsync(c => c.Id == commentId && c.UserId == userId);
+            return _set.AnyAsync(c => c.Id == commentId && c.UserId == userId);
         }
         //private CommentView FillUserName(NewComment comment, Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<Comment> commentEntity)
         //{

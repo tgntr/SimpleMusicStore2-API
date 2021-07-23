@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SimpleMusicStore.Contracts.Repositories;
-using SimpleMusicStore.Contracts.Services;
-using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Data;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories

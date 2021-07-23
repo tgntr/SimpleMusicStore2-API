@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SimpleMusicStore.Models.Entities;
-using System;
+﻿using SimpleMusicStore.Models.Entities;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SimpleMusicStore.Entities
 {
@@ -28,6 +25,6 @@ namespace SimpleMusicStore.Entities
         public virtual ICollection<LabelFollow> FollowedLabels { get; set; }
         public virtual ICollection<Wish> Wishlist { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
-        
+
     }
 }

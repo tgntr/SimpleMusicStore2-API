@@ -14,7 +14,6 @@ using SimpleMusicStore.ModelValidations;
 using SimpleMusicStore.Newsletter;
 using StackExchange.Redis;
 using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting;
-using System.Linq;
 
 namespace SimpleMusicStore.Api
 {
@@ -45,7 +44,7 @@ namespace SimpleMusicStore.Api
             services.AddJwtAuthentication(JwtPayload());
             services.AddNewsletter(EmailSenderCredentials());
             services.AddHangfire(HangfireConnectionString());
-            services.AddSwaggerGen(s => 
+            services.AddSwaggerGen(s =>
             {
                 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {

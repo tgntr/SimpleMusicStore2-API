@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Models.View;
 
@@ -14,7 +9,7 @@ namespace SimpleMusicStore.Api.Controllers
         private readonly IRecordService _records;
 
         public HomeController(IRecordService records)
-            :base()
+            : base()
         {
             _records = records;
         }

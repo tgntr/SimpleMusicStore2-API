@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SimpleMusicStore.Models.View
+﻿namespace SimpleMusicStore.Models.View
 {
     public class Newsletter
     {

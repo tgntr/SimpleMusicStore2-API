@@ -1,10 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using SimpleMusicStore.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SimpleMusicStore.Data
 {

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SimpleMusicStore.Contracts;
 using SimpleMusicStore.Contracts.Newsletter;
 using SimpleMusicStore.Models.Credentials;
 using SimpleMusicStore.Newsletter;

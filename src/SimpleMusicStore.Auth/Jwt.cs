@@ -1,19 +1,16 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Google.Apis.Auth;
+using Microsoft.Extensions.Options;
+using SimpleMusicStore.Auth.Extensions;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Auth;
+using SimpleMusicStore.Contracts.Repositories;
+using SimpleMusicStore.Models;
 using SimpleMusicStore.Models.Auth;
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using SimpleMusicStore.Auth.Extensions;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using SimpleMusicStore.Entities;
-using SimpleMusicStore.Contracts.Validators;
-using SimpleMusicStore.Constants;
-using SimpleMusicStore.Contracts.Repositories;
-using Google.Apis.Auth;
-using System;
-using SimpleMusicStore.Models;
-using System.Collections.Generic;
 
 namespace SimpleMusicStore.Auth
 {
@@ -44,13 +41,11 @@ namespace SimpleMusicStore.Auth
             //return GenerateJwtToken(GenerateClaims(user));
             var email = $"{token}@aaa.aa";
 
-            if (await _db.Users.Exists(email))
+            if (!await _db.Users.Exists(email))
             {
-                return "exists";
+                await _db.Users.Add(new UserClaims(email, email));
+                await _db.SaveChanges();
             }
-
-            await _db.Users.Add(new UserClaims(email, email));
-            await _db.SaveChanges();
             var user = await _db.Users.Find(email);
             return GenerateJwtToken(GenerateClaims(user));
         }

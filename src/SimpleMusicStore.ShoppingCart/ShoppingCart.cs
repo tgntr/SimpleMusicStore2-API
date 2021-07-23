@@ -5,8 +5,6 @@ using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Validators;
 using SimpleMusicStore.Models.View;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.ShoppingCart

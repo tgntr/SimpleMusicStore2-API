@@ -1,8 +1,4 @@
-﻿using SimpleMusicStore.Contracts.Services;
-using SimpleMusicStore.Contracts.Validators;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Repositories

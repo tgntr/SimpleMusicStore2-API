@@ -1,8 +1,5 @@
 ﻿using SimpleMusicStore.Entities.Common;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace SimpleMusicStore.Entities
 {
@@ -14,7 +11,7 @@ namespace SimpleMusicStore.Entities
         }
         public DateTime DateEdited { get; set; }
         public int Id { get; set; }
-        
+
         public string Text { get; set; }
 
         public int RecordId { get; set; }

@@ -1,12 +1,8 @@
-﻿using SimpleMusicStore.Contracts.Sorting;
-using SimpleMusicStore.Contracts.Services;
-using SimpleMusicStore.Entities;
+﻿using SimpleMusicStore.Contracts.Repositories;
+using SimpleMusicStore.Contracts.Sorting;
 using SimpleMusicStore.Models.View;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using SimpleMusicStore.Contracts.Repositories;
 
 namespace SimpleMusicStore.Sorting
 {
@@ -37,7 +33,7 @@ namespace SimpleMusicStore.Sorting
             else
                 return 0;
         }
-        
+
         private int IsLabelFollowed(RecordDetails record)
         {
             if (_currentUser.FollowedLabels.Any(fa => fa.Id == record.Label.Id))

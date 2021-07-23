@@ -1,8 +1,5 @@
 ﻿using SimpleMusicStore.Models.Entities;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace SimpleMusicStore.Entities
 {

@@ -1,10 +1,7 @@
-﻿using SimpleMusicStore.Entities;
-using SimpleMusicStore.Models;
+﻿using SimpleMusicStore.Models;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Repositories
@@ -14,7 +11,7 @@ namespace SimpleMusicStore.Contracts.Repositories
         Task Add(NewRecord record);
         Task<bool> Exists(int id);
         Task<RecordView> Find(int id);
-		Task<int> Availability(int id);
+        Task<int> Availability(int id);
         IEnumerable<RecordDetails> FindAllInStock();
         IEnumerable<RecordDetails> FindAll(FilterCriterias criterias);
         IEnumerable<SearchResult> FindAll(string searchTerm);

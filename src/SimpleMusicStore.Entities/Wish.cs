@@ -1,20 +1,17 @@
 ﻿using SimpleMusicStore.Entities.Common;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace SimpleMusicStore.Entities
 {
     public class Wish : UserActivity
     {
         public Wish()
-			:base()
+            : base()
         {
         }
 
         public Wish(int recordId, int userId)
-            :base()
+            : base()
         {
             RecordId = recordId;
             UserId = userId;

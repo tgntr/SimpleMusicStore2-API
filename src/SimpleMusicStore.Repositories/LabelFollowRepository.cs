@@ -4,9 +4,6 @@ using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
 using SimpleMusicStore.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories
@@ -23,7 +20,7 @@ namespace SimpleMusicStore.Repositories
             return _set.AddAsync(new LabelFollow(labelId, userId));
         }
 
-		public async Task Delete(int labelId, int userId)
+        public async Task Delete(int labelId, int userId)
         {
             var labelFollow = await _set.FindAsync(labelId, userId);
             ValidateThatLabelFollowExists(labelFollow);
