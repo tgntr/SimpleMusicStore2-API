@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Data;
@@ -7,9 +6,6 @@ using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories
@@ -17,7 +13,7 @@ namespace SimpleMusicStore.Repositories
     public class OrderRepository : DbRepository<Order>, IOrderRepository
     {
         public OrderRepository(SimpleMusicStoreDbContext db, IMapper mapper)
-            :base(db, mapper)
+            : base(db, mapper)
         {
         }
 

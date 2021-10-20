@@ -1,8 +1,6 @@
-﻿using SimpleMusicStore.Entities;
-using SimpleMusicStore.Models;
+﻿using SimpleMusicStore.Models;
 using SimpleMusicStore.Models.View;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Contracts.Repositories

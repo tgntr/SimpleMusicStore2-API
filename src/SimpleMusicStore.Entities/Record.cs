@@ -22,7 +22,7 @@ namespace SimpleMusicStore.Entities
         [Required]
         public string Title { get; set; }
         [Url]
-        public string Image { get; set; } 
+        public string Image { get; set; }
         public string Genre { get; set; }
         [Required]
         public int Year { get; set; }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Api.Controllers
 {
@@ -22,13 +20,13 @@ namespace SimpleMusicStore.Api.Controllers
         }
 
         [HttpPost]
-        public Task Add([FromBody]NewAddress address)
+        public Task Add([FromBody] NewAddress address)
         {
             return _addresses.Add(address);
         }
 
         [HttpPost]
-        public Task Edit([FromBody]AddressEdit address)
+        public Task Edit([FromBody] AddressEdit address)
         {
             return _addresses.Edit(address);
         }

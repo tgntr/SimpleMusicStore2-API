@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SimpleMusicStore.Contracts.Auth
+﻿namespace SimpleMusicStore.Contracts.Auth
 {
     public interface IClaimAccessor
     {

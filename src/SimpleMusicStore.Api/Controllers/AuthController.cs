@@ -9,13 +9,13 @@ namespace SimpleMusicStore.Api.Controllers
         private readonly AuthenticationHandler _authenticator;
 
         public AuthController(AuthenticationHandler authenticator)
-			: base()
-		{
+            : base()
+        {
             _authenticator = authenticator;
         }
 
-		public Task<string> Google(string token)
-		{
+        public Task<string> Google(string token)
+        {
             return _authenticator.Google(token);
 
         }

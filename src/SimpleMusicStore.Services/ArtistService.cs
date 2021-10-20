@@ -1,11 +1,6 @@
-﻿using AutoMapper;
-using SimpleMusicStore.Contracts;
-using SimpleMusicStore.Contracts.Repositories;
+﻿using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
-using SimpleMusicStore.Contracts.Validators;
-using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.View;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services
@@ -23,9 +18,9 @@ namespace SimpleMusicStore.Services
 
         public async Task<ArtistView> Find(int id)
         {
-			var artist = await _db.Artists.Find(id);
-			artist.IsFollowed = _currentUser.IsArtistFollowed(id);
-			return artist;
-		}
+            var artist = await _db.Artists.Find(id);
+            artist.IsFollowed = _currentUser.IsArtistFollowed(id);
+            return artist;
+        }
     }
 }

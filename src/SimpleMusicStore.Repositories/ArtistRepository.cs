@@ -10,7 +10,6 @@ using SimpleMusicStore.Sorting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Repositories
@@ -18,7 +17,7 @@ namespace SimpleMusicStore.Repositories
     public class ArtistRepository : DbRepository<Artist>, IArtistRepository
     {
         public ArtistRepository(SimpleMusicStoreDbContext db, IMapper mapper)
-            :base(db, mapper)
+            : base(db, mapper)
         {
         }
 

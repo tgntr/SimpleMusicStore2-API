@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SimpleMusicStore.Constants
+﻿namespace SimpleMusicStore.Constants
 {
     public static class DiscogsConstants
     {

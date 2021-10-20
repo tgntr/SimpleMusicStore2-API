@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Auth;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace SimpleMusicStore.Auth

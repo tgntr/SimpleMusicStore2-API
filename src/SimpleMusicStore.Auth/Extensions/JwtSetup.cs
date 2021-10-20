@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SimpleMusicStore.Models.Auth;
-using System;
 
 namespace SimpleMusicStore.Auth.Extensions
 {
@@ -24,11 +22,6 @@ namespace SimpleMusicStore.Auth.Extensions
                     options.SaveToken = true;
                     options.TokenValidationParameters = config.JwtConfiguration().ValidationParameters();
                 });
-
-            services.AddAuthorization(options =>
-            {
-                //EXAMPLE POLICY options.AddPolicy("ApiUser", policy => policy.RequireClaim("username"));
-            });
         }
 
         private static JwtConfiguration JwtConfiguration(this IConfigurationSection config)

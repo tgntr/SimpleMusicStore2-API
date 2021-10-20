@@ -3,13 +3,10 @@ using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Sorting;
-using SimpleMusicStore.Contracts.Validators;
-using SimpleMusicStore.Extensions;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace SimpleMusicStore.Services

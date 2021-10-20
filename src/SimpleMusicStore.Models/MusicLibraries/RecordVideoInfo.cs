@@ -6,6 +6,6 @@ namespace SimpleMusicStore.Models.MusicLibraries
     {
         [Required]
         public string Uri { get; set; }
-        
+
     }
 }

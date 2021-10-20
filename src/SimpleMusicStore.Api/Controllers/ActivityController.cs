@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Contracts.Repositories;
-using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Models.View;
+using System.Collections.Generic;
 
 namespace SimpleMusicStore.Api.Controllers
 {
@@ -16,7 +12,7 @@ namespace SimpleMusicStore.Api.Controllers
         private readonly ICurrentUserActivities _currentUser;
 
         public ActivityController(ICurrentUserActivities currentUser)
-            :base()
+            : base()
         {
             _currentUser = currentUser;
         }

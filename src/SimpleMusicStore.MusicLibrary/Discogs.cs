@@ -1,14 +1,14 @@
-﻿using SimpleMusicStore.Models.MusicLibraries;
+﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using SimpleMusicStore.Constants;
 using SimpleMusicStore.Contracts;
+using SimpleMusicStore.Models.Binding;
+using SimpleMusicStore.Models.MusicLibraries;
+using SimpleMusicStore.MusicLibrary.Extensions;
 using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using SimpleMusicStore.MusicLibrary.Extensions;
-using Microsoft.Extensions.Configuration;
-using SimpleMusicStore.Constants;
-using SimpleMusicStore.Models.Binding;
 
 namespace SimpleMusicStore.MusicLibrary
 {
@@ -45,7 +45,7 @@ namespace SimpleMusicStore.MusicLibrary
         {
             if (id == DiscogsConstants.VARIOUS_ARTISTS_ID)
             {
-                return Task.Run(()=>new ArtistInfo
+                return Task.Run(() => new ArtistInfo
                 {
                     Id = DiscogsConstants.VARIOUS_ARTISTS_ID,
                     Name = DiscogsConstants.VARIOUS_ARTISTS

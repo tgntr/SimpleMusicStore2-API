@@ -18,7 +18,7 @@ namespace SimpleMusicStore.Storage
 
         public Task Upload(IFormFile file, string fileName)
         {
-            return  _storage.UploadObjectAsync(
+            return _storage.UploadObjectAsync(
                     bucket: CommonConstants.BUCKET_NAME,
                     objectName: fileName,
                     contentType: file.ContentType,

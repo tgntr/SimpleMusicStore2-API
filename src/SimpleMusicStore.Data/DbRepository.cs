@@ -1,12 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using SimpleMusicStore.Contracts.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Data
 {
@@ -28,7 +21,7 @@ namespace SimpleMusicStore.Data
         {
             _context = context;
             _set = _context.Set<TEntity>();
-        }      
+        }
 
         //public Task Add(TEntity entity)
         //{

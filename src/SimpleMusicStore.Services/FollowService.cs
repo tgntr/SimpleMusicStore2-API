@@ -2,7 +2,6 @@
 using SimpleMusicStore.Contracts.Repositories;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Contracts.Validators;
-using SimpleMusicStore.Entities;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Services

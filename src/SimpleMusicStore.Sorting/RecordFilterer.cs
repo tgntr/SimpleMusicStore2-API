@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SimpleMusicStore.Sorting
 {
@@ -27,9 +26,9 @@ namespace SimpleMusicStore.Sorting
         public static IEnumerable<Record> Search(this IEnumerable<Record> records, string searchTerm)
         {
             return records
-                .Where(r => 
+                .Where(r =>
                     r.Title.Contains(searchTerm, StringComparison.InvariantCultureIgnoreCase) ||
-                    r.Tracklist.Any(t=>t.Title.Split().Any(tt=>tt.StartsWith(searchTerm, StringComparison.InvariantCultureIgnoreCase))));
+                    r.Tracklist.Any(t => t.Title.Split().Any(tt => tt.StartsWith(searchTerm, StringComparison.InvariantCultureIgnoreCase))));
         }
 
         public static IEnumerable<Artist> Search(this IEnumerable<Artist> artists, string searchTerm)

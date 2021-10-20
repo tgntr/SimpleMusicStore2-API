@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Contracts.Services;
 using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Api.Controllers
 {
@@ -26,14 +24,14 @@ namespace SimpleMusicStore.Api.Controllers
 
         [Authorize]
         [HttpPost]
-        public Task Add([FromBody]NewComment comment)
+        public Task Add([FromBody] NewComment comment)
         {
             return _comments.Add(comment);
         }
 
         [Authorize]
         [HttpPost]
-        public Task Edit([FromBody]EditComment comment)
+        public Task Edit([FromBody] EditComment comment)
         {
             return _comments.Edit(comment);
         }

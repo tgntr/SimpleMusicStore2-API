@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using SimpleMusicStore.Api.StartupConfigurations;
 using SimpleMusicStore.Auth.Extensions;
 using SimpleMusicStore.Data;
@@ -12,6 +13,7 @@ using SimpleMusicStore.EmailSender;
 using SimpleMusicStore.ModelValidations;
 using SimpleMusicStore.Newsletter;
 using StackExchange.Redis;
+using Swashbuckle.AspNetCore.SwaggerGen.ConventionalRouting;
 
 namespace SimpleMusicStore.Api
 {
@@ -28,8 +30,12 @@ namespace SimpleMusicStore.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddMvc(options => options.Filters.Add(typeof(ValidateModelStateGloballyAttribute)))
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                .AddControllers(options =>
+                {
+                    options.EnableEndpointRouting = false;
+                    options.Filters.Add(typeof(ValidateModelStateGloballyAttribute));
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddDatabase(DbConnectionString());
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddCustomServices(Configuration);
@@ -38,9 +44,28 @@ namespace SimpleMusicStore.Api
             services.AddJwtAuthentication(JwtPayload());
             services.AddNewsletter(EmailSenderCredentials());
             services.AddHangfire(HangfireConnectionString());
+            services.AddSwaggerGen(s =>
+            {
+                s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Description = "Enter JWT token value",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "bearer"
+                });
 
-            
-            
+                s.AddSecurityRequirement(new OpenApiSecurityRequirement { { new OpenApiSecurityScheme { Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" } }, new string[] { } } });
+            });//(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "SimpleMusicStore.API", Version = "v1" }));
+            services.AddSwaggerGenWithConventionalRoutes(options =>
+            {
+                options.IgnoreTemplateFunc = (template) => template.StartsWith("api/");
+                options.SkipDefaults = true;
+            });
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,7 +80,8 @@ namespace SimpleMusicStore.Api
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SimpleMusicStore.API"));
             app.UseHangfireDashboard();
             app.ConfigureExceptionHandler();
 
@@ -63,15 +89,16 @@ namespace SimpleMusicStore.Api
             app.UseCookiePolicy();
             app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseMvc(routes =>
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(routes =>
             {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapControllers();
+                routes.MapDefaultControllerRoute();
+                ConventionalRoutingSwaggerGen.UseRoutes(routes);
             });
-            
-
         }
+
         private string GoogleAuthClientId() => Configuration["GoogleAuth:ClientId"];
         private IConfigurationSection EmailSenderCredentials() => Configuration.GetSection("EmailSender");
 

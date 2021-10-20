@@ -11,7 +11,7 @@ namespace SimpleMusicStore.Repositories
     public class WishRepository : DbRepository<Wish>, IWishRepository
     {
         public WishRepository(SimpleMusicStoreDbContext db)
-            :base(db)
+            : base(db)
         {
         }
 
@@ -25,7 +25,7 @@ namespace SimpleMusicStore.Repositories
             return _set.AnyAsync(w => w.RecordId == recordId && w.UserId == userId);
         }
 
-		public async Task Delete(int recordId, int userId)
+        public async Task Delete(int recordId, int userId)
         {
             var wish = await _set.FindAsync(recordId, userId);
             ValidateThatWishExists(wish);

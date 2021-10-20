@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMusicStore.Contracts;
 using SimpleMusicStore.ModelValidations;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Api.Controllers
 {
@@ -19,7 +16,7 @@ namespace SimpleMusicStore.Api.Controllers
             _cloud = cloud;
         }
         [HttpPost]
-        public Task Upload(string fileName, [Required, NonEmptyMp3File]IFormFile file)
+        public Task Upload(string fileName, [Required, NonEmptyMp3File] IFormFile file)
         {
             return _cloud.Upload(file, fileName);
         }

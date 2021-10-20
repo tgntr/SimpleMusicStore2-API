@@ -1,5 +1,4 @@
-﻿using SimpleMusicStore.Entities;
-using SimpleMusicStore.Models.Binding;
+﻿using SimpleMusicStore.Models.Binding;
 using SimpleMusicStore.Models.View;
 using System.Collections.Generic;
 using System.Threading.Tasks;

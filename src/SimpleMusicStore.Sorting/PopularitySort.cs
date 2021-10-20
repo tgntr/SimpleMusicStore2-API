@@ -1,5 +1,4 @@
 ﻿using SimpleMusicStore.Contracts.Sorting;
-using SimpleMusicStore.Entities;
 using SimpleMusicStore.Models.View;
 using System.Collections.Generic;
 using System.Linq;

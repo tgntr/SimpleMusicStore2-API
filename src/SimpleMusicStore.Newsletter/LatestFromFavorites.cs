@@ -1,9 +1,6 @@
 ﻿using SimpleMusicStore.Contracts.Newsletter;
 using SimpleMusicStore.Contracts.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SimpleMusicStore.Newsletter
